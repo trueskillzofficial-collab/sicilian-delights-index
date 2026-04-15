@@ -514,28 +514,49 @@ button { font-family: inherit; }
   .products-carousel-wrap .product-card { width: 320px; }
 }
 
-/* ── Card style Casa Infante: bordo tratteggiato decorativo ── */
+/* ── Card style 3D stacked — ispirato Casa Infante ─────────────
+   Effetto "carta impilata": due layer visibili sotto-destra con
+   box-shadow a blur=0 (hard-stop). Il border-radius viene applicato
+   automaticamente a ogni layer, l'hover "solleva" la card.
+   ─────────────────────────────────────────────────────────────── */
 .product-card {
   background: var(--color-bianco);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
   border: 2px dashed rgba(181, 135, 111, 0.28);
+  /* Layer 1: verde-chiaro (#DBD4A1) — carta più vicina  */
+  /* Layer 2: castagna tenue         — carta più lontana */
+  box-shadow:
+    0 2px 10px rgba(26, 26, 26, 0.06),
+    5px 6px 0 0 var(--color-verde-chiaro),
+    9px 11px 0 0 rgba(181, 135, 111, 0.40);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
+/* Hover: la card si sposta in alto-sinistra, rivelando più stack */
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
+  transform: translate(-3px, -5px);
+  box-shadow:
+    0 18px 44px rgba(26, 26, 26, 0.13),
+    8px 11px 0 0 var(--color-verde-chiaro),
+    13px 16px 0 0 rgba(181, 135, 111, 0.38);
 }
+/* Featured (Kit Cannoli): layer gialli al posto dei castagna */
 .product-card.featured {
   border: 2.5px solid var(--color-giallo);
-  box-shadow: 0 0 0 4px rgba(var(--color-giallo-rgb), 0.15), var(--shadow-md);
+  box-shadow:
+    0 2px 10px rgba(26, 26, 26, 0.06),
+    5px 6px 0 0 rgba(241, 221, 78, 0.72),
+    9px 11px 0 0 rgba(241, 221, 78, 0.32);
 }
 .product-card.featured:hover {
-  box-shadow: 0 0 0 4px rgba(var(--color-giallo-rgb), 0.2), var(--shadow-lg);
+  transform: translate(-3px, -5px);
+  box-shadow:
+    0 18px 44px rgba(26, 26, 26, 0.13),
+    8px 11px 0 0 rgba(241, 221, 78, 0.72),
+    13px 16px 0 0 rgba(241, 221, 78, 0.32);
 }
 .card-img {
   position: relative;
