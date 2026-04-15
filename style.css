@@ -502,8 +502,7 @@ button { font-family: inherit; }
   animation: carousel-slide 42s linear infinite;
   padding: 0 12px;
 }
-/* Carousel non si ferma sull'hover — si controlla trascinando col mouse */
-.products-carousel-track.is-dragging { animation-play-state: paused; cursor: grabbing; }
+/* Carousel — JS gestisce tutto: nessuna pausa su hover */
 .products-carousel-wrap .product-card {
   width: 280px;
   flex-shrink: 0;
@@ -1725,6 +1724,13 @@ textarea.form-control {
   to   { background-position: -40px 0; }
 }
 
-/* ── CAROUSEL — cursore grab ──────────────────────────────── */
-.products-carousel-wrap { cursor: grab; }
-.products-carousel-wrap.is-grabbing { cursor: grabbing; }
+/* ── CAROUSEL — cursore e blocco selezione testo ─────────── */
+.products-carousel-wrap {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y; /* lascia lo scroll verticale al browser, JS gestisce l'orizzontale */
+}
+.products-carousel-wrap.is-grabbing {
+  cursor: grabbing;
+}
