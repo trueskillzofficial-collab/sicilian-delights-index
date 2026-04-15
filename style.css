@@ -502,7 +502,8 @@ button { font-family: inherit; }
   animation: carousel-slide 42s linear infinite;
   padding: 0 12px;
 }
-.products-carousel-track:hover { animation-play-state: paused; }
+/* Carousel non si ferma sull'hover — si controlla trascinando col mouse */
+.products-carousel-track.is-dragging { animation-play-state: paused; cursor: grabbing; }
 .products-carousel-wrap .product-card {
   width: 280px;
   flex-shrink: 0;
@@ -514,15 +515,17 @@ button { font-family: inherit; }
   .products-carousel-wrap .product-card { width: 320px; }
 }
 
+/* ── Card style Casa Infante: bordo tratteggiato decorativo ── */
 .product-card {
   background: var(--color-bianco);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
+  border: 2px dashed rgba(181, 135, 111, 0.28);
 }
 .product-card:hover {
   transform: translateY(-6px);
@@ -563,21 +566,40 @@ button { font-family: inherit; }
   text-align: center;
   padding: 20px;
 }
+/* ── Badge "Best Seller" — adesivo a punte starburst ── */
 .badge {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  background: var(--color-giallo);
-  color: var(--color-nero);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
+  top: 10px;
+  right: 10px;
+  background: var(--color-nero);
+  color: var(--color-giallo);
+  font-size: 7.5px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 5px 13px;
-  border-radius: var(--radius-pill);
-  box-shadow: 0 3px 10px rgba(var(--color-giallo-rgb), 0.55);
-  transform: rotate(2.5deg);
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.3;
+  padding: 10px;
+  clip-path: polygon(
+    50% 0%, 59.6% 14.3%, 75% 6.7%, 76.2% 23.8%,
+    93.3% 25%, 85.7% 40.4%, 100% 50%, 85.7% 59.6%,
+    93.3% 75%, 76.2% 76.2%, 75% 93.3%, 59.6% 85.7%,
+    50% 100%, 40.4% 85.7%, 25% 93.3%, 23.8% 76.2%,
+    6.7% 75%, 14.3% 59.6%, 0% 50%, 14.3% 40.4%,
+    6.7% 25%, 23.8% 23.8%, 25% 6.7%, 40.4% 14.3%
+  );
+  transform: rotate(-12deg);
   z-index: 2;
+  animation: badge-wobble 4s ease-in-out infinite;
+}
+@keyframes badge-wobble {
+  0%, 100% { transform: rotate(-12deg) scale(1); }
+  50%       { transform: rotate(-12deg) scale(1.07); }
 }
 .card-body {
   padding: 20px 20px 22px;
@@ -1357,7 +1379,7 @@ textarea.form-control {
 
 /* ── Cat-grid 3 colonne fisse ───────────────────────────────── */
 .cat-grid-3 { grid-template-columns: 1fr; }
-@media (min-width: 600px) { .cat-grid-3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 600px) { .cat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); padding: 0; margin: 0; } }
 .cat-card-featured .cat-overlay h3 {
   font-size: clamp(18px, 3vw, 24px);
 }
@@ -1551,10 +1573,30 @@ textarea.form-control {
   /* Carousel: narrower cards on small screens */
   .products-carousel-wrap .product-card { width: 240px; }
 
-  /* Cat-grid single col on phone */
+  /* Cat-grid — griglia 2 col su phone */
   .cat-grid { grid-template-columns: 1fr 1fr; }
-  .cat-grid-3 { grid-template-columns: 1fr; }
   .cat-card { height: 180px; }
+
+  /* Cat-grid-3 — scroll orizzontale mobile, card quasi full-width */
+  .cat-grid-3 {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 14px;
+    padding: 0 20px 20px;
+    margin: 0 -20px;
+    grid-template-columns: unset;
+  }
+  .cat-grid-3::-webkit-scrollbar { display: none; }
+  .cat-grid-3 .cat-card {
+    flex: 0 0 82vw;
+    min-width: 0;
+    scroll-snap-align: start;
+    height: 260px;
+    border-radius: var(--radius-md);
+  }
 
   /* Vulcano mobile */
   .vulcano-text-col { padding: 0 0 48px; }
@@ -1589,3 +1631,100 @@ textarea.form-control {
   .shipping-grid { grid-template-columns: repeat(4, 1fr); }
   .trust-item    { flex: 1; min-width: 0; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   NUOVI ELEMENTI DECORATIVI — Wave & Spike dividers
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── WAVE DIVIDER animata ──────────────────────────────────── */
+.inter-wave {
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+  pointer-events: none;
+  display: block;
+  /* altezza = ampiezza onda */
+  height: 64px;
+}
+.inter-wave svg {
+  display: block;
+  /* SVG è 200% width → animiamo -50% per loop perfetto */
+  width: 200%;
+  height: 64px;
+  animation: wave-flow 14s linear infinite;
+}
+.inter-wave.wave-reverse svg {
+  animation-direction: reverse;
+}
+
+@keyframes wave-flow {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── SPIKE / ZIGZAG band ──────────────────────────────────── */
+.spike-band {
+  position: relative;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 3;
+}
+/* Versione: band nera con denti sopra e sotto — senza margin per evitare gap di colore sbagliato */
+.spike-band-full {
+  background: var(--color-nero);
+  height: 18px;
+  margin: 0;
+}
+.spike-band-full::before,
+.spike-band-full::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-repeat: repeat-x;
+  background-size: 40px 20px;
+}
+/* denti puntati verso l'alto (top edge della banda) */
+.spike-band-full::before {
+  bottom: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cpolygon points='0,20 20,0 40,20' fill='%231A1A1A'/%3E%3C/svg%3E");
+  animation: spike-scroll 5s linear infinite;
+}
+/* denti puntati verso il basso (bottom edge della banda) */
+.spike-band-full::after {
+  top: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cpolygon points='0,0 20,20 40,0' fill='%231A1A1A'/%3E%3C/svg%3E");
+  animation: spike-scroll 5s linear infinite reverse;
+}
+
+/* Versione: solo spike sopra una sezione (per creare bordo superiore a denti) */
+.spike-top-nero {
+  position: relative;
+  z-index: 3;
+  height: 20px;
+  overflow: visible;
+  pointer-events: none;
+}
+.spike-top-nero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cpolygon points='0,0 20,20 40,0' fill='%231A1A1A'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 40px 20px;
+  animation: spike-scroll 5s linear infinite;
+}
+
+@keyframes spike-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: -40px 0; }
+}
+
+/* ── CAROUSEL — cursore grab ──────────────────────────────── */
+.products-carousel-wrap { cursor: grab; }
+.products-carousel-wrap.is-grabbing { cursor: grabbing; }

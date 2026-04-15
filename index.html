@@ -107,6 +107,13 @@
       </div>
     </section>
 
+    <!-- ── WAVE: hero → trust bar (crema) ─────────────────────────── -->
+    <div class="inter-wave" style="margin-top:-40px;position:relative;z-index:5;" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 64" preserveAspectRatio="none">
+        <path d="M0 32 C240 0, 480 64, 720 32 C960 0, 1200 64, 1440 32 C1680 0, 1920 64, 2160 32 C2400 0, 2640 64, 2880 32 L2880 64 L0 64 Z" fill="#E8E2CD"/>
+      </svg>
+    </div>
+
     <!-- ── TRUST BAR ──────────────────────────────────────────────── -->
     <div class="trust-bar" role="complementary" aria-label="Le nostre garanzie">
       <div class="trust-inner">
@@ -167,7 +174,7 @@
           <article class="product-card featured" aria-label="Kit Cannoli — Best Seller">
             <a href="kit-cannolo.html" class="card-img" style="display:block;text-decoration:none">
               <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit Cannoli con cialde, ricotta di pecora e creme artigianali" loading="lazy" style="object-position:center center">
-              <span class="badge" aria-label="Prodotto più venduto">Best Seller</span>
+              <span class="badge" aria-label="Prodotto più venduto">BEST<br>SELLER</span>
             </a>
             <div class="card-body">
               <span class="card-cannoleria">la Cannoleria</span>
@@ -259,7 +266,7 @@
           <article class="product-card featured" aria-hidden="true">
             <a href="kit-cannolo.html" class="card-img" style="display:block;text-decoration:none">
               <img src="assets/images/Kit Cannolo 1.jpg" alt="" loading="lazy" style="object-position:center center">
-              <span class="badge">Best Seller</span>
+              <span class="badge">BEST<br>SELLER</span>
             </a>
             <div class="card-body">
               <span class="card-cannoleria">la Cannoleria</span>
@@ -382,6 +389,9 @@
       </div>
     </section>
 
+    <!-- ── SPIKE DIVIDER: categorie (bianco) → Vulcano (nero) ──────── -->
+    <div class="spike-band spike-band-full" aria-hidden="true"></div>
+
     <!-- ── VULCANO ETNA ───────────────────────────────────────────── -->
     <section class="vulcano-feature" aria-labelledby="vulcano-title">
       <div class="vulcano-inner">
@@ -433,6 +443,13 @@
       </div>
     </section>
 
+    <!-- ── WAVE: brand story (rosso) → shipping (crema) ──────────── -->
+    <div class="inter-wave wave-reverse" aria-hidden="true" style="background:var(--color-rosso);margin-top:-30px;position:relative;z-index:5;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 64" preserveAspectRatio="none">
+        <path d="M0 32 C240 0, 480 64, 720 32 C960 0, 1200 64, 1440 32 C1680 0, 1920 64, 2160 32 C2400 0, 2640 64, 2880 32 L2880 64 L0 64 Z" fill="#E8E2CD"/>
+      </svg>
+    </div>
+
     <!-- ── SHIPPING ───────────────────────────────────────────────── -->
     <section class="section shipping texture" aria-labelledby="spedizioni-title">
       <div class="container">
@@ -478,6 +495,13 @@
         </div>
       </div>
     </section>
+
+    <!-- ── WAVE: shipping (crema) → reviews (bianco) ─────────────── -->
+    <div class="inter-wave" style="background:var(--color-crema);" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 64" preserveAspectRatio="none">
+        <path d="M0 32 C240 64, 480 0, 720 32 C960 64, 1200 0, 1440 32 C1680 64, 1920 0, 2160 32 C2400 64, 2640 0, 2880 32 L2880 64 L0 64 Z" fill="#FFFFFF"/>
+      </svg>
+    </div>
 
     <!-- ── REVIEWS ────────────────────────────────────────────────── -->
     <section class="section reviews" aria-labelledby="reviews-title">
@@ -639,6 +663,77 @@
         }
       });
     });
+
+    // ── Carousel drag-to-control ──────────────────────────────────
+    // Il carousel scorre in automatico e NON si ferma sull'hover.
+    // Tenendo premuto il mouse si controlla manualmente la posizione.
+    (function() {
+      const wrap  = document.querySelector('.products-carousel-wrap');
+      const track = document.querySelector('.products-carousel-track');
+      if (!wrap || !track) return;
+
+      let isDragging = false;
+      let startX     = 0;
+      let baseX      = 0; // translateX al momento del pointerdown
+      const DURATION = 42; // deve coincidere con la durata CSS (secondi)
+
+      function getTranslateX(el) {
+        const m = new DOMMatrix(window.getComputedStyle(el).transform);
+        return m.m41;
+      }
+
+      function resumeFrom(x) {
+        // Calcola la frazione del ciclo animazione e riprende con animation-delay negativo
+        const halfWidth = track.scrollWidth / 2;
+        let nx = x % -halfWidth;
+        if (nx > 0) nx -= halfWidth;
+        const fraction = Math.abs(nx) / halfWidth;
+        track.style.removeProperty('transform');
+        track.style.animationDelay = `${-fraction * DURATION}s`;
+        track.classList.remove('is-dragging');
+        wrap.classList.remove('is-grabbing');
+      }
+
+      wrap.addEventListener('pointerdown', (e) => {
+        // Solo pulsante principale (sinistro)
+        if (e.button !== 0) return;
+        isDragging = true;
+        startX = e.clientX;
+        baseX  = getTranslateX(track);
+        track.classList.add('is-dragging');
+        wrap.classList.add('is-grabbing');
+        wrap.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+
+      wrap.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        track.style.transform = `translateX(${baseX + dx}px)`;
+      });
+
+      wrap.addEventListener('pointerup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        resumeFrom(getTranslateX(track));
+      });
+
+      wrap.addEventListener('pointercancel', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        resumeFrom(baseX);
+      });
+
+      // Click su una card durante drag: previeni la navigazione se c'è stato movimento
+      let hasDragged = false;
+      wrap.addEventListener('pointerdown', () => { hasDragged = false; });
+      wrap.addEventListener('pointermove', (e) => {
+        if (isDragging && Math.abs(e.clientX - startX) > 6) hasDragged = true;
+      });
+      wrap.addEventListener('click', (e) => {
+        if (hasDragged) e.preventDefault();
+      }, true);
+    })();
   </script>
   <script src="cart.js"></script>
 </body>
