@@ -11,7 +11,8 @@
     .product-hero { padding: 60px 0; background: var(--color-crema); }
     .product-hero-grid { display: grid; grid-template-columns: 1fr; gap: 60px; align-items: start; }
     @media (min-width: 768px) { .product-hero-grid { grid-template-columns: 1fr 1fr; } }
-    .product-gallery { position: sticky; top: 100px; }
+    .product-gallery { position: static; }
+    @media (min-width: 768px) { .product-gallery { position: sticky; top: 88px; } }
     .main-image {
       border-radius: var(--radius-lg); overflow: hidden;
       aspect-ratio: 1 / 1; background: var(--color-bianco); box-shadow: var(--shadow-md);
@@ -85,7 +86,8 @@
     .cream-option:hover { border-color: rgba(217,75,50,0.4); }
     .cream-option.selected { border-color: var(--color-rosso); background: rgba(217,75,50,0.04); }
     .cream-dot { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
-    .cream-name { font-size: 14px; font-weight: 600; color: var(--color-nero); flex: 1; }
+    .cream-name { font-size: 14px; font-weight: 600; color: var(--color-nero); display: block; }
+    .cream-sub  { font-size: 11px; font-weight: 400; color: var(--color-castagna); display: block; margin-top: 1px; }
     .cream-check { color: var(--color-rosso); opacity: 0; transition: opacity 0.2s; flex-shrink: 0; }
     .cream-option.selected .cream-check { opacity: 1; }
 
@@ -213,20 +215,53 @@
               </div>
             </div>
 
-            <!-- Scegli la crema -->
+            <!-- Scegli il ripieno -->
             <div class="cream-selector">
-              <p class="cream-label">Scegli la crema</p>
+              <p class="cream-label">Scegli il ripieno del kit</p>
               <div class="cream-options">
-                <label class="cream-option selected" id="opt-pistacchio">
-                  <input type="radio" name="crema" value="pistacchio" checked onchange="updateCream(this)">
-                  <span class="cream-dot" style="background:#5a7a2a"></span>
-                  <span class="cream-name">Pistacchio di Bronte DOP</span>
+                <label class="cream-option selected" id="opt-ricotta-classica">
+                  <input type="radio" name="ripieno" value="ricotta-classica" checked onchange="updateCream(this)">
+                  <span class="cream-dot" style="background:#f0ede0"></span>
+                  <div style="flex:1">
+                    <span class="cream-name">Ricotta di pecora classica</span>
+                    <span class="cream-sub">500g di ricotta fresca già zuccherata</span>
+                  </div>
                   <svg class="cream-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
                 </label>
-                <label class="cream-option" id="opt-cioccolato">
-                  <input type="radio" name="crema" value="cioccolato" onchange="updateCream(this)">
+                <label class="cream-option" id="opt-ricotta-pistacchio">
+                  <input type="radio" name="ripieno" value="ricotta-pistacchio" onchange="updateCream(this)">
+                  <span class="cream-dot" style="background:#7a9a2e"></span>
+                  <div style="flex:1">
+                    <span class="cream-name">Ricotta al pistacchio</span>
+                    <span class="cream-sub">500g di ricotta con crema pistacchio DOP</span>
+                  </div>
+                  <svg class="cream-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+                </label>
+                <label class="cream-option" id="opt-ricotta-cioccolato">
+                  <input type="radio" name="ripieno" value="ricotta-cioccolato" onchange="updateCream(this)">
                   <span class="cream-dot" style="background:#3d1a0a"></span>
-                  <span class="cream-name">Cioccolato Fondente 54%</span>
+                  <div style="flex:1">
+                    <span class="cream-name">Ricotta al cioccolato</span>
+                    <span class="cream-sub">500g di ricotta con pepite di fondente 54%</span>
+                  </div>
+                  <svg class="cream-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+                </label>
+                <label class="cream-option" id="opt-crema-pistacchio">
+                  <input type="radio" name="ripieno" value="crema-pistacchio" onchange="updateCream(this)">
+                  <span class="cream-dot" style="background:#5a7a2a;border:2px solid #7a9a2e"></span>
+                  <div style="flex:1">
+                    <span class="cream-name">Crema al pistacchio</span>
+                    <span class="cream-sub">250g di crema pura pistacchio Bronte DOP</span>
+                  </div>
+                  <svg class="cream-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+                </label>
+                <label class="cream-option" id="opt-crema-cioccolato">
+                  <input type="radio" name="ripieno" value="crema-cioccolato" onchange="updateCream(this)">
+                  <span class="cream-dot" style="background:#1a0a06;border:2px solid #5a2a14"></span>
+                  <div style="flex:1">
+                    <span class="cream-name">Crema al cioccolato</span>
+                    <span class="cream-sub">250g di crema fondente al cacao 54%</span>
+                  </div>
                   <svg class="cream-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
                 </label>
               </div>

@@ -1320,6 +1320,253 @@ textarea.form-control {
 }
 
 
+/* ── BADGE redesign (adesivo stile Casa Infante) ─────────────── */
+.badge {
+  position: absolute;
+  top: 14px;
+  right: -4px;
+  background: var(--color-giallo);
+  color: var(--color-nero);
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 16px 6px 12px;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 2px 3px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.4);
+  transform: none;
+  z-index: 2;
+}
+/* Triangolo folded-corner */
+.badge::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid #c9b520;
+  border-top: 6px solid #c9b520;
+  border-bottom: none;
+  width: 0; height: 0;
+}
+
+
+/* ── Cat-grid 3 colonne fisse ───────────────────────────────── */
+.cat-grid-3 { grid-template-columns: 1fr; }
+@media (min-width: 600px) { .cat-grid-3 { grid-template-columns: repeat(3, 1fr); } }
+.cat-card-featured .cat-overlay h3 {
+  font-size: clamp(18px, 3vw, 24px);
+}
+
+
+/* ── VULCANO ETNA feature section ───────────────────────────── */
+.vulcano-feature {
+  background: var(--color-nero);
+  color: var(--color-crema);
+  overflow: hidden;
+  position: relative;
+}
+.vulcano-feature::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 70% 50%, rgba(217,75,50,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.vulcano-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+@media (min-width: 768px) {
+  .vulcano-inner { grid-template-columns: 1fr 1fr; align-items: center; }
+}
+.vulcano-image-col {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 12px;
+  padding: 48px 0 48px;
+}
+@media (min-width: 768px) {
+  .vulcano-image-col { padding: 64px 40px 64px 0; }
+}
+.vulcano-img-wrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+.vulcano-img-wrap img { width:100%; height:100%; object-fit:cover; }
+.vulcano-img-secondary {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1/1.2;
+  align-self: end;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+.vulcano-img-secondary img { width:100%; height:100%; object-fit:cover; }
+
+.vulcano-text-col {
+  padding: 48px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .vulcano-text-col { padding: 64px 0 64px 40px; }
+}
+.vulcano-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(217,75,50,0.15);
+  border: 1px solid rgba(217,75,50,0.4);
+  color: var(--color-rosso);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+.vulcano-badge::before {
+  content: '★';
+  font-size: 10px;
+}
+.vulcano-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 900;
+  line-height: 0.9;
+  color: var(--color-crema);
+}
+.vulcano-title em {
+  font-style: italic;
+  color: var(--color-rosso);
+}
+.vulcano-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(232,226,205,0.75);
+  max-width: 480px;
+}
+.vulcano-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vulcano-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-crema);
+}
+.vulcano-features svg { color: var(--color-rosso); flex-shrink: 0; }
+.vulcano-cta { margin-top: 8px; align-self: flex-start; }
+
+
+/* ── CONTATTI CTA ───────────────────────────────────────────── */
+.contatti-cta-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 48px;
+  background: var(--color-rosso);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+@media (min-width: 768px) {
+  .contatti-cta-inner {
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    padding: 56px;
+  }
+}
+.contatti-cta-inner .eyebrow { color: rgba(232,226,205,0.7); }
+.contatti-cta-inner .eyebrow::before,
+.contatti-cta-inner .eyebrow::after { opacity: 0.5; }
+.contatti-cta-inner .section-title { color: var(--color-crema); }
+.contatti-cta-inner .section-sub { color: rgba(232,226,205,0.8); }
+.contatti-cta-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex-shrink: 0;
+}
+@media (min-width: 768px) {
+  .contatti-cta-action { align-items: center; }
+}
+.contatti-cta-action .btn-primary {
+  background: var(--color-crema);
+  color: var(--color-rosso);
+  white-space: nowrap;
+}
+.contatti-cta-action .btn-primary:hover {
+  background: var(--color-bianco);
+  transform: translateY(-2px);
+}
+.contatti-cta-hint {
+  font-size: 12px;
+  color: rgba(232,226,205,0.65);
+  text-align: center;
+}
+
+
+/* ── MOBILE IMPROVEMENTS ────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Navbar height fix */
+  .navbar { height: 60px; padding: 0 16px; }
+
+  /* Hero adjustments */
+  .hero-body { padding: 0 20px; }
+  .hero-h1 { font-size: clamp(36px, 11vw, 64px); }
+
+  /* Product hero: stack gracefully */
+  .product-hero { padding: 32px 0; }
+  .product-hero-grid { gap: 28px; }
+
+  /* Thumb row scrollable */
+  .thumb-row { overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .thumb-row::-webkit-scrollbar { display: none; }
+
+  /* Section spacing */
+  .section { padding: 48px 0; }
+
+  /* Carousel: narrower cards on small screens */
+  .products-carousel-wrap .product-card { width: 240px; }
+
+  /* Cat-grid single col on phone */
+  .cat-grid { grid-template-columns: 1fr 1fr; }
+  .cat-grid-3 { grid-template-columns: 1fr; }
+  .cat-card { height: 180px; }
+
+  /* Vulcano mobile */
+  .vulcano-text-col { padding: 0 0 48px; }
+  .vulcano-image-col { padding: 48px 0 24px; }
+  .vulcano-title { font-size: clamp(48px, 14vw, 72px); }
+
+  /* Contatti CTA */
+  .contatti-cta-inner { padding: 32px 24px; }
+
+  /* Trust bar wraps nicely */
+  .trust-inner { gap: 12px; }
+  .trust-item { flex-basis: calc(50% - 6px); }
+}
+
+
 /* ── RESPONSIVE: 768px ─────────────────────────────────────── */
 @media (min-width: 768px) {
   .nav-links       { display: flex; }

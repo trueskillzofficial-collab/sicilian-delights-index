@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cannolo Grande Pistacchio — Delizie Siciliane</title>
-  <meta name="description" content="Il Cannolo Grande con crema al pistacchio di Bronte DOP. Cialda friabile, farcitura vellutata, spedito refrigerato in tutta Italia.">
+  <title>Vulcano Etna — Delizie Siciliane</title>
+  <meta name="description" content="Il Vulcano Etna: l'invenzione brevettata di Delizie Siciliane. Mousse vulcanica con cuore cremoso e glassa scura. 150g · confezione 6 pz. Spedito refrigerato.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     .product-hero { padding: 60px 0; background: var(--color-crema); }
-    .product-hero-grid {
-      display: grid; grid-template-columns: 1fr; gap: 60px; align-items: start;
-    }
+    .product-hero-grid { display: grid; grid-template-columns: 1fr; gap: 60px; align-items: start; }
     @media (min-width: 768px) { .product-hero-grid { grid-template-columns: 1fr 1fr; } }
     .product-gallery { position: static; }
     @media (min-width: 768px) { .product-gallery { position: sticky; top: 88px; } }
     .main-image {
       border-radius: var(--radius-lg); overflow: hidden;
       aspect-ratio: 1 / 1; background: var(--color-bianco); box-shadow: var(--shadow-md);
+      position: relative;
     }
     .main-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-    .thumb-row { display: flex; gap: 10px; margin-top: 12px; }
+    .thumb-row { display: flex; gap: 10px; margin-top: 12px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+    .thumb-row::-webkit-scrollbar { display: none; }
     .thumb {
       width: 72px; height: 72px; border-radius: var(--radius-md); overflow: hidden;
       border: 2px solid transparent; cursor: pointer; flex-shrink: 0; transition: border-color 0.2s;
@@ -33,20 +33,20 @@
       color: var(--color-rosso); display: flex; align-items: center; gap: 10px;
     }
     .product-essentials h1 {
-      font-family: var(--font-display); font-size: clamp(28px, 4.5vw, 48px);
-      font-weight: 900; line-height: 1.1; color: var(--color-nero);
+      font-family: var(--font-display); font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900; line-height: 1.05; color: var(--color-nero);
     }
+    .product-essentials h1 em { font-style: italic; color: var(--color-rosso); }
     .product-price-tag { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--color-rosso); }
     .product-short-desc { font-size: 16px; line-height: 1.65; color: var(--color-castagna); }
-    .variant-label { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-nero); }
-    .variant-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .variant-btn {
-      background: var(--color-bianco); border: 1.5px solid rgba(var(--color-nero-rgb), 0.14);
-      border-radius: var(--radius-pill); padding: 8px 18px; font-size: 13px; font-weight: 700;
-      cursor: pointer; transition: all 0.2s; font-family: var(--font-body);
+    .brevetto-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(26,26,26,0.06); border: 1px solid rgba(26,26,26,0.15);
+      border-radius: var(--radius-pill); padding: 7px 14px;
+      font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--color-nero); width: fit-content;
     }
-    .variant-btn:hover { border-color: var(--color-rosso); color: var(--color-rosso); }
-    .variant-btn.active { background: var(--color-rosso); color: var(--color-bianco); border-color: var(--color-rosso); }
+    .brevetto-tag::before { content: '★'; color: var(--color-rosso); }
     .cta-area { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
     .quantity-selector {
       display: flex; align-items: center; gap: 20px; padding: 12px 24px;
@@ -67,9 +67,26 @@
     }
     .t-badge { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; color: var(--color-castagna); }
     .t-badge svg { color: var(--color-rosso); flex-shrink: 0; }
+    .format-pill {
+      display: inline-flex; align-items: center; gap: 8px; background: var(--color-verde-chiaro);
+      border-radius: var(--radius-pill); padding: 6px 14px; font-size: 12px; font-weight: 700; color: var(--color-nero);
+    }
     .related { padding: 60px 0 80px; background: var(--color-crema); }
     .related-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 32px; }
     @media (min-width: 768px) { .related-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    /* Hero banner breviato */
+    .vulcano-hero-banner {
+      background: var(--color-nero);
+      color: var(--color-crema);
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .vulcano-hero-banner span { color: var(--color-rosso); }
   </style>
 </head>
 <body>
@@ -110,13 +127,18 @@
     </div>
   </header>
 
+  <!-- Banner brevetto -->
+  <div class="vulcano-hero-banner" role="complementary">
+    <span>★</span> Prodotto <span>brevettato</span> — Invenzione originale di Delizie Siciliane <span>★</span>
+  </div>
+
   <main>
     <!-- Breadcrumb -->
     <div style="background:var(--color-crema);padding:12px 0;border-bottom:1px solid rgba(217,75,50,0.1)">
       <div class="container" style="font-size:12px;color:var(--color-castagna)">
         <a href="index.html" style="color:var(--color-castagna)">Home</a> ›
         <a href="shop.html" style="color:var(--color-castagna)">Shop</a> ›
-        <span>Cannolo Grande — Pistacchio di Bronte</span>
+        <span>Vulcano Etna</span>
       </div>
     </div>
 
@@ -127,41 +149,36 @@
           <!-- Galleria -->
           <div class="product-gallery">
             <div class="main-image" id="mainImg">
-              <img src="assets/images/Cannolo Pistacchio.jpg" id="mainImgEl" alt="Cannolo Grande al Pistacchio di Bronte">
+              <img src="assets/images/Vulcano.jpg" id="mainImgEl" alt="Vulcano Etna — il dolce brevettato di Delizie Siciliane">
+              <span class="badge" style="position:absolute;top:16px;left:16px">Brevettato</span>
             </div>
             <div class="thumb-row">
-              <div class="thumb active" onclick="switchImg('assets/images/Cannolo Pistacchio.jpg', this)">
-                <img src="assets/images/Cannolo Pistacchio.jpg" alt="Pistacchio">
+              <div class="thumb active" onclick="switchImg('assets/images/Vulcano.jpg', this)">
+                <img src="assets/images/Vulcano.jpg" alt="Vulcano Etna">
               </div>
-              <div class="thumb" onclick="switchImg('assets/images/Cannolo Pistacchio 1.jpg', this)">
-                <img src="assets/images/Cannolo Pistacchio 1.jpg" alt="Pistacchio 2">
-              </div>
-              <div class="thumb" onclick="switchImg('assets/images/Cannolo Pistacchio 2.jpg', this)">
-                <img src="assets/images/Cannolo Pistacchio 2.jpg" alt="Pistacchio 3">
+              <div class="thumb" onclick="switchImg('assets/images/Vulcano 1.jpg', this)">
+                <img src="assets/images/Vulcano 1.jpg" alt="Vulcano Etna dettaglio">
               </div>
             </div>
           </div>
 
-          <!-- Info -->
+          <!-- Info prodotto -->
           <div class="product-essentials">
             <p class="product-eyebrow">
-              <span class="card-cannoleria" style="font-size:15px">la Cannoleria</span>
-              · Cannolo artigianale
+              Delizie Siciliane · <span style="color:var(--color-rosso)">Esclusiva</span>
             </p>
-            <h1>Cannolo Grande<br>Pistacchio di Bronte</h1>
-            <p class="product-price-tag">€3,50 <span style="font-size:16px;color:var(--color-castagna);font-family:var(--font-body)">/ pz</span></p>
+            <h1>Vulcano<br><em>Etna</em></h1>
+
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <p class="product-price-tag" style="margin:0">€18,00</p>
+              <span class="format-pill">150g · conf. da 6 pz</span>
+            </div>
+
+            <div class="brevetto-tag">Brevetto esclusivo Delizie Siciliane</div>
 
             <p class="product-short-desc">
-              La nostra cialda dorata e fragrante ripiena di vellutata crema al pistacchio di Bronte DOP. Il pistacchio verde smeraldo della Sicilia, lavorato nel nostro laboratorio per esaltarne ogni sfumatura aromatica.
+              L'unico, l'originale. Il Vulcano Etna è una nostra creazione brevettata: non esiste nessun altro dolce così. Una struttura a vulcano di mousse voluttuosa, con un cuore cremoso che cola come la lava dell'Etna, rivestita da una glassa scura lucida e intensa. Un'eruzione di gusto che inizia con gli occhi.
             </p>
-
-            <div>
-              <p class="variant-label">Farcitura</p>
-              <div class="variant-row">
-                <a href="cannolo-ricotta.html"><button class="variant-btn">Ricotta Classica</button></a>
-                <button class="variant-btn active" onclick="selectVariant(this, 'cannolo-pistacchio')">Pistacchio</button>
-              </div>
-            </div>
 
             <div class="cta-area">
               <div class="quantity-selector">
@@ -170,7 +187,7 @@
                 <button class="qty-btn" onclick="updateQty(1)">+</button>
               </div>
               <button class="add-to-cart-big" onclick="addToCartPage()">
-                Aggiungi al carrello — €<span id="totalPrice">3,50</span>
+                Aggiungi al carrello — €<span id="totalPrice">18,00</span>
               </button>
             </div>
 
@@ -181,7 +198,7 @@
               </div>
               <div class="t-badge">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-                Pistacchio DOP Bronte
+                Ricetta brevettata
               </div>
               <div class="t-badge">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -194,35 +211,39 @@
         <!-- Tabs -->
         <div class="product-tabs">
           <ul class="tabs-nav" role="tablist">
-            <li><button class="tab-btn active" data-target="tab-desc" role="tab">Descrizione</button></li>
+            <li><button class="tab-btn active" data-target="tab-desc" role="tab">Il nostro segreto</button></li>
             <li><button class="tab-btn" data-target="tab-ingred" role="tab">Ingredienti</button></li>
             <li><button class="tab-btn" data-target="tab-conserv" role="tab">Conservazione</button></li>
             <li><button class="tab-btn" data-target="tab-sped" role="tab">Spedizioni</button></li>
           </ul>
 
           <div class="tab-panel show" id="tab-desc">
-            <h4>Il verde smeraldo della Sicilia, in una cialda</h4>
-            <p>Il Cannolo al Pistacchio di Bronte è la nostra interpretazione più preziosa del cannolo siciliano. Il pistacchio di Bronte DOP — celebre per il suo colore verde intenso e il profumo unico — viene lavorato a crema nel nostro laboratorio, senza coloranti né aromi artificiali.</p>
-            <p>La cialda viene preparata artigianalmente secondo l'antica ricetta siciliana, fritta a mano fino alla croccantezza perfetta, e farcita al momento della spedizione per garantire la massima fragranza all'arrivo.</p>
+            <h4>Un'eruzione che non ti aspetti</h4>
+            <p>Il Vulcano Etna nasce da un'idea semplice ma geniale: replicare il fascino dell'Etna in un dolce. La forma a cratere, il cuore cremoso che cola verso l'esterno come la lava, la glassa scura e lucida che avvolge tutto — ogni dettaglio è pensato per stupire prima ancora del primo morso.</p>
+            <p>Questa è una nostra invenzione brevettata. Forma, struttura e ricetta sono protette: il Vulcano Etna lo trovi <strong>solo da Delizie Siciliane</strong>. Non esistono imitazioni autorizzate. Ogni pezzo viene realizzato a mano nel nostro laboratorio di Ariano Irpino, con materie prime siciliane selezionate.</p>
+            <p>Perfetto come conclusione di una cena importante, come regalo sorpresa, o semplicemente per stupire chi ami con qualcosa di davvero unico.</p>
           </div>
 
           <div class="tab-panel" id="tab-ingred">
             <h4>Ingredienti e Allergeni</h4>
-            <p><strong>Cialda:</strong> Farina di grano tipo 00, vino, strutto, zucchero, uova fresche, cacao amaro in polvere, sale, aromi naturali.</p>
-            <p><strong>Farcitura pistacchio:</strong> Crema di pistacchio di Bronte DOP (min. 45% pistacchio), zucchero, ricotta di pecora pastorizzata, aromi naturali.</p>
-            <p><strong>Allergeni:</strong> <strong>GLUTINE</strong>, <strong>UOVA</strong>, <strong>LATTE</strong>, <strong>FRUTTA A GUSCIO</strong> (pistacchio). Può contenere tracce di <strong>SOIA</strong>, <strong>SESAMO</strong> e altri tipi di <strong>FRUTTA A GUSCIO</strong>.</p>
+            <p><strong>Struttura esterna (mousse):</strong> Panna fresca UHT, mascarpone, uova fresche, zucchero semolato, gelatina alimentare, aroma di vaniglia naturale.</p>
+            <p><strong>Cuore cremoso:</strong> Crema al cioccolato fondente (cacao min. 54%), burro di cacao, zucchero, aroma naturale. Oppure crema al pistacchio di Bronte DOP (min. 45%), zucchero.</p>
+            <p><strong>Glassa esterna:</strong> Cioccolato fondente (cacao min. 70%), burro di cacao, olio di girasole.</p>
+            <p><strong>Base:</strong> Pan di Spagna (farina di grano tipo 00, uova, zucchero, aroma di limone).</p>
+            <p><strong>Allergeni:</strong> <strong>GLUTINE</strong>, <strong>UOVA</strong>, <strong>LATTE</strong>, potenzialmente <strong>FRUTTA A GUSCIO</strong> (pistacchio). Può contenere tracce di <strong>SOIA</strong>, <strong>SESAMO</strong> e <strong>ALTRI FRUTTI A GUSCIO</strong>.</p>
           </div>
 
           <div class="tab-panel" id="tab-conserv">
             <h4>Come conservarlo</h4>
-            <p>Conservare in frigorifero a +4°C. Il cannolo farcito va consumato entro 24–48 ore dall'apertura del pacco per godere al massimo della croccantezza della cialda.</p>
-            <p><strong>Scadenza:</strong> La crema al pistacchio fresca garantisce una qualità eccellente per 5–7 giorni dalla data di partenza dal laboratorio (indicata sulla confezione).</p>
+            <p>Conservare in frigorifero a +2°C / +4°C. Consumare entro 4–5 giorni dalla data di confezionamento (indicata sulla confezione). Non congelare.</p>
+            <p>Per gustarlo al meglio: estrarre dal frigorifero 10 minuti prima di servire. La glassa diventerà leggermente meno rigida e il cuore cremoso raggiungerà la consistenza ideale — il momento perfetto per tagliarlo e ammirare il "vulcano in eruzione".</p>
           </div>
 
           <div class="tab-panel" id="tab-sped">
             <h4>Spedizione e Catena del Freddo</h4>
             <p>Spediamo esclusivamente il <strong>Lunedì e il Martedì</strong> per garantire che i prodotti freschi non restino nei magazzini dei corrieri durante il weekend.</p>
-            <p><strong>Imballaggio:</strong> Box isotermico in polistirene ad alta densità con gel refrigerante professionale incluso. La catena del freddo è garantita per 48–72 ore. Non spediamo nei periodi con temperature esterne previste superiori a 30°C.</p>
+            <p><strong>Imballaggio:</strong> Box isotermico in polistirene ad alta densità con ghiaccio secco incluso. La catena del freddo è garantita per 48–72 ore. Non spediamo nei periodi con temperature esterne previste superiori a 30°C.</p>
+            <p>Ogni Vulcano Etna viene singolarmente protetto nel box per evitare qualsiasi danno alla forma durante il trasporto. Riceviamo solo prodotti integri — è una promessa.</p>
           </div>
         </div>
       </div>
@@ -252,30 +273,30 @@
             </div>
           </article>
           <article class="product-card">
-            <a href="cannolo-ricotta.html" class="card-img" style="display:block;text-decoration:none">
-              <img src="assets/images/Cannolo Ricotta.jpg" alt="Cannolo Ricotta" loading="lazy" style="object-position:center 82%">
-            </a>
-            <div class="card-body">
-              <span class="card-cannoleria">la Cannoleria</span>
-              <h3 class="card-name"><a href="cannolo-ricotta.html" style="color:inherit;text-decoration:none">Cannolo alla Ricotta</a></h3>
-              <p class="card-desc">La ricetta originale. Ricotta di pecora fresca in una cialda dorata e croccante.</p>
-              <div class="card-footer">
-                <span class="card-price">€3,50</span>
-                <button class="add-btn" onclick="addToCart('cannolo-ricotta')">Aggiungi</button>
-              </div>
-            </div>
-          </article>
-          <article class="product-card">
             <a href="cassatina-siciliana.html" class="card-img" style="display:block;text-decoration:none">
               <img src="assets/images/Cassatina Siciliana.jpg" alt="Cassatina Siciliana" loading="lazy" style="object-position:center 72%">
             </a>
             <div class="card-body">
               <span class="card-cat">Monoporzioni</span>
               <h3 class="card-name"><a href="cassatina-siciliana.html" style="color:inherit;text-decoration:none">Cassatina Siciliana</a></h3>
-              <p class="card-desc">Pan di Spagna, ricotta fresca e glassa reale. La tradizione siciliana in una monoporzione.</p>
+              <p class="card-desc">110g di pura tradizione palermitana: ricotta fresca, glassa reale e frutta candita.</p>
               <div class="card-footer">
                 <span class="card-price">€16,00</span>
                 <button class="add-btn" onclick="addToCart('cassatina-siciliana')">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+          <article class="product-card">
+            <a href="torta-cassata.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Torta Cassata Siciliana.jpg" alt="Torta Cassata Siciliana" loading="lazy" style="object-position:center 52%">
+            </a>
+            <div class="card-body">
+              <span class="card-cat">Torte</span>
+              <h3 class="card-name"><a href="torta-cassata.html" style="color:inherit;text-decoration:none">Torta Cassata Siciliana</a></h3>
+              <p class="card-desc">La regina dei dolci siciliani in formato intero da 1kg. Per le grandi occasioni.</p>
+              <div class="card-footer">
+                <span class="card-price">€35,00</span>
+                <button class="add-btn" onclick="addToCart('torta-cassata')">Aggiungi</button>
               </div>
             </div>
           </article>
@@ -299,8 +320,8 @@
           <ul>
             <li><a href="shop.html">Tutti i prodotti</a></li>
             <li><a href="kit-cannolo.html">Kit Cannoli</a></li>
-            <li><a href="shop.html">Torte</a></li>
-            <li><a href="shop.html">Pasta di Mandorla</a></li>
+            <li><a href="vulcano.html">Vulcano Etna</a></li>
+            <li><a href="shop.html?filter=torte">Torte</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -332,9 +353,8 @@
       hamburger.setAttribute('aria-expanded', String(isOpen));
     });
 
-    // Qty
-    let currentHandle = 'cannolo-pistacchio';
-    const unitPrice = 3.50;
+    // Qty + prezzo dinamico
+    const unitPrice = 18.00;
     const qtyEl = document.getElementById('qty');
     const totalEl = document.getElementById('totalPrice');
 
@@ -347,13 +367,7 @@
 
     function addToCartPage() {
       const qty = parseInt(qtyEl.textContent) || 1;
-      addToCart(currentHandle, qty);
-    }
-
-    function selectVariant(btn, handle) {
-      document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentHandle = handle;
+      addToCart('vulcano', qty);
     }
 
     // Gallery thumbnails

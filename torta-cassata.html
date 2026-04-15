@@ -13,7 +13,8 @@
       display: grid; grid-template-columns: 1fr; gap: 60px; align-items: start;
     }
     @media (min-width: 768px) { .product-hero-grid { grid-template-columns: 1fr 1fr; } }
-    .product-gallery { position: sticky; top: 100px; }
+    .product-gallery { position: static; }
+    @media (min-width: 768px) { .product-gallery { position: sticky; top: 88px; } }
     .main-image {
       border-radius: var(--radius-lg); overflow: hidden;
       aspect-ratio: 1 / 1; background: var(--color-bianco); box-shadow: var(--shadow-md);
