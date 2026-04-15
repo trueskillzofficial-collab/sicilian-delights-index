@@ -479,6 +479,38 @@ button { font-family: inherit; }
   grid-template-columns: 1fr;
   gap: 24px;
 }
+
+/* ── Products Carousel ───────────────────────────────────────────── */
+@keyframes carousel-slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.products-carousel-wrap {
+  overflow: hidden;
+  padding: 8px 0 32px;
+  /* fade edges */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+.products-carousel-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: carousel-slide 42s linear infinite;
+  padding: 0 12px;
+}
+.products-carousel-track:hover { animation-play-state: paused; }
+.products-carousel-wrap .product-card {
+  width: 280px;
+  flex-shrink: 0;
+}
+@media (min-width: 768px) {
+  .products-carousel-wrap .product-card { width: 300px; }
+}
+@media (min-width: 1200px) {
+  .products-carousel-wrap .product-card { width: 320px; }
+}
+
 .product-card {
   background: var(--color-bianco);
   border-radius: var(--radius-lg);
@@ -950,8 +982,8 @@ button { font-family: inherit; }
 }
 
 
-/* ── CARD IMAGE — object-position per food photography ────── */
-.card-img img { object-position: center 20%; }
+/* ── CARD IMAGE — object-position gestita per-prodotto con inline style ──── */
+.card-img img { object-position: center 60%; }
 
 
 /* ── CARRELLO DRAWER ────────────────────────────────────────── */

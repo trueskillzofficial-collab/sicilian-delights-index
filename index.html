@@ -149,7 +149,7 @@
       </div>
     </div>
 
-    <!-- ── BEST SELLERS ───────────────────────────────────────────── -->
+    <!-- ── BEST SELLERS CAROUSEL ────────────────────────────────── -->
     <section class="section texture bg-crema" id="shop" aria-labelledby="bestsellers-title">
       <div class="container">
         <div class="section-header">
@@ -157,19 +157,22 @@
           <h2 class="section-title" id="bestsellers-title">I più amati dai siciliani nel mondo</h2>
           <p class="section-sub">Scelti ogni giorno da chi vuole portare un pezzo di Sicilia sulla propria tavola.</p>
         </div>
+      </div>
 
-        <div class="products-grid">
+      <!-- Carousel (full-width, overflow hidden) -->
+      <div class="products-carousel-wrap" aria-label="Prodotti in evidenza">
+        <div class="products-carousel-track">
 
-          <!-- Kit Cannoli — BEST SELLER -->
-          <article class="product-card featured fade-up" aria-label="Kit Cannoli — Best Seller">
+          <!-- Set 1 -->
+          <article class="product-card featured" aria-label="Kit Cannoli — Best Seller">
             <a href="kit-cannolo.html" class="card-img" style="display:block;text-decoration:none">
-              <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit Cannoli con cialde, ricotta di pecora e creme artigianali" loading="lazy">
+              <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit Cannoli con cialde, ricotta di pecora e creme artigianali" loading="lazy" style="object-position:center center">
               <span class="badge" aria-label="Prodotto più venduto">Best Seller</span>
             </a>
             <div class="card-body">
               <span class="card-cannoleria">la Cannoleria</span>
               <h3 class="card-name"><a href="kit-cannolo.html" style="color:inherit;text-decoration:none">Kit Cannoli</a></h3>
-              <p class="card-desc">5 cialde croccanti, ricotta di pecora fresca e creme artigianali. Farcisci tu stesso: il rituale siciliano a casa tua.</p>
+              <p class="card-desc">5 cialde croccanti, ricotta di pecora fresca e creme artigianali. Il rituale siciliano a casa tua.</p>
               <div class="card-footer">
                 <span class="card-price">€17,50</span>
                 <button class="add-btn" onclick="addToCart('kit-cannolo')" aria-label="Aggiungi Kit Cannoli al carrello">Aggiungi</button>
@@ -177,15 +180,14 @@
             </div>
           </article>
 
-          <!-- Cannolo Grande -->
-          <article class="product-card fade-up">
+          <article class="product-card">
             <a href="cannolo-ricotta.html" class="card-img" style="display:block;text-decoration:none">
-              <img src="assets/images/Cannolo Ricotta.jpg" alt="Cannolo grande con ricotta di pecora siciliana" loading="lazy">
+              <img src="assets/images/Cannolo Ricotta.jpg" alt="Cannolo grande con ricotta di pecora siciliana" loading="lazy" style="object-position:center 82%">
             </a>
             <div class="card-body">
               <span class="card-cannoleria">la Cannoleria</span>
-              <h3 class="card-name"><a href="cannolo-ricotta.html" style="color:inherit;text-decoration:none">Cannolo Grande</a></h3>
-              <p class="card-desc">Cialda friabile ripiena al momento. Disponibile in ricotta classica, pistacchio e cioccolato fondente.</p>
+              <h3 class="card-name"><a href="cannolo-ricotta.html" style="color:inherit;text-decoration:none">Cannolo alla Ricotta</a></h3>
+              <p class="card-desc">Cialda friabile ripiena al momento con soffice ricotta di pecora siciliana. La versione autentica.</p>
               <div class="card-footer">
                 <span class="card-price">€3,50</span>
                 <button class="add-btn" onclick="addToCart('cannolo-ricotta')" aria-label="Aggiungi Cannolo Grande al carrello">Aggiungi</button>
@@ -193,15 +195,14 @@
             </div>
           </article>
 
-          <!-- Cassatina Siciliana -->
-          <article class="product-card fade-up">
+          <article class="product-card">
             <a href="cassatina-siciliana.html" class="card-img" style="display:block;text-decoration:none">
-              <img src="assets/images/Cassatina Siciliana.jpg" alt="Cassatina Siciliana monoporzione con glassa reale" loading="lazy">
+              <img src="assets/images/Cassatina Siciliana.jpg" alt="Cassatina Siciliana monoporzione con glassa reale" loading="lazy" style="object-position:center 72%">
             </a>
             <div class="card-body">
               <span class="card-cat">Monoporzioni</span>
               <h3 class="card-name"><a href="cassatina-siciliana.html" style="color:inherit;text-decoration:none">Cassatina Siciliana</a></h3>
-              <p class="card-desc">110g di pura tradizione: pan di Spagna, ricotta fresca, glassa reale e scorze d'arancia candite. Conf. 6 pz.</p>
+              <p class="card-desc">110g di pura tradizione: pan di Spagna, ricotta fresca, glassa reale e scorze d'arancia. Conf. 6 pz.</p>
               <div class="card-footer">
                 <span class="card-price">€16,00</span>
                 <button class="add-btn" onclick="addToCart('cassatina-siciliana')" aria-label="Aggiungi Cassatina Siciliana al carrello">Aggiungi</button>
@@ -209,10 +210,149 @@
             </div>
           </article>
 
-        </div>
+          <article class="product-card">
+            <a href="cannolo-pistacchio.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Cannolo Pistacchio.jpg" alt="Cannolo al pistacchio di Bronte DOP" loading="lazy" style="object-position:center 58%">
+            </a>
+            <div class="card-body">
+              <span class="card-cannoleria">la Cannoleria</span>
+              <h3 class="card-name"><a href="cannolo-pistacchio.html" style="color:inherit;text-decoration:none">Cannolo al Pistacchio</a></h3>
+              <p class="card-desc">Crema vellutata al pistacchio di Bronte DOP in una cialda artigianale dorata. Intenso e memorabile.</p>
+              <div class="card-footer">
+                <span class="card-price">€3,50</span>
+                <button class="add-btn" onclick="addToCart('cannolo-pistacchio')" aria-label="Aggiungi Cannolo Pistacchio al carrello">Aggiungi</button>
+              </div>
+            </div>
+          </article>
 
+          <article class="product-card">
+            <a href="torta-cassata.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Torta Cassata Siciliana.jpg" alt="Torta Cassata Siciliana intera 1kg" loading="lazy" style="object-position:center 52%">
+            </a>
+            <div class="card-body">
+              <span class="card-cat">Torte</span>
+              <h3 class="card-name"><a href="torta-cassata.html" style="color:inherit;text-decoration:none">Torta Cassata Siciliana</a></h3>
+              <p class="card-desc">La regina dei dolci siciliani in formato intero da 1kg. Pan di Spagna, ricotta, pasta reale, frutta candita.</p>
+              <div class="card-footer">
+                <span class="card-price">€35,00</span>
+                <button class="add-btn" onclick="addToCart('torta-cassata')" aria-label="Aggiungi Torta Cassata al carrello">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <a href="shop.html?filter=pasta-di-mandorla" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Pasta di Mandorla.jpg" alt="Pasta di mandorla siciliana artigianale" loading="lazy" style="object-position:center 68%">
+            </a>
+            <div class="card-body">
+              <span class="card-cat">Pasta di Mandorla</span>
+              <h3 class="card-name"><a href="shop.html?filter=pasta-di-mandorla" style="color:inherit;text-decoration:none">Pasta di Mandorla</a></h3>
+              <p class="card-desc">Dolcetti di pasta di mandorla siciliana lavorata a mano. Morbidi, profumati, irresistibili.</p>
+              <div class="card-footer">
+                <span class="card-price">€12,00</span>
+                <button class="add-btn" onclick="addToCart('pasta-di-mandorla')" aria-label="Aggiungi Pasta di Mandorla al carrello">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Set 2 (duplicato per loop infinito) -->
+          <article class="product-card featured" aria-hidden="true">
+            <a href="kit-cannolo.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Kit Cannolo 1.jpg" alt="" loading="lazy" style="object-position:center center">
+              <span class="badge">Best Seller</span>
+            </a>
+            <div class="card-body">
+              <span class="card-cannoleria">la Cannoleria</span>
+              <h3 class="card-name"><a href="kit-cannolo.html" style="color:inherit;text-decoration:none">Kit Cannoli</a></h3>
+              <p class="card-desc">5 cialde croccanti, ricotta di pecora fresca e creme artigianali. Il rituale siciliano a casa tua.</p>
+              <div class="card-footer">
+                <span class="card-price">€17,50</span>
+                <button class="add-btn" onclick="addToCart('kit-cannolo')" tabindex="-1">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" aria-hidden="true">
+            <a href="cannolo-ricotta.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Cannolo Ricotta.jpg" alt="" loading="lazy" style="object-position:center 82%">
+            </a>
+            <div class="card-body">
+              <span class="card-cannoleria">la Cannoleria</span>
+              <h3 class="card-name"><a href="cannolo-ricotta.html" style="color:inherit;text-decoration:none">Cannolo alla Ricotta</a></h3>
+              <p class="card-desc">Cialda friabile ripiena al momento con soffice ricotta di pecora siciliana. La versione autentica.</p>
+              <div class="card-footer">
+                <span class="card-price">€3,50</span>
+                <button class="add-btn" onclick="addToCart('cannolo-ricotta')" tabindex="-1">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" aria-hidden="true">
+            <a href="cassatina-siciliana.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Cassatina Siciliana.jpg" alt="" loading="lazy" style="object-position:center 72%">
+            </a>
+            <div class="card-body">
+              <span class="card-cat">Monoporzioni</span>
+              <h3 class="card-name"><a href="cassatina-siciliana.html" style="color:inherit;text-decoration:none">Cassatina Siciliana</a></h3>
+              <p class="card-desc">110g di pura tradizione: pan di Spagna, ricotta fresca, glassa reale e scorze d'arancia. Conf. 6 pz.</p>
+              <div class="card-footer">
+                <span class="card-price">€16,00</span>
+                <button class="add-btn" onclick="addToCart('cassatina-siciliana')" tabindex="-1">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" aria-hidden="true">
+            <a href="cannolo-pistacchio.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Cannolo Pistacchio.jpg" alt="" loading="lazy" style="object-position:center 58%">
+            </a>
+            <div class="card-body">
+              <span class="card-cannoleria">la Cannoleria</span>
+              <h3 class="card-name"><a href="cannolo-pistacchio.html" style="color:inherit;text-decoration:none">Cannolo al Pistacchio</a></h3>
+              <p class="card-desc">Crema vellutata al pistacchio di Bronte DOP in una cialda artigianale dorata. Intenso e memorabile.</p>
+              <div class="card-footer">
+                <span class="card-price">€3,50</span>
+                <button class="add-btn" onclick="addToCart('cannolo-pistacchio')" tabindex="-1">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" aria-hidden="true">
+            <a href="torta-cassata.html" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Torta Cassata Siciliana.jpg" alt="" loading="lazy" style="object-position:center 52%">
+            </a>
+            <div class="card-body">
+              <span class="card-cat">Torte</span>
+              <h3 class="card-name"><a href="torta-cassata.html" style="color:inherit;text-decoration:none">Torta Cassata Siciliana</a></h3>
+              <p class="card-desc">La regina dei dolci siciliani in formato intero da 1kg. Pan di Spagna, ricotta, pasta reale, frutta candita.</p>
+              <div class="card-footer">
+                <span class="card-price">€35,00</span>
+                <button class="add-btn" onclick="addToCart('torta-cassata')" tabindex="-1">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" aria-hidden="true">
+            <a href="shop.html?filter=pasta-di-mandorla" class="card-img" style="display:block;text-decoration:none">
+              <img src="assets/images/Pasta di Mandorla.jpg" alt="" loading="lazy" style="object-position:center 68%">
+            </a>
+            <div class="card-body">
+              <span class="card-cat">Pasta di Mandorla</span>
+              <h3 class="card-name"><a href="shop.html?filter=pasta-di-mandorla" style="color:inherit;text-decoration:none">Pasta di Mandorla</a></h3>
+              <p class="card-desc">Dolcetti di pasta di mandorla siciliana lavorata a mano. Morbidi, profumati, irresistibili.</p>
+              <div class="card-footer">
+                <span class="card-price">€12,00</span>
+                <button class="add-btn" onclick="addToCart('pasta-di-mandorla')" tabindex="-1">Aggiungi</button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <div class="container">
         <div class="view-all">
-          <a href="#categorie" class="btn btn-outline">Scopri tutte le categorie</a>
+          <a href="shop.html" class="btn btn-outline">Scopri tutti i prodotti</a>
         </div>
       </div>
     </section>
@@ -226,28 +366,28 @@
         </div>
 
         <div class="cat-grid">
-          <a href="#" class="cat-card" aria-label="Esplora Cannoli">
-            <img src="assets/images/Cannoli Siciliani.jpg" alt="Cannoli siciliani artigianali" loading="lazy">
+          <a href="shop.html?filter=cannoli" class="cat-card" aria-label="Esplora Cannoli">
+            <img src="assets/images/Cannoli Siciliani.jpg" alt="Cannoli siciliani artigianali" loading="lazy" style="object-position:center 55%">
             <div class="cat-overlay"><h3>Cannoli</h3></div>
           </a>
-          <a href="#" class="cat-card" aria-label="Esplora Dolci al cucchiaio">
-            <img src="assets/images/Cassatina Siciliana 1.jpg" alt="Dolci al cucchiaio: cassatine e monoporzioni" loading="lazy">
+          <a href="shop.html?filter=monoporzioni" class="cat-card" aria-label="Esplora Dolci al cucchiaio">
+            <img src="assets/images/Cassatina Siciliana 1.jpg" alt="Dolci al cucchiaio: cassatine e monoporzioni" loading="lazy" style="object-position:center 65%">
             <div class="cat-overlay"><h3>Dolci al cucchiaio</h3></div>
           </a>
-          <a href="#" class="cat-card" aria-label="Esplora Fiori di Mandorla">
-            <img src="assets/images/Pasta di Mandorla 1.jpg" alt="Fiori di mandorla siciliani" loading="lazy">
+          <a href="shop.html?filter=fiori" class="cat-card" aria-label="Esplora Fiori di Mandorla">
+            <img src="assets/images/Pasta di Mandorla 1.jpg" alt="Fiori di mandorla siciliani" loading="lazy" style="object-position:center 65%">
             <div class="cat-overlay"><h3>Fiori di Mandorla</h3></div>
           </a>
-          <a href="#" class="cat-card" aria-label="Esplora Pasta di Mandorla">
-            <img src="assets/images/Pasta di Mandorla.jpg" alt="Pasta di mandorla in vari formati" loading="lazy">
+          <a href="shop.html?filter=pasta-di-mandorla" class="cat-card" aria-label="Esplora Pasta di Mandorla">
+            <img src="assets/images/Pasta di Mandorla.jpg" alt="Pasta di mandorla in vari formati" loading="lazy" style="object-position:center 68%">
             <div class="cat-overlay"><h3>Pasta di Mandorla</h3></div>
           </a>
-          <a href="#" class="cat-card" aria-label="Esplora Salato">
-            <img src="assets/images/Sole di Sicilia 1.jpg" alt="Salato siciliano: arancini e sole di sicilia" loading="lazy">
+          <a href="shop.html?filter=salato" class="cat-card" aria-label="Esplora Salato">
+            <img src="assets/images/Sole di Sicilia 1.jpg" alt="Salato siciliano: arancini e sole di sicilia" loading="lazy" style="object-position:center 58%">
             <div class="cat-overlay"><h3>Salato</h3></div>
           </a>
-          <a href="#" class="cat-card" aria-label="Esplora Torte intere">
-            <img src="assets/images/Torta Cassata Siciliana.jpg" alt="Torte intere: cassata, fedora, pasta di mandorla" loading="lazy">
+          <a href="shop.html?filter=torte" class="cat-card" aria-label="Esplora Torte intere">
+            <img src="assets/images/Torta Cassata Siciliana.jpg" alt="Torte intere: cassata, fedora, pasta di mandorla" loading="lazy" style="object-position:center 52%">
             <div class="cat-overlay"><h3>Torte</h3></div>
           </a>
         </div>
@@ -269,10 +409,10 @@
 
           <div class="story-photos" aria-hidden="true">
             <div class="story-photo">
-              <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit cannoli nel laboratorio artigianale" loading="lazy">
+              <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit cannoli nel laboratorio artigianale" loading="lazy" style="object-position:center center">
             </div>
             <div class="story-photo">
-              <img src="assets/images/Cannolo Pistacchio.jpg" alt="Cannolo al pistacchio artigianale" loading="lazy">
+              <img src="assets/images/Cannolo Pistacchio.jpg" alt="Cannolo al pistacchio artigianale" loading="lazy" style="object-position:center 58%">
             </div>
           </div>
         </div>

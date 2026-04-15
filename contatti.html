@@ -3,123 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop — Delizie Siciliane</title>
-  <meta name="description" content="Acquista dolci artigianali siciliani: cannoli, cassate, pasta di mandorla, torte e salato. Spedizione refrigerata in tutta Italia.">
+  <title>Contatti — Delizie Siciliane</title>
+  <meta name="description" content="Contatta Delizie Siciliane per info sui prodotti, ordini personalizzati o assistenza sulle spedizioni. Siamo ad Ariano Irpino, pronti ad aiutarti.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ── Shop-specific styles ─────────────────────────── */
-    .shop-hero {
-      background: var(--color-crema);
-      padding: 48px 0 32px;
-      text-align: center;
-    }
-    .shop-hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 900;
-      color: var(--color-nero);
-    }
-    .shop-hero p {
-      font-size: 15px;
-      color: var(--color-castagna);
-      margin-top: 8px;
-    }
-
-    /* Filtri pill */
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      padding: 20px 20px 0;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .filter-pill {
-      background: var(--color-bianco);
-      color: var(--color-nero);
-      border: 1.5px solid rgba(var(--color-nero-rgb), 0.12);
-      border-radius: var(--radius-pill);
-      padding: 8px 20px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: var(--font-body);
-    }
-    .filter-pill:hover {
-      border-color: var(--color-rosso);
-      color: var(--color-rosso);
-    }
-    .filter-pill.active {
+    .contact-hero {
       background: var(--color-rosso);
-      color: var(--color-bianco);
-      border-color: var(--color-rosso);
-    }
-
-    /* Griglia shop */
-    .shop-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 20px 80px;
-    }
-    @media (min-width: 540px) {
-      .shop-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (min-width: 768px) {
-      .shop-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    /* Skeleton loading */
-    .skeleton-card {
-      background: var(--color-bianco);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-    .skeleton-img {
-      aspect-ratio: 4 / 3;
-      background: var(--color-crema);
-      animation: shimmer 1.5s infinite;
-    }
-    .skeleton-body { padding: 20px; }
-    .skeleton-line {
-      height: 14px;
-      background: var(--color-crema);
-      border-radius: 6px;
-      margin-bottom: 10px;
-      animation: shimmer 1.5s infinite;
-    }
-    .skeleton-line.short { width: 60%; }
-    .skeleton-line.price { width: 35%; height: 22px; }
-    @keyframes shimmer {
-      0%   { opacity: 1; }
-      50%  { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-
-    /* Errore */
-    .shop-error {
+      padding: 80px 0;
       text-align: center;
-      padding: 60px 20px;
-      max-width: 480px;
-      margin: 0 auto;
+      color: var(--color-crema);
     }
-    .shop-error h2 {
+    .contact-hero h1 {
       font-family: var(--font-display);
-      font-size: 24px;
-      color: var(--color-rosso);
-      margin-bottom: 12px;
-    }
-    .shop-error p {
-      font-size: 15px;
-      color: var(--color-castagna);
-      line-height: 1.6;
-      margin-bottom: 24px;
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 900;
+      margin-top: 12px;
     }
   </style>
 </head>
@@ -154,10 +53,10 @@
       </ul>
       <div class="navbar-right">
         <button class="cart-btn" aria-label="Carrello, 0 prodotti">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-          <span class="cart-count" aria-live="polite">0</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count">0</span>
         </button>
-        <button class="hamburger" id="hamburger" aria-label="Apri menu" aria-expanded="false" aria-controls="mobileNav">
+        <button class="hamburger" id="hamburger" aria-label="Apri menu">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -165,35 +64,74 @@
   </header>
 
   <main>
-    <!-- Hero minimo -->
-    <section class="shop-hero texture">
+    <section class="contact-hero">
       <div class="container">
-        <p class="eyebrow">Delizie Siciliane</p>
-        <h1>I nostri dolci</h1>
-        <p>Sfoglia il catalogo e porta la Sicilia sulla tua tavola.</p>
+        <p class="eyebrow eyebrow-light">Sempre con te</p>
+        <h1>Parla con noi</h1>
       </div>
     </section>
 
-    <!-- Filtri categoria -->
-    <div class="filters" role="tablist" aria-label="Filtra per categoria">
-      <button class="filter-pill active" data-filter="tutti" role="tab" aria-selected="true">Tutti</button>
-      <button class="filter-pill" data-filter="cannoli" role="tab" aria-selected="false">Cannoli</button>
-      <button class="filter-pill" data-filter="monoporzioni" role="tab" aria-selected="false">Monoporzioni</button>
-      <button class="filter-pill" data-filter="fiori" role="tab" aria-selected="false">Fiori</button>
-      <button class="filter-pill" data-filter="pasta-di-mandorla" role="tab" aria-selected="false">Pasta di Mandorla</button>
-      <button class="filter-pill" data-filter="salato" role="tab" aria-selected="false">Salato</button>
-      <button class="filter-pill" data-filter="torte" role="tab" aria-selected="false">Torte</button>
-    </div>
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info-section">
+          <h2>Hai domande? Siamo qui per aiutarti.</h2>
+          <p>Che tu voglia informazioni su una spedizione, desideri un ordine personalizzato per un evento o semplicemente voglia salutarci, scrivici pure. Ti risponderemo il prima possibile.</p>
+          
+          <div class="contact-methods">
+            <div class="method-item">
+              <div class="method-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div class="method-content">
+                <h3>Email</h3>
+                <p>info@deliziesiciliane.it</p>
+              </div>
+            </div>
 
-    <!-- Griglia prodotti (popolata da JS) -->
-    <div class="shop-grid" id="shopGrid">
-      <!-- Skeleton loading -->
-      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line price"></div></div></div>
-      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line price"></div></div></div>
-      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line price"></div></div></div>
-      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line price"></div></div></div>
-      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line price"></div></div></div>
-      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line price"></div></div></div>
+            <div class="method-item">
+              <div class="method-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div class="method-content">
+                <h3>Telefono</h3>
+                <p>+39 0825 000 000</p>
+              </div>
+            </div>
+
+            <div class="method-item">
+              <div class="method-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="method-content">
+                <h3>Laboratorio</h3>
+                <p>Ariano Irpino (AV), Italia</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-section">
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name">Nome completo</label>
+              <input type="text" id="name" class="form-control" placeholder="Inserisci il tuo nome" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Indirizzo Email</label>
+              <input type="email" id="email" class="form-control" placeholder="esempio@email.it" required>
+            </div>
+            <div class="form-group">
+              <label for="subject">Oggetto</label>
+              <input type="text" id="subject" class="form-control" placeholder="Come possiamo aiutarti?">
+            </div>
+            <div class="form-group">
+              <label for="message">Messaggio</label>
+              <textarea id="message" class="form-control" placeholder="Scrivi qui il tuo messaggio..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Invia Messaggio</button>
+          </form>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -202,7 +140,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="index.html" aria-label="Delizie Siciliane — torna alla homepage">
+          <a href="index.html" aria-label="Delizie Siciliane — homepage">
             <svg id="logo-footer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1649.93 1080" aria-label="Delizie Siciliane" role="img">
               <defs><style>#logo-footer .cls-1{fill:var(--color-giallo)}#logo-footer .cls-2{fill:var(--color-rosso)}</style></defs>
               <g><path class="cls-1" d="M1398.95,522.23c-3.65,4.55-7.93,22.82-8.56,29.23-1.31,13.26-2.07,71.96,1.14,82.15,3.51,11.16,35.54,27.29,46.92,31.21,12.14,4.18,46.17,5.68,44.47,23.62-2,21.1-22.65,8.36-31.86,12.01-17.72,7.02-15.79,27.41-6.08,40.49,1.23,1.65,26.6,27.78,28.56,29.44,12.17,10.29,41.69,4.58,39.33,28.37-.73,7.35-13.42,10.84-10.69,20.66.89,4.08,13.46-.36,13.48,15.91.02,15.52-12.04,13.22-20.3,20.35-4.81,4.15-9.48,14.5-15.52,19.62-8.33,7.07-23.11,11.68-30.91,18.57-28.69,25.31-40.41,87.15-34.95,123.6,2.05,13.73,24.58,49.64-.21,59.99-29.21,12.19-28.82-23.06-40.82-26.78-16.85-5.22-16.83,14.58-35.4,12-2.62-.36-20.17-9.33-22.51-11.37-8.35-7.3-6.68-19.29-25-18.21-23.32,1.37-26.22,37.61-60.93,23.39-8.73-3.58-28.65-12.95-37.39-17.3-8.26-4.11-16.02-15.94-26.46-20.42-30.7-13.2-69.43,1.19-86.95-30.25-29.2-52.4-23.36-73.04-73.35-119.38-52.48-48.65-99.73-85.02-175.55-73.91-27.01,3.96-47.02,21.16-74.34.85-9.03-6.71-10.57-15.28-20.98-20.69-20.06-10.4-38.35-2.34-54.6-7.9-5.21-1.78-32.2-20.16-37.82-24.69-16.48-13.27-37.94-46.9-55.4-51.38-13.52-3.46-32.09-1.97-45.53-6.56-12.48-4.27-22.69-20.5-33.47-29.04-13.76-10.89-32.27-17.63-45.36-27.57-22.87-17.37-45.54-48.63-67.12-68.54-23.62-11.85-50.34-4.88-75.59-7.51-10.12-3.01-22.95-28.7-31.74-35.98-20.31-16.82-57.85-20.45-83.35-18.14-29.66,2.68-55.21,24.41-86.58,5.76-9.47-5.63-13.55-24.71-20.4-34.29-18.3-25.56-56.84-24.51-74.11-56.11-5.7-10.43-5.22-24.82-10.32-36.56C10.21,371.15-.22,359.28,0,356.57c.97-11.84,26.78-17.38,31.75-33.44,8.18-26.46-13.72-26.88-8.7-53,1.21-6.31,9.34-7.79,13.58-15.05,8.65-14.84,6.78-29.46,11.26-40.83,6.01-15.24,22.73-29.32,37.73-35.19,29.56-11.55,24.63-11.75,48.55-26.98,4.76-3.03,20.76-7.6,21.37-8.58,2.51-4.05-2.08-28.53,7.13-30.73,29.39,9.78,27.91,48.66,46.49,67.65,11.64,11.9,40.3,30.07,57.11,28.42,24.94-2.44,52.12-23.47,65.28-44.28,14.73-23.28-14.22-23.72-11.33-34.62,1.61-6.07,11.55-7.5,15.25-10.96,8.36-7.8,6.9-20.87,24.89-22.18,27.05-1.97,21.22,24.43,38.77,23.49,12.2-.66,9.41-10.32,15.01-19.01,10.81-16.76,34.98-26.95,53.08-14.86,4.26,2.85,22.05,28.64,23.42,33.88,1.88,7.18-.13,14.86,2.54,20.9,4.2,9.48,25.94,19.22,36.17,18.23,16.12-1.56,18.74-20.81,38.17-14.43,2.83.93,16.31,11.04,17.81,13.43,4.48,7.16,2.87,21.38,6.17,26.38.8,1.21,19.88,13.13,23.96,16.4,31.45,25.19,61.08,43.42,104.32,36.45,17.49-2.82,40.97-27.13,58.43-35.32,10.29-4.83,18.59-4.98,28.03-8.44,7.29-2.67,12.31-9.53,20.39-10.86,19.88-3.26,20.7,7.83,34.13,15.06,19.37,10.43,31.62-4.99,54.35-2.22,11.68,1.42,13.69,9.07,20.82,10.41,5.17.97,39.04,3.01,43.62,2.08,10.81-2.2,34.04-19.24,49.31-23.65,18.23-5.26,37.33-3.93,54.85-7.65,28.31-6.01,62.39-29.81,83.94-48.88,11.02-9.76,19.45-32.07,38.98-28.67,5.75,1,7.59,6.59,11.06,7.53,7.87,2.12,24.05-12.78,31.35-14.67,7.35-1.9,15.51.86,22.3-1.14,5.01-1.48,6.43-8.42,13.58-9.83,24.66-4.89,18.95,8.48,31.79,14.97,8.26,4.17,20.31,3.83,28.62,7.84,11.29,5.45,11.69,18.46,30.14,13.01,17.54-18.02,49.75-22.47,59.36-47.41,3.12-8.11,3.75-46.77,15.46-41.91,15.3,6.35-5.43,40.15,23.94,37.27,28.74-2.83,83.88-49.32,111.55-63.16,6.1-2.07,21.03-2.58,27.2-1.37,5.33,1.05,7.09,5.7,11.12,7.1,5.21,1.82,27.96,4.28,25.64,13.81-2.91,11.94-32.99,13.59-39.26,31.28-3.84,10.82,3,17.16,2.92,26.75-.53,63.06-105.76,176.94-138.21,233.74-7.38,12.92-10.51,25.43-16.63,38.07-2.72,5.63-10.33,11.3-12.12,16.53-5.57,16.32-.43,47.77-7.41,68.11-1.98,5.78-7.7,10.52-9.04,17.01-4.15,20.15,3.93,30.73-11.02,51.48-5.16,7.16-16.33,13.04-20.05,17.69Z"/><g><path class="cls-2" d="M0,666.01v-252s14.82,0,14.82,0c16.01,0,31.72,3.26,46.55,10.08,14.23,6.52,26.68,15.42,37.65,27.28,10.67,11.56,19.27,24.9,25.2,40.02,6.23,15.42,9.19,31.72,9.19,48.62,0,16.9-2.96,33.21-9.19,48.62-5.93,15.12-14.53,28.46-25.2,40.02-10.97,11.86-23.42,21.05-37.65,27.28-14.82,6.82-30.54,10.08-46.55,10.08H0ZM29.65,635.18c17.79-3.26,34.39-12.45,47.73-26.68,16.9-18.08,26.39-42.4,26.39-68.49,0-25.79-9.49-50.1-26.39-68.49-13.34-14.23-29.94-23.42-47.73-26.39v190.04Z"/><path class="cls-2" d="M185.3,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/><path class="cls-2" d="M266.84,666.01v-252s29.65,0,29.65,0v222.36s59.29,0,59.29,0v29.65s-88.94,0-88.94,0Z"/><path class="cls-2" d="M378.02,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M429.9,666.01l64.33-222.36h-64.33s0-29.65,0-29.65h103.77s-64.33,222.36-64.33,222.36h64.33s0,29.65,0,29.65h-103.77Z"/><path class="cls-2" d="M555.91,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M637.44,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/><path class="cls-2" d="M770.86,664.53l.89-29.65c8.6.3,17.49-1.78,25.2-5.63,7.71-4.15,14.53-10.67,19.27-18.38,4.74-7.41,7.41-16.31,7.71-25.2,0-8.89-1.78-17.49-5.93-25.2l-.3-.3-20.75-44.17c-5.63-10.38-8.3-22.24-8-34.09.3-12.45,3.85-24.31,10.38-34.98,6.52-10.67,15.71-19.27,26.68-24.9,10.67-5.63,22.53-8.3,34.39-8h3.85s-.3,29.65-.3,29.65h-4.45c-14.23-.3-27.57,6.82-34.98,18.97-3.85,5.93-5.93,13.04-5.93,19.86-.3,7.12,1.48,13.93,4.45,19.86l.3.3,21.05,44.17c6.23,12.16,9.49,25.79,9.19,39.43-.3,14.23-4.45,28.17-12.16,40.32-7.41,12.16-18.08,22.24-30.83,28.76-11.56,5.93-24.31,9.19-37.36,9.19-.59,0-1.48,0-2.37,0Z"/><path class="cls-2" d="M886.49,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M1010.41,655.93c-14.23-6.23-26.68-15.42-37.65-27.28-10.97-11.56-19.27-24.9-25.2-40.02-6.23-15.42-9.19-31.72-9.19-48.62,0-16.9,2.96-33.21,9.19-48.62,5.93-15.12,14.23-28.46,25.2-40.02,10.97-11.86,23.42-20.75,37.65-27.28,14.82-6.82,30.54-10.08,46.55-10.08v29.65c-23.72,0-45.66,9.78-62.56,27.87-16.9,18.38-26.39,42.69-26.39,68.49,0,26.09,9.49,50.4,26.39,68.49,16.9,18.08,38.84,27.87,62.56,27.87v29.65c-16.01,0-31.72-3.26-46.55-10.08Z"/><path class="cls-2" d="M1079.2,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M1131.09,666.01v-252s29.65,0,29.65,0v222.36s59.29,0,59.29,0v29.65s-88.94,0-88.94,0Z"/><path class="cls-2" d="M1242.27,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M1397.92,465.89v200.12s-29.65,0-29.65,0v-59.29s-44.47,0-44.47,0v59.29s-29.65,0-29.65,0v-200.12c0-28.46,23.12-51.88,51.88-51.88,28.46,0,51.88,23.42,51.88,51.88ZM1368.27,577.07v-111.18c0-12.16-10.08-22.24-22.23-22.24-12.16,0-22.24,10.08-22.24,22.24v111.18s44.47,0,44.47,0Z"/><path class="cls-2" d="M1538.75,414.01v252s-29.65,0-29.65,0v-169.88s-59.29-45.06-59.29-45.06v214.94s-29.65,0-29.65,0v-252s29.65,0,29.65,0l59.29,44.77v-44.77s29.65,0,29.65,0Z"/><path class="cls-2" d="M1590.64,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/></g><path class="cls-2" d="M956.55,199.18c-14.82-22.93-41.98-33.08-67.14-27.34.04-.32.04-.68.04-1,.72-34.91-27.02-63.76-61.93-64.48-34.91-.72-63.8,27.02-64.48,61.93-.04.32-.04.68,0,.97-24.94-6.71-52.46,2.33-68.21,24.65-20.09,28.53-13.24,68,15.29,88.09,0,0,71.05,50.02,112.28,79.05,45.36-29.28,115.33-74.46,115.33-74.46,29.32-18.95,37.75-58.06,18.84-87.41Z"/><path class="cls-1" d="M889.87,271.52l-52.96,34.16c-7.89,5.13-18.16,4.92-25.87-.5l-51.53-36.31c-18.66-13.13-9.04-42.48,13.81-42.02l104.45,2.08c22.82.47,31.29,30.21,12.09,42.59Z"/></g>
@@ -222,11 +160,10 @@
         <div class="footer-col">
           <h4>Informazioni</h4>
           <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="kit-cannolo.html">Kit Cannolo</a></li>
             <li><a href="chi-siamo.html">Chi siamo</a></li>
             <li><a href="spedizioni.html">Spedizioni</a></li>
-            <li><a href="contatti.html">Contatti</a></li>
+            <li><a href="spedizioni.html#allergeni">Allergeni</a></li>
+            <li><a href="mailto:info@deliziesiciliane.it">Contattaci</a></li>
           </ul>
         </div>
       </div>
@@ -240,7 +177,6 @@
     </div>
   </footer>
 
-  <script src="shopify.js"></script>
   <script>
     // ── Hamburger menu ──
     const hamburger = document.getElementById('hamburger');
@@ -248,99 +184,14 @@
     hamburger.addEventListener('click', () => {
       const isOpen = mobileNav.classList.toggle('open');
       hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', String(isOpen));
     });
 
-    // ── Variabili globali ──
-    let allProducts = [];
-    const grid = document.getElementById('shopGrid');
-
-    // ── Prodotti statici — immagini reali da assets/images/ ──
-    const staticProducts = [
-      { title:"Kit Cannoli Siciliani", handle:"kit-cannolo", description:"5 cialde croccanti, ricotta di pecora fresca e creme artigianali. Il rituale siciliano a casa tua.", price:"17.50", tags:["cannoli","best-seller"], category:"cannoli", image:"Kit Cannolo 1.jpg", page:"kit-cannolo.html", imgPos:"center center" },
-      { title:"Cannolo Grande — Ricotta Classica", handle:"cannolo-ricotta", description:"La cialda friabile ripiena di soffice ricotta di pecora siciliana. La versione autentica e intramontabile.", price:"3.50", tags:["cannoli"], category:"cannoli", image:"Cannolo Ricotta.jpg", page:"cannolo-ricotta.html", imgPos:"center 82%" },
-      { title:"Cannolo Grande — Pistacchio", handle:"cannolo-pistacchio", description:"Cialda artigianale con crema vellutata al pistacchio di Bronte DOP. Intenso e memorabile.", price:"3.50", tags:["cannoli"], category:"cannoli", image:"Cannolo Pistacchio.jpg", page:"cannolo-pistacchio.html", imgPos:"center 58%" },
-      { title:"Cannolo Grande — Cioccolato", handle:"cannolo-cioccolato", description:"Cialda fragrante con ricotta e pepite di cioccolato fondente al 54%. Per gli amanti del fondente.", price:"3.50", tags:["cannoli"], category:"cannoli", image:"Cannolo Cioccolato.jpg", page:"cannolo-ricotta.html", imgPos:"center 80%" },
-      { title:"Cassatina Siciliana", handle:"cassatina-siciliana", description:"110g di tradizione pura: pan di Spagna, ricotta fresca, glassa reale e scorze d'arancia candite. Conf. 6 pz.", price:"16.00", tags:["monoporzioni"], category:"monoporzioni", image:"Cassatina Siciliana.jpg", page:"cassatina-siciliana.html", imgPos:"center 72%" },
-      { title:"Pasta di Mandorla", handle:"pasta-di-mandorla", description:"Dolcetti di pasta di mandorla siciliana lavorata a mano. Morbidi, profumati, irresistibili.", price:"12.00", tags:["pasta-di-mandorla"], category:"pasta-di-mandorla", image:"Pasta di Mandorla.jpg", page:"shop.html", imgPos:"center 68%" },
-      { title:"Sole di Sicilia", handle:"sole-di-sicilia", description:"Soffici e dorati, i Soli di Sicilia sono una specialità unica del nostro laboratorio. Conf. 6 pz.", price:"16.00", tags:["salato"], category:"salato", image:"Sole di Sicilia 1.jpg", page:"shop.html", imgPos:"center 58%" },
-      { title:"Torta Cassata Siciliana", handle:"torta-cassata", description:"La regina dei dolci siciliani in formato intero da 1kg. Pan di Spagna, ricotta, pasta reale, frutta candita.", price:"35.00", tags:["torte"], category:"torte", image:"Torta Cassata Siciliana.jpg", page:"torta-cassata.html", imgPos:"center 52%" },
-      { title:"Torta Fedora", handle:"torta-fedora", description:"Mandorle al limone, mandorle filettate tostate, pan di Spagna al limoncello. Elegante e profumata. 1kg.", price:"34.00", tags:["torte"], category:"torte", image:"Torta Fedora 1.jpg", page:"shop.html", imgPos:"center 52%" },
-      { title:"Torta Pasta di Mandorla", handle:"torta-pasta-mandorla", description:"Interamente a base di pasta di mandorla siciliana DOP. Senza farina, senza compromessi. 1kg.", price:"32.00", tags:["torte"], category:"torte", image:"Torta Pasta di Mandorla 1.jpg", page:"shop.html", imgPos:"center 58%" },
-      { title:"Tronchetto Cassata", handle:"tronchetto-cassata", description:"La cassata siciliana in formato tronchetto. Un'idea regalo originale e golosa. 1kg.", price:"33.00", tags:["torte"], category:"torte", image:"Tronchetto Cassata 1.jpg", page:"shop.html", imgPos:"center 62%" }
-    ];
-
-    // ── Rendering card prodotto ──
-    function renderProductCard(product) {
-      const isBestSeller = product.tags?.includes('best-seller');
-      const imgSrc = `assets/images/${product.image}`;
-      const pageUrl = product.page || 'shop.html';
-
-      return `
-        <article class="product-card${isBestSeller ? ' featured' : ''}" aria-label="${product.title}">
-          <a href="${pageUrl}" class="card-img" style="display:block;text-decoration:none">
-            <img src="${imgSrc}" alt="${product.title}" loading="lazy"
-                 style="object-position:${product.imgPos || 'center center'}"
-                 onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>${product.title}</div>'">
-            ${isBestSeller ? '<span class="badge" aria-label="Prodotto più venduto">Best Seller</span>' : ''}
-          </a>
-          <div class="card-body">
-            <h3 class="card-name"><a href="${pageUrl}" style="color:inherit;text-decoration:none">${product.title}</a></h3>
-            <p class="card-desc">${product.description}</p>
-            <div class="card-footer">
-              <span class="card-price">€${parseFloat(product.price).toFixed(2).replace('.', ',')}</span>
-              <button class="add-btn" onclick="addToCart('${product.handle}')">Aggiungi</button>
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    // ── Caricamento prodotti ──
-    function loadProducts() {
-      setTimeout(() => {
-        allProducts = staticProducts;
-        renderGrid(allProducts);
-      }, 350);
-    }
-
-    // ── Rendering griglia ──
-    function renderGrid(products) {
-      if (!products.length) {
-        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--color-castagna);padding:40px 0;">Nessun prodotto trovato in questa categoria.</p>';
-        return;
-      }
-      grid.innerHTML = products.map(renderProductCard).join('');
-    }
-
-    // ── Filtri ──
-    document.querySelectorAll('.filter-pill').forEach(pill => {
-      pill.addEventListener('click', () => {
-        document.querySelectorAll('.filter-pill').forEach(p => {
-          p.classList.remove('active');
-          p.setAttribute('aria-selected', 'false');
-        });
-        pill.classList.add('active');
-        pill.setAttribute('aria-selected', 'true');
-        const filter = pill.dataset.filter;
-        renderGrid(filter === 'tutti' ? allProducts : allProducts.filter(p => p.category === filter || p.tags?.includes(filter)));
-      });
+    // ── Form submission ──
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Messaggio inviato con successo! Ti contatteremo a breve.');
+      e.target.reset();
     });
-
-    loadProducts();
-
-    // ── URL parameter filter (es. shop.html?filter=cannoli) ──
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlFilter = urlParams.get('filter');
-    if (urlFilter) {
-      const targetPill = document.querySelector(`.filter-pill[data-filter="${urlFilter}"]`);
-      if (targetPill) {
-        setTimeout(() => {
-          targetPill.click();
-          targetPill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }, 400);
-      }
-    }
   </script>
   <script src="cart.js"></script>
 </body>
