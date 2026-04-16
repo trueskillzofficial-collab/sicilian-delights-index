@@ -6,6 +6,7 @@
   <title>Prodotto — Delizie Siciliane</title>
   <meta name="description" content="Dolci artigianali siciliani spediti freschi in tutta Italia. Scopri i nostri prodotti.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/Favicon.png">
   <link rel="stylesheet" href="style.css">
   <style>
     /* ── Product hero layout ── */
@@ -133,6 +134,51 @@
     .pp-option-btn.unavailable {
       opacity: 0.4; text-decoration: line-through; cursor: not-allowed;
     }
+
+    /* ── Cross-product switcher (prodotti-fratelli tipo cannoli) ── */
+    .pp-cross-link { text-decoration: none; display: inline-flex; }
+    .pp-cross-btn { user-select: none; }
+    .pp-cross-link:hover .pp-cross-btn {
+      border-color: var(--color-rosso); color: var(--color-rosso);
+    }
+    .pp-cross-btn[disabled] { cursor: default; }
+    .pp-cross-link.unavailable { pointer-events: none; }
+    .pp-cross-link.unavailable .pp-cross-btn {
+      opacity: 0.4; text-decoration: line-through; cursor: not-allowed;
+    }
+
+    /* ── Variant card selector (per scelte "ricche" tipo ripieno kit) ── */
+    .pp-option-cards { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .pp-option-card {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 16px; width: 100%; text-align: left;
+      border: 2px solid rgba(217,75,50,0.15); border-radius: var(--radius-md);
+      background: var(--color-bianco); cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
+      font-family: var(--font-body); color: var(--color-nero);
+    }
+    .pp-option-card:hover { border-color: rgba(217,75,50,0.4); }
+    .pp-option-card.selected {
+      border-color: var(--color-rosso);
+      background: rgba(217,75,50,0.04);
+    }
+    .pp-option-dot {
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .pp-option-card-body { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .pp-option-card-name {
+      font-size: 14px; font-weight: 600; color: var(--color-nero); line-height: 1.3;
+    }
+    .pp-option-card-sub {
+      font-size: 11px; font-weight: 400; color: var(--color-castagna);
+      line-height: 1.4; margin-top: 2px;
+    }
+    .pp-option-card-check {
+      color: var(--color-rosso); opacity: 0; flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+    .pp-option-card.selected .pp-option-card-check { opacity: 1; }
 
     /* ── Tabs (descrizione / ingredienti) ── */
     .pp-tabs { border-bottom: 2px solid rgba(26,26,26,0.1); display: flex; gap: 0; margin-bottom: 24px; }

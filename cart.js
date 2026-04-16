@@ -23,6 +23,18 @@ const DS_CATALOG = {
   'tronchetto-cassata':   { name: 'Tronchetto Cassata',            price: 33.00, image: 'Tronchetto Cassata 1.jpg',      page: 'shop.html' },
 };
 
+/* ── Escape sicuro per stringhe dentro onclick="foo('...')" ─
+   Evita che virgolette o backslash rompano l'attributo HTML o
+   il letterale JS al suo interno.                              */
+function _escapeForJsAttr(str) {
+  return String(str ?? '')
+    .replace(/\\/g, '\\\\')   // backslash prima di tutto
+    .replace(/'/g,  "\\'")    // apici singoli JS
+    .replace(/"/g,  '&quot;') // virgolette doppie (chiuderebbero l'attributo)
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;');
+}
+
 /* ── Classe carrello ──────────────────────────────────────── */
 class DSCart {
   constructor() {
@@ -143,14 +155,20 @@ class DSCart {
     }
 
     list.innerHTML = this._items.map(item => {
-      const ok  = JSON.stringify(item._optKey ?? '');
+      // Escape sicuro di handle e _optKey per inclusione dentro attributi HTML onclick="..."
+      // (usiamo apici singoli JS e fuggiamo backslash + apice singolo)
+      const safeHandle = _escapeForJsAttr(item.handle);
+      const safeKey    = _escapeForJsAttr(item._optKey ?? '');
       const optLabel = item.selectedOptions?.length
         ? ' — ' + item.selectedOptions.map(o => o.value).join(', ')
+        : '';
+      const imgSrc = item.image
+        ? (item.image.startsWith('http') ? item.image : 'assets/images/' + item.image)
         : '';
       return `
       <div class="ds-cart-item">
         <div class="ds-ci-img">
-          <img src="${item.image.startsWith('http') ? item.image : 'assets/images/' + item.image}" alt="${item.name}" loading="lazy"
+          <img src="${imgSrc}" alt="${item.name}" loading="lazy"
                onerror="this.style.opacity='0'">
         </div>
         <div class="ds-ci-body">
@@ -158,14 +176,14 @@ class DSCart {
           <span class="ds-ci-unit-price">€${item.price.toFixed(2).replace('.', ',')} / pz</span>
           <div class="ds-ci-row">
             <div class="ds-ci-qty">
-              <button class="ds-qty-btn" onclick="dsCart.setQty('${item.handle}', ${item.qty - 1}, ${ok})" aria-label="Diminuisci">−</button>
+              <button class="ds-qty-btn" onclick="dsCart.setQty('${safeHandle}', ${item.qty - 1}, '${safeKey}')" aria-label="Diminuisci">−</button>
               <span class="ds-qty-val">${item.qty}</span>
-              <button class="ds-qty-btn" onclick="dsCart.setQty('${item.handle}', ${item.qty + 1}, ${ok})" aria-label="Aumenta">+</button>
+              <button class="ds-qty-btn" onclick="dsCart.setQty('${safeHandle}', ${item.qty + 1}, '${safeKey}')" aria-label="Aumenta">+</button>
             </div>
             <span class="ds-ci-price">€${(item.price * item.qty).toFixed(2).replace('.', ',')}</span>
           </div>
         </div>
-        <button class="ds-ci-remove" onclick="dsCart.remove('${item.handle}', ${ok})" aria-label="Rimuovi ${item.name}">
+        <button class="ds-ci-remove" onclick="dsCart.remove('${safeHandle}', '${safeKey}')" aria-label="Rimuovi ${item.name}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>`;

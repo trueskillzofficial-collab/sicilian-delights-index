@@ -287,9 +287,61 @@ async function fetchProducts(collectionHandle = null) {
   return data.products?.edges?.map(e => e.node) ?? [];
 }
 
+/* ── Metafields richiesti sulle pagine prodotto ──────────────
+   Da creare su Shopify Admin › Settings › Custom data › Products
+   (tutti con "Storefronts" spuntato in Access).
+
+   BASE (consigliati su tutti i prodotti):
+     • custom.descrizione     → Rich text           → tab "Descrizione" (testo esteso/editoriale).
+                                                        Il campo "Description" standard di Shopify
+                                                        viene invece usato SOLO come short-desc
+                                                        nella hero (sotto il prezzo).
+     • custom.ingredienti     → Rich text           → tab "Ingredienti"
+     • custom.conservazione   → Rich text           → tab "Conservazione"
+     • custom.spedizioni      → Rich text (opz.)    → tab "Spedizioni" (override)
+     • custom.unita           → Single line text    → suffisso prezzo ("pz", "kit",
+                                                        "box", "g", "kg"…)
+                                                        default "pz" se vuoto
+
+   EXTRA (solo per prodotti complessi come kit / box):
+     • custom.composizione    → Rich text             → tab "Cosa comprende"
+     • custom.preparazione    → Rich text             → tab "Preparazione"
+     • custom.opzioni_visuali → JSON                  → rendering a card delle varianti
+                                                          (pallino colorato + sottotitolo)
+
+   GRUPPO CROSS-PRODUCT (per prodotti separati collegati, es. cannoli
+   ricotta/pistacchio/cioccolato: stesso gruppo, pagine diverse):
+     • custom.cross_gruppo       → List of product references
+                                    → gli altri prodotti del gruppo
+                                      (consiglio: stessa lista su tutti e 3,
+                                       il codice auto-identifica quello corrente)
+     • custom.cross_gruppo_label → Single line text    → label del gruppo
+                                                          es. "Farcitura" (default "Variante")
+     • custom.cross_etichetta    → Single line text    → testo del bottone sullo switcher
+                                                          per QUESTO prodotto
+                                                          es. "Pistacchio". Se vuoto usa
+                                                          il titolo del prodotto.
+
+   Se un metafield manca o è vuoto, la funzione corrispondente
+   viene nascosta automaticamente (graceful degrade).
+   ───────────────────────────────────────────────────────────── */
+const PRODUCT_METAFIELD_IDS = [
+  { namespace: "custom", key: "descrizione"        },
+  { namespace: "custom", key: "ingredienti"        },
+  { namespace: "custom", key: "conservazione"      },
+  { namespace: "custom", key: "spedizioni"         },
+  { namespace: "custom", key: "unita"              },
+  { namespace: "custom", key: "composizione"       },
+  { namespace: "custom", key: "preparazione"       },
+  { namespace: "custom", key: "opzioni_visuali"    },
+  { namespace: "custom", key: "cross_gruppo"       },
+  { namespace: "custom", key: "cross_gruppo_label" },
+  { namespace: "custom", key: "cross_etichetta"    },
+];
+
 async function fetchProductByHandle(handle) {
   const data = await shopifyFetch(`
-    query GetProduct($handle: String!) {
+    query GetProduct($handle: String!, $mfIds: [HasMetafieldsIdentifier!]!) {
       product(handle: $handle) {
         id title handle descriptionHtml description tags
         images(first: 5) { edges { node { url altText } } }
@@ -303,9 +355,32 @@ async function fetchProductByHandle(handle) {
             }
           }
         }
+        metafields(identifiers: $mfIds) {
+          namespace
+          key
+          value
+          type
+          references(first: 20) {
+            edges {
+              node {
+                __typename
+                ... on Product {
+                  id
+                  handle
+                  title
+                  availableForSale
+                  featuredImage { url altText }
+                  crossEtichetta: metafield(namespace: "custom", key: "cross_etichetta") {
+                    value
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
-  `, { handle });
+  `, { handle, mfIds: PRODUCT_METAFIELD_IDS });
   return data.product;
 }
 

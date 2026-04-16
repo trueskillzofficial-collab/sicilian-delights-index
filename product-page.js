@@ -192,15 +192,189 @@ function _fmtPrice(amount) {
 
 
 /* ═══════════════════════════════════════════════════════════
+   METAFIELDS — helper
+   ═══════════════════════════════════════════════════════════ */
+
+/** Estrae il metafield { namespace, key } dall'array product.metafields */
+function _getMetafield(product, namespace, key) {
+  const list = product?.metafields;
+  if (!Array.isArray(list)) return null;
+  return list.find(m => m && m.namespace === namespace && m.key === key) || null;
+}
+
+/** Converte il valore di un metafield in HTML renderizzabile.
+ *  Supporta: rich_text_field (JSON), multi_line_text_field,
+ *  single_line_text_field, html (legacy).
+ *  Ritorna '' se vuoto o non parsabile. */
+function _metafieldToHtml(mf) {
+  if (!mf || !mf.value) return '';
+  const type = mf.type || '';
+  const val  = mf.value;
+
+  if (type === 'rich_text_field') {
+    try {
+      const node = JSON.parse(val);
+      return _richTextNodeToHtml(node);
+    } catch (e) {
+      console.warn('[product-page] rich_text_field non parsabile:', e);
+      return _escapeHtml(val).replace(/\n/g, '<br>');
+    }
+  }
+
+  if (type === 'multi_line_text_field') {
+    // Converte doppi a capo in paragrafi, singoli in <br>
+    return _escapeHtml(val)
+      .split(/\n{2,}/)
+      .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+      .join('');
+  }
+
+  // single_line_text_field, html, altro → paragrafo semplice/HTML grezzo
+  if (type === 'html' || /^<[a-z]/i.test(val.trim())) return val;
+  return `<p>${_escapeHtml(val)}</p>`;
+}
+
+/** Converte il JSON Rich Text di Shopify in HTML minimale. */
+function _richTextNodeToHtml(node) {
+  if (!node) return '';
+  if (Array.isArray(node)) return node.map(_richTextNodeToHtml).join('');
+
+  const kids = () => (node.children || []).map(_richTextNodeToHtml).join('');
+
+  switch (node.type) {
+    case 'root':      return kids();
+    case 'paragraph': return `<p>${kids()}</p>`;
+    case 'heading': {
+      const lvl = Math.min(Math.max(parseInt(node.level) || 4, 2), 6);
+      return `<h${lvl}>${kids()}</h${lvl}>`;
+    }
+    case 'list': {
+      const tag = node.listType === 'ordered' ? 'ol' : 'ul';
+      return `<${tag}>${kids()}</${tag}>`;
+    }
+    case 'list-item': return `<li>${kids()}</li>`;
+    case 'link': {
+      const href = _escapeHtml(node.url || '#');
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${kids()}</a>`;
+    }
+    case 'text': {
+      let t = _escapeHtml(node.value || '');
+      if (node.bold)   t = `<strong>${t}</strong>`;
+      if (node.italic) t = `<em>${t}</em>`;
+      return t;
+    }
+    default:
+      return kids();
+  }
+}
+
+function _escapeHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/** Estrae il valore testuale di un metafield "single_line_text_field"
+ *  restituendo '' se vuoto o assente. */
+function _getTextMetafield(product, namespace, key) {
+  const mf = _getMetafield(product, namespace, key);
+  return (mf?.value ?? '').trim();
+}
+
+/** Suffisso unità di misura per il prezzo unitario: "pz", "kit", "box"…
+ *  Legge custom.unita (default "pz"). Sanitizza a max 16 char. */
+function _getUnitLabel(product) {
+  const raw = _getTextMetafield(product, 'custom', 'unita');
+  const val = (raw || 'pz').slice(0, 16);
+  return _escapeHtml(val);
+}
+
+/** Parsa il metafield JSON custom.opzioni_visuali. Esempio valido:
+ *  {
+ *    "Ripieno": {
+ *      "style": "card",
+ *      "values": {
+ *        "Ricotta classica": { "color": "#f0ede0", "subtitle": "500g…" }
+ *      }
+ *    }
+ *  }
+ *  Ritorna {} se il metafield è assente/non parsabile. */
+function _getVisualOptions(product) {
+  const mf = _getMetafield(product, 'custom', 'opzioni_visuali');
+  if (!mf || !mf.value) return {};
+  try {
+    const parsed = JSON.parse(mf.value);
+    return (parsed && typeof parsed === 'object') ? parsed : {};
+  } catch (e) {
+    console.warn('[product-page] custom.opzioni_visuali non è JSON valido:', e);
+    return {};
+  }
+}
+
+/** True se il prodotto è del sub-brand "la Cannoleria" (tag shopify). */
+function _hasCannoleriaTag(product) {
+  return Array.isArray(product?.tags) && product.tags.includes('cannoleria');
+}
+
+/** Estrae il gruppo cross-product (cannolo ricotta/pistacchio/cioccolato, ecc.)
+ *  Restituisce { label, items } dove items = [{handle, title, etichetta, isCurrent, isAvailable}]
+ *  oppure null se il prodotto non fa parte di nessun gruppo cross. */
+function _getCrossGroup(product) {
+  if (!product) return null;
+
+  const mf = _getMetafield(product, 'custom', 'cross_gruppo');
+  const refEdges = mf?.references?.edges;
+  if (!Array.isArray(refEdges) || !refEdges.length) return null;
+
+  // Etichetta del gruppo (es. "Farcitura"); fallback "Variante"
+  const label = _getTextMetafield(product, 'custom', 'cross_gruppo_label') || 'Variante';
+  // Etichetta del prodotto corrente nello switcher
+  const myEtichetta = _getTextMetafield(product, 'custom', 'cross_etichetta');
+
+  // Mappiamo i prodotti referenziati + includiamo il prodotto corrente (se non già listato)
+  const items = refEdges
+    .map(e => e?.node)
+    .filter(n => n && n.__typename === 'Product')
+    .map(n => ({
+      handle:      n.handle,
+      title:       n.title,
+      etichetta:  (n.crossEtichetta?.value ?? '').trim() || n.title,
+      isCurrent:   n.handle === product.handle,
+      isAvailable: n.availableForSale !== false,
+    }));
+
+  // Se il cliente non ha incluso il prodotto corrente nella lista,
+  // lo aggiungiamo noi all'inizio così lo switcher è sempre completo.
+  if (!items.some(i => i.isCurrent)) {
+    items.unshift({
+      handle:      product.handle,
+      title:       product.title,
+      etichetta:   myEtichetta || product.title,
+      isCurrent:   true,
+      isAvailable: true,
+    });
+  }
+
+  // Se rimane un solo elemento (solo se stesso) non ha senso mostrare lo switcher
+  if (items.length < 2) return null;
+
+  return { label, items };
+}
+
+
+/* ═══════════════════════════════════════════════════════════
    RENDER PRODOTTO
    ═══════════════════════════════════════════════════════════ */
 
 function _renderProduct(container, product) {
-  const variants = _flatVariants(product);
-  const images   = product.images.edges.map(e => e.node);
-  const variant  = _getCurrentVariant();
-  const isBest   = product.tags?.includes('best-seller');
-  const isNew    = product.tags?.includes('new');
+  const variants  = _flatVariants(product);
+  const images    = product.images.edges.map(e => e.node);
+  const variant   = _getCurrentVariant();
+  const isBest    = product.tags?.includes('best-seller');
+  const isNew     = product.tags?.includes('new');
+  const isCann    = _hasCannoleriaTag(product);
+  const unitLabel = _getUnitLabel(product);
 
   container.innerHTML = `
 
@@ -255,14 +429,19 @@ function _renderProduct(container, product) {
           <div class="product-essentials" id="ppEssentials">
 
             <p class="product-eyebrow">
-              <span style="font-family:var(--font-script);font-size:16px;color:var(--color-castagna)">Delizie Siciliane</span>
+              ${isCann
+                ? `<span class="card-cannoleria" style="font-size:15px">la Cannoleria</span>`
+                : `<span style="font-family:var(--font-script);font-size:16px;color:var(--color-castagna)">Delizie Siciliane</span>`
+              }
               ${isBest ? '&nbsp;· <strong>Best Seller</strong>' : ''}
+              ${isNew  ? '&nbsp;· <strong>Nuovo</strong>'       : ''}
             </p>
 
             <h1>${product.title}</h1>
 
             <p class="product-price-tag" id="ppPrice">
               ${_fmtPrice(variant.price.amount)}
+              <span style="font-size:16px;color:var(--color-castagna);font-family:var(--font-body);font-weight:500">/ ${unitLabel}</span>
             </p>
 
             ${product.description
@@ -270,8 +449,11 @@ function _renderProduct(container, product) {
               : ''
             }
 
-            <!-- Varianti (solo se il prodotto ha opzioni reali) -->
-            ${_isDefaultVariantOnly(product) ? '' : _buildVariantSelectorHTML(variants)}
+            <!-- Switcher tra prodotti fratelli (es. cannolo ricotta / pistacchio / cioccolato) -->
+            ${_buildCrossGroupHTML(product)}
+
+            <!-- Varianti interne al singolo prodotto (peso, taglia, ripieno kit…) -->
+            ${_isDefaultVariantOnly(product) ? '' : _buildVariantSelectorHTML(variants, product)}
 
             <!-- Quantità + CTA -->
             <div class="cta-area">
@@ -287,7 +469,7 @@ function _renderProduct(container, product) {
                 ${!variant.availableForSale ? 'disabled' : ''}
               >
                 ${variant.availableForSale
-                  ? `Aggiungi al carrello — <span id="ppBtnPrice">${_fmtPrice(variant.price.amount)}</span>`
+                  ? `Aggiungi al carrello — €<span id="ppBtnPrice">${parseFloat(variant.price.amount).toFixed(2).replace('.', ',')}</span>`
                   : 'Non disponibile'
                 }
               </button>
@@ -346,7 +528,66 @@ function _renderProduct(container, product) {
    VARIANT SELECTOR HTML
    ═══════════════════════════════════════════════════════════ */
 
-function _buildVariantSelectorHTML(variants) {
+/* ═══════════════════════════════════════════════════════════
+   CROSS-PRODUCT SWITCHER
+   (stessa famiglia: cannolo ricotta / pistacchio / cioccolato)
+   ═══════════════════════════════════════════════════════════ */
+
+function _buildCrossGroupHTML(product) {
+  const group = _getCrossGroup(product);
+  if (!group) return '';
+
+  return `
+    <div class="pp-option-group pp-cross-group" data-option-group="${_attr(group.label)}">
+      <p class="pp-option-label">${_escapeHtml(group.label)}</p>
+      <div class="pp-option-btns" role="group" aria-label="Scegli ${_attr(group.label)}">
+        ${group.items.map(it => {
+          if (it.isCurrent) {
+            return `
+              <button
+                type="button"
+                class="pp-option-btn active pp-cross-btn"
+                aria-current="page"
+                disabled
+              >${_escapeHtml(it.etichetta)}</button>
+            `;
+          }
+          const href = `product.html?handle=${encodeURIComponent(it.handle)}`;
+          const unavailableCls = it.isAvailable ? '' : ' unavailable';
+          return `
+            <a href="${href}"
+               class="pp-cross-link${unavailableCls}"
+               aria-label="Vai a ${_attr(it.title)}">
+              <span class="pp-option-btn pp-cross-btn${unavailableCls}">${_escapeHtml(it.etichetta)}</span>
+            </a>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/** Escape per inserimento dentro un attributo HTML tra doppi apici. */
+function _attr(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/** Escape di una stringa JS destinata a un attributo onclick="…".
+ *  Restituisce il letterale da mettere tra apici singoli, es:
+ *  onclick="ppSelectOption('Name','<escaped>', this)". */
+function _jsAttr(s) {
+  return String(s ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '\\u003C');
+}
+
+function _buildVariantSelectorHTML(variants, product) {
   // Raggruppa i valori per nome opzione, preservando l'ordine di apparizione
   const groups = {};       // { [optName]: Set<value> }
   const order  = [];       // ordine dei nomi opzione
@@ -357,65 +598,155 @@ function _buildVariantSelectorHTML(variants) {
     });
   });
 
+  const visualMap = _getVisualOptions(product);
+
   return order.map(name => {
-    const values = [...groups[name]];
+    const values    = [...groups[name]];
+    const visualCfg = visualMap[name];
+    const isCard    = visualCfg && visualCfg.style === 'card';
+
     return `
-      <div class="pp-option-group">
-        <p class="pp-option-label">${name}</p>
-        <div class="pp-option-btns" role="radiogroup" aria-label="Scegli ${name}">
-          ${values.map(val => `
-            <button
-              class="pp-option-btn${_state.selectedOptions[name] === val ? ' active' : ''}"
-              onclick="ppSelectOption('${name}', '${val.replace(/'/g, "\\'")}', this)"
-              role="radio"
-              aria-checked="${_state.selectedOptions[name] === val ? 'true' : 'false'}"
-              data-option="${name}"
-              data-value="${val}"
-            >${val}</button>
-          `).join('')}
-        </div>
+      <div class="pp-option-group" data-option-group="${_attr(name)}">
+        <p class="pp-option-label">${_escapeHtml(name)}</p>
+        ${isCard
+          ? _buildCardOptionsHTML(name, values, visualCfg.values || {})
+          : _buildPillOptionsHTML(name, values)
+        }
       </div>
     `;
   }).join('');
 }
 
+/** Rendering "classico" a pill orizzontali — per Peso, Taglia, ecc. */
+function _buildPillOptionsHTML(name, values) {
+  return `
+    <div class="pp-option-btns" role="radiogroup" aria-label="Scegli ${_attr(name)}">
+      ${values.map(val => {
+        const active = _state.selectedOptions[name] === val;
+        return `
+          <button
+            class="pp-option-btn${active ? ' active' : ''}"
+            onclick="ppSelectOption('${_jsAttr(name)}', '${_jsAttr(val)}', this)"
+            role="radio"
+            aria-checked="${active ? 'true' : 'false'}"
+            data-option="${_attr(name)}"
+            data-value="${_attr(val)}"
+          >${_escapeHtml(val)}</button>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+/** Rendering a card verticali con pallino colorato + sottotitolo —
+ *  per scelte "ricche" come il ripieno del Kit Cannoli.
+ *  valueMeta = { "<optionValue>": { color: "#…", subtitle: "…" } } */
+function _buildCardOptionsHTML(name, values, valueMeta) {
+  return `
+    <div class="pp-option-cards" role="radiogroup" aria-label="Scegli ${_attr(name)}">
+      ${values.map(val => {
+        const meta     = valueMeta[val] || {};
+        const color    = meta.color    || 'var(--color-crema)';
+        const subtitle = meta.subtitle || '';
+        const active   = _state.selectedOptions[name] === val;
+        return `
+          <button
+            type="button"
+            class="pp-option-card${active ? ' selected' : ''}"
+            onclick="ppSelectOption('${_jsAttr(name)}', '${_jsAttr(val)}', this)"
+            role="radio"
+            aria-checked="${active ? 'true' : 'false'}"
+            data-option="${_attr(name)}"
+            data-value="${_attr(val)}"
+          >
+            <span class="pp-option-dot" style="background:${_attr(color)}"></span>
+            <span class="pp-option-card-body">
+              <span class="pp-option-card-name">${_escapeHtml(val)}</span>
+              ${subtitle ? `<span class="pp-option-card-sub">${_escapeHtml(subtitle)}</span>` : ''}
+            </span>
+            <svg class="pp-option-card-check" width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                 aria-hidden="true">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </button>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
 
 /* ═══════════════════════════════════════════════════════════
-   TABS HTML
+   TABS HTML — fino a 6 tab, tutte opzionali tranne Descrizione
+   e Spedizioni (quest'ultima con fallback generico). Ordine:
+     Descrizione · Cosa comprende · Preparazione ·
+     Ingredienti · Conservazione · Spedizioni
+   Tab mostrata solo se il metafield corrispondente è compilato.
    ═══════════════════════════════════════════════════════════ */
 
+/* Testo di default per la tab Spedizioni — usato se il prodotto
+   non ha il metafield custom.spedizioni valorizzato. */
+const _DEFAULT_SPEDIZIONI_HTML = `
+  <h4>Spedizione e Catena del Freddo</h4>
+  <p>Spediamo esclusivamente il <strong>Lunedì e il Martedì</strong> per garantire che i prodotti freschi non restino nei magazzini dei corrieri durante il weekend.</p>
+  <p><strong>Imballaggio isotermico:</strong> Box in polistirene ad alta densità con ghiaccio secco incluso. La catena del freddo è garantita per 48–72 ore dalla partenza.</p>
+  <p>Non spediamo nei periodi con temperature esterne previste superiori a 30°C. La tua sicurezza alimentare viene prima di tutto.</p>
+  <p><a href="spedizioni.html" style="color:var(--color-rosso);font-weight:700">Leggi la policy completa sulle spedizioni →</a></p>
+`;
+
 function _buildTabsHTML(product) {
-  const hasDesc = product.descriptionHtml?.trim().length > 0;
+  // Tab "Descrizione" → SOLO dal metafield custom.descrizione.
+  // Il campo Description standard di Shopify viene usato altrove (short-desc hero),
+  // quindi qui NON facciamo fallback su descriptionHtml.
+  const descHtml           = _metafieldToHtml(_getMetafield(product, 'custom', 'descrizione'));
+
+  const composizioneHtml   = _metafieldToHtml(_getMetafield(product, 'custom', 'composizione'));
+  const preparazioneHtml   = _metafieldToHtml(_getMetafield(product, 'custom', 'preparazione'));
+  const ingredientiHtml    = _metafieldToHtml(_getMetafield(product, 'custom', 'ingredienti'));
+  const conservazioneHtml  = _metafieldToHtml(_getMetafield(product, 'custom', 'conservazione'));
+  const spedizioniCustom   = _metafieldToHtml(_getMetafield(product, 'custom', 'spedizioni'));
+  const spedizioniHtml     = spedizioniCustom || _DEFAULT_SPEDIZIONI_HTML;
+
+  // Ordine delle tab. Mostrate solo se il rispettivo metafield è compilato.
+  // Spedizioni è l'unica con fallback generico → di fatto sempre presente.
+  // Descrizione legge da custom.descrizione: se vuoto, la tab scompare
+  // (il field Description standard di Shopify è già visibile nella hero).
+  const tabs = [
+    { id: 'pp-tab-desc',    label: 'Descrizione',    html: descHtml },
+    { id: 'pp-tab-comp',    label: 'Cosa comprende', html: composizioneHtml },
+    { id: 'pp-tab-prep',    label: 'Preparazione',   html: preparazioneHtml },
+    { id: 'pp-tab-ingred',  label: 'Ingredienti',    html: ingredientiHtml },
+    { id: 'pp-tab-conserv', label: 'Conservazione',  html: conservazioneHtml },
+    { id: 'pp-tab-sped',    label: 'Spedizioni',     html: spedizioniHtml },
+  ].filter(t => t.html && t.html.trim().length > 0);
+
+  if (!tabs.length) return '';
+
+  // La prima tab con contenuto è attiva di default
+  const buttons = tabs.map((t, i) => `
+    <li>
+      <button
+        class="tab-btn${i === 0 ? ' active' : ''}"
+        data-target="${t.id}"
+        role="tab"
+        aria-selected="${i === 0 ? 'true' : 'false'}"
+      >${t.label}</button>
+    </li>
+  `).join('');
+
+  const panels = tabs.map((t, i) => `
+    <div class="tab-panel${i === 0 ? ' show' : ''} pp-desc-html" id="${t.id}" role="tabpanel">
+      ${t.html}
+    </div>
+  `).join('');
 
   return `
     <div class="product-tabs" style="margin-top:40px">
       <ul class="tabs-nav" role="tablist">
-        ${hasDesc
-          ? `<li><button class="tab-btn active" data-target="pp-tab-desc" role="tab" aria-selected="true">Descrizione</button></li>`
-          : ''
-        }
-        <li>
-          <button
-            class="tab-btn${!hasDesc ? ' active' : ''}"
-            data-target="pp-tab-sped"
-            role="tab"
-            aria-selected="${!hasDesc ? 'true' : 'false'}"
-          >Spedizioni</button>
-        </li>
+        ${buttons}
       </ul>
-
-      ${hasDesc ? `
-      <div class="tab-panel show pp-desc-html" id="pp-tab-desc" role="tabpanel">
-        ${product.descriptionHtml}
-      </div>` : ''}
-
-      <div class="tab-panel${!hasDesc ? ' show' : ''}" id="pp-tab-sped" role="tabpanel">
-        <h4>Spedizione e Catena del Freddo</h4>
-        <p>Spediamo esclusivamente il <strong>Lunedì e il Martedì</strong> per garantire che i prodotti freschi non restino nei magazzini dei corrieri durante il weekend.</p>
-        <p><strong>Imballaggio isotermico:</strong> Box in polistirene ad alta densità con ghiaccio secco incluso. La catena del freddo è garantita per 48–72 ore dalla partenza.</p>
-        <p>Non spediamo nei periodi con temperature esterne previste superiori a 30°C. La tua sicurezza alimentare viene prima di tutto.</p>
-        <p><a href="spedizioni.html" style="color:var(--color-rosso);font-weight:700">Leggi la policy completa sulle spedizioni →</a></p>
-      </div>
+      ${panels}
     </div>
   `;
 }
@@ -491,25 +822,45 @@ async function _loadRelated(currentHandle) {
 
 
 /* ═══════════════════════════════════════════════════════════
-   SYNC UI — aggiorna prezzo e disponibilità al cambio variante
+   SYNC UI — aggiorna prezzo e disponibilità al cambio variante.
+   Il prezzo "grande" resta il prezzo unitario (/ pz);
+   il bottone "Aggiungi al carrello" mostra il TOTALE (unit × qty).
+   Fonte di verità sui prezzi = Shopify (qui la UI è di supporto).
    ═══════════════════════════════════════════════════════════ */
 
 function _syncVariantUI() {
-  const v       = _getCurrentVariant();
-  const addBtn  = document.getElementById('ppAddBtn');
+  const v      = _getCurrentVariant();
+  const addBtn = document.getElementById('ppAddBtn');
   if (!v || !addBtn) return;
 
-  const formatted = _fmtPrice(v.price.amount);
+  const unitLabel = _getUnitLabel(_state.product);
 
-  // Aggiorna prezzo nell'header prodotto
+  // Aggiorna prezzo unitario nell'header prodotto
   const priceEl = document.getElementById('ppPrice');
-  if (priceEl) priceEl.textContent = formatted;
+  if (priceEl) {
+    priceEl.innerHTML =
+      `${_fmtPrice(v.price.amount)}` +
+      `<span style="font-size:16px;color:var(--color-castagna);font-family:var(--font-body);font-weight:500">/ ${unitLabel}</span>`;
+  }
 
-  // Aggiorna bottone
+  // Aggiorna bottone (disponibilità + prezzo totale)
   addBtn.disabled = !v.availableForSale;
-  addBtn.innerHTML = v.availableForSale
-    ? `Aggiungi al carrello — <span id="ppBtnPrice">${formatted}</span>`
-    : 'Non disponibile';
+  if (v.availableForSale) {
+    const total = parseFloat(v.price.amount) * _state.qty;
+    addBtn.innerHTML =
+      `Aggiungi al carrello — €<span id="ppBtnPrice">${total.toFixed(2).replace('.', ',')}</span>`;
+  } else {
+    addBtn.innerHTML = 'Non disponibile';
+  }
+}
+
+/** Aggiorna solo il prezzo totale nel bottone — chiamato al cambio qty. */
+function _syncTotalPrice() {
+  const v = _getCurrentVariant();
+  const priceSpan = document.getElementById('ppBtnPrice');
+  if (!v || !priceSpan) return;
+  const total = parseFloat(v.price.amount) * _state.qty;
+  priceSpan.textContent = total.toFixed(2).replace('.', ',');
 }
 
 
@@ -525,28 +876,33 @@ function ppSwitchImg(src, alt, thumb) {
   thumb.classList.add('active');
 }
 
-/** Seleziona un valore di variante, aggiorna UI e prezzo */
+/** Seleziona un valore di variante, aggiorna UI e prezzo.
+ *  Funziona sia con i pill (.pp-option-btn) che con le card (.pp-option-card). */
 function ppSelectOption(name, value, btn) {
   _state.selectedOptions[name] = value;
 
-  // Aggiorna bottoni del gruppo corrispondente
-  btn.closest('.pp-option-btns')
-     .querySelectorAll('.pp-option-btn')
-     .forEach(b => {
-       b.classList.remove('active');
-       b.setAttribute('aria-checked', 'false');
-     });
-  btn.classList.add('active');
+  // Aggiorna tutti i bottoni del gruppo (pill o card)
+  const group = btn.closest('.pp-option-group');
+  if (group) {
+    group.querySelectorAll('.pp-option-btn, .pp-option-card').forEach(b => {
+      b.classList.remove('active', 'selected');
+      b.setAttribute('aria-checked', 'false');
+    });
+  }
+
+  // Classe corretta in base al tipo di bottone
+  btn.classList.add(btn.classList.contains('pp-option-card') ? 'selected' : 'active');
   btn.setAttribute('aria-checked', 'true');
 
   _syncVariantUI();
 }
 
-/** Aggiorna la quantità (+1 / -1) */
+/** Aggiorna la quantità (+1 / -1) e ricalcola il prezzo totale nel bottone. */
 function ppUpdateQty(delta) {
   _state.qty = Math.max(1, _state.qty + delta);
   const el = document.getElementById('ppQty');
   if (el) el.textContent = _state.qty;
+  _syncTotalPrice();
 }
 
 /**
