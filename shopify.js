@@ -424,6 +424,10 @@ async function dsCheckout() {
   }
 
   try {
+    // Crea sempre un carrello Shopify nuovo per evitare duplicati
+    // se l'utente torna indietro dal checkout e riprova
+    _clearCartId();
+
     // Risolve tutti i variantId in parallelo
     const lines = await Promise.all(
       dsCart._items.map(async item => {
