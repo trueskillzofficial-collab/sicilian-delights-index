@@ -39,16 +39,32 @@ class DSCart {
     localStorage.setItem('ds_cart', JSON.stringify(this._items));
   }
 
-  /* aggiunge un prodotto (o incrementa qty) */
-  add(handle, qty = 1) {
+  /* aggiunge un prodotto (o incrementa qty)
+   * selectedOptions: Array<{name, value}> — es. [{name:"Peso", value:"500g"}]
+   *   passare [] per prodotti senza varianti (default)
+   */
+  add(handle, qty = 1, selectedOptions = []) {
     const info = DS_CATALOG[handle];
     if (!info) { console.warn('DSCart: handle non trovato:', handle); return; }
 
-    const existing = this._items.find(i => i.handle === handle);
+    // La chiave di deduplicazione include le opzioni scelte (es. variante peso)
+    const optKey = selectedOptions.map(o => `${o.name}:${o.value}`).join('|');
+    const existing = this._items.find(
+      i => i.handle === handle && (i._optKey ?? '') === optKey
+    );
+
     if (existing) {
       existing.qty += qty;
     } else {
-      this._items.push({ handle, qty, name: info.name, price: info.price, image: info.image });
+      this._items.push({
+        handle,
+        qty,
+        name:            info.name,
+        price:           info.price,
+        image:           info.image,
+        selectedOptions, // [{name, value}] — usato da dsCheckout per il mapping Shopify
+        _optKey:         optKey,
+      });
     }
     this._save();
     this._sync();
@@ -56,20 +72,24 @@ class DSCart {
     this._toast(`✓ "${info.name}" aggiunto al carrello`);
   }
 
-  /* imposta quantità (0 = rimuovi) */
-  setQty(handle, qty) {
+  /* imposta quantità (0 = rimuovi) — identifica l'item per handle + _optKey */
+  setQty(handle, qty, optKey = '') {
     const n = Math.max(0, parseInt(qty) || 0);
     if (n === 0) {
-      this._items = this._items.filter(i => i.handle !== handle);
+      this._items = this._items.filter(
+        i => !(i.handle === handle && (i._optKey ?? '') === optKey)
+      );
     } else {
-      const item = this._items.find(i => i.handle === handle);
+      const item = this._items.find(
+        i => i.handle === handle && (i._optKey ?? '') === optKey
+      );
       if (item) item.qty = n;
     }
     this._save();
     this._sync();
   }
 
-  remove(handle) { this.setQty(handle, 0); }
+  remove(handle, optKey = '') { this.setQty(handle, 0, optKey); }
 
   /* calcoli */
   total() { return this._items.reduce((s, i) => s + i.price * i.qty, 0); }
@@ -122,28 +142,34 @@ class DSCart {
       return;
     }
 
-    list.innerHTML = this._items.map(item => `
+    list.innerHTML = this._items.map(item => {
+      const ok  = JSON.stringify(item._optKey ?? '');
+      const optLabel = item.selectedOptions?.length
+        ? ' — ' + item.selectedOptions.map(o => o.value).join(', ')
+        : '';
+      return `
       <div class="ds-cart-item">
         <div class="ds-ci-img">
-          <img src="assets/images/${item.image}" alt="${item.name}" loading="lazy"
+          <img src="${item.image.startsWith('http') ? item.image : 'assets/images/' + item.image}" alt="${item.name}" loading="lazy"
                onerror="this.style.opacity='0'">
         </div>
         <div class="ds-ci-body">
-          <span class="ds-ci-name">${item.name}</span>
+          <span class="ds-ci-name">${item.name}${optLabel}</span>
           <span class="ds-ci-unit-price">€${item.price.toFixed(2).replace('.', ',')} / pz</span>
           <div class="ds-ci-row">
             <div class="ds-ci-qty">
-              <button class="ds-qty-btn" onclick="dsCart.setQty('${item.handle}', ${item.qty - 1})" aria-label="Diminuisci">−</button>
+              <button class="ds-qty-btn" onclick="dsCart.setQty('${item.handle}', ${item.qty - 1}, ${ok})" aria-label="Diminuisci">−</button>
               <span class="ds-qty-val">${item.qty}</span>
-              <button class="ds-qty-btn" onclick="dsCart.setQty('${item.handle}', ${item.qty + 1})" aria-label="Aumenta">+</button>
+              <button class="ds-qty-btn" onclick="dsCart.setQty('${item.handle}', ${item.qty + 1}, ${ok})" aria-label="Aumenta">+</button>
             </div>
             <span class="ds-ci-price">€${(item.price * item.qty).toFixed(2).replace('.', ',')}</span>
           </div>
         </div>
-        <button class="ds-ci-remove" onclick="dsCart.remove('${item.handle}')" aria-label="Rimuovi ${item.name}">
+        <button class="ds-ci-remove" onclick="dsCart.remove('${item.handle}', ${ok})" aria-label="Rimuovi ${item.name}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
-      </div>`).join('');
+      </div>`;
+    }).join('');
 
     if (total) total.textContent = `€${this.total().toFixed(2).replace('.', ',')}`;
     if (btn) btn.disabled = false;
@@ -208,45 +234,14 @@ class DSCart {
   }
 }
 
-/* ── Checkout ─────────────────────────────────────────────── */
-function dsCheckout() {
-  if (!dsCart._items.length) return;
+/* ── Funzione globale addToCart ───────────────────────────────
+   Chiamata inline dall'HTML: onclick="addToCart('kit-cannolo')"
+   oppure con varianti:       addToCart('pasta-di-mandorla', 1, [{name:'Peso', value:'500g'}])
 
-  /* ══════════════════════════════════════════════════════════
-     TODO — Shopify Integration:
-
-     1. Configurare STOREFRONT_API_URL e STOREFRONT_ACCESS_TOKEN
-        in shopify.js con le credenziali del negozio.
-
-     2. Sostituire questo blocco con:
-
-        const cartId = await getOrCreateCartId();
-        for (const item of dsCart._items) {
-          await addToCart(variantId_di_shopify, item.qty);
-        }
-        const shopCart = await fetchCart(cartId);
-        window.location.href = shopCart.checkoutUrl;
-
-     3. Mappare ogni `handle` locale al `variantId` Shopify
-        (ottenibile con fetchProductByHandle(handle)).
-     ══════════════════════════════════════════════════════════ */
-
-  const righe = dsCart._items
-    .map(i => `• ${i.qty}× ${i.name}  €${(i.price * i.qty).toFixed(2)}`)
-    .join('\n');
-
-  alert(
-    `🛒 Checkout — Shopify non ancora configurato\n\n` +
-    `Il pulsante si collegherà automaticamente al tuo negozio Shopify\n` +
-    `una volta inserite le credenziali in shopify.js.\n\n` +
-    `Ordine attuale:\n${righe}\n\n` +
-    `Totale: €${dsCart.total().toFixed(2)}`
-  );
-}
-
-/* ── Funzione globale addToCart (usata nelle pagine prodotto) */
-function addToCart(handle, qty) {
-  dsCart.add(handle, parseInt(qty) || 1);
+   dsCheckout() è definita in shopify.js (caricato prima di cart.js).
+   ─────────────────────────────────────────────────────────── */
+function addToCart(handle, qty, selectedOptions) {
+  dsCart.add(handle, parseInt(qty) || 1, selectedOptions ?? []);
 }
 
 /* ── Init ─────────────────────────────────────────────────── */

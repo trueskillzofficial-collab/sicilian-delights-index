@@ -371,22 +371,8 @@
         document.getElementById(btn.dataset.target).classList.add('show');
       });
     });
-
-    // Cart
-    function getCart() { try { return JSON.parse(localStorage.getItem('cart')) || []; } catch { return []; } }
-    function saveCart(c) { localStorage.setItem('cart', JSON.stringify(c)); }
-    function addToCart(handle, qty = 1) {
-      const cart = getCart();
-      const idx = cart.findIndex(i => i.handle === handle);
-      if (idx > -1) { cart[idx].qty += qty; } else { cart.push({ handle, qty }); }
-      saveCart(cart);
-      updateCartCount();
-    }
-    function updateCartCount() {
-      const total = getCart().reduce((s, i) => s + i.qty, 0);
-      document.querySelectorAll('.cart-count').forEach(el => el.textContent = total);
-    }
-    updateCartCount();
   </script>
+  <script src="shopify.js"></script>
+  <script src="cart.js"></script>
 </body>
 </html>

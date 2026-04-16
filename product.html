@@ -3,30 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cassatina Siciliana — Delizie Siciliane</title>
-  <meta name="description" content="La Cassatina Siciliana artigianale: pan di Spagna, ricotta di pecora fresca, glassa reale e frutta candita. 6 monoporzioni spedite refrigerate in tutta Italia.">
+  <title>Prodotto — Delizie Siciliane</title>
+  <meta name="description" content="Dolci artigianali siciliani spediti freschi in tutta Italia. Scopri i nostri prodotti.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
+    /* ── Product hero layout ── */
     .product-hero { padding: 60px 0; background: var(--color-crema); }
     .product-hero-grid {
       display: grid; grid-template-columns: 1fr; gap: 60px; align-items: start;
     }
     @media (min-width: 768px) { .product-hero-grid { grid-template-columns: 1fr 1fr; } }
+
+    /* ── Gallery ── */
     .product-gallery { position: static; }
     @media (min-width: 768px) { .product-gallery { position: sticky; top: 88px; } }
     .main-image {
       border-radius: var(--radius-lg); overflow: hidden;
       aspect-ratio: 1 / 1; background: var(--color-bianco); box-shadow: var(--shadow-md);
+      position: relative;
     }
     .main-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-    .thumb-row { display: flex; gap: 10px; margin-top: 12px; }
+    .thumb-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
     .thumb {
       width: 72px; height: 72px; border-radius: var(--radius-md); overflow: hidden;
       border: 2px solid transparent; cursor: pointer; flex-shrink: 0; transition: border-color 0.2s;
     }
     .thumb.active { border-color: var(--color-rosso); }
     .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+    /* ── Product essentials ── */
     .product-essentials { display: flex; flex-direction: column; gap: 24px; }
     .product-eyebrow {
       font-size: 12px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;
@@ -36,15 +42,20 @@
       font-family: var(--font-display); font-size: clamp(28px, 4.5vw, 48px);
       font-weight: 900; line-height: 1.1; color: var(--color-nero);
     }
-    .product-price-tag { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--color-rosso); }
+    .product-price-tag {
+      font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--color-rosso);
+    }
     .product-short-desc { font-size: 16px; line-height: 1.65; color: var(--color-castagna); }
     .cta-area { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
     .quantity-selector {
       display: flex; align-items: center; gap: 20px; padding: 12px 24px;
-      border: 1.5px solid rgba(var(--color-nero-rgb), 0.1); border-radius: var(--radius-pill);
+      border: 1.5px solid rgba(26,26,26,0.1); border-radius: var(--radius-pill);
       width: fit-content; background: var(--color-bianco);
     }
-    .qty-btn { background: none; border: none; font-size: 20px; font-weight: 700; cursor: pointer; color: var(--color-castagna); padding: 0 4px; }
+    .qty-btn {
+      background: none; border: none; font-size: 20px; font-weight: 700;
+      cursor: pointer; color: var(--color-castagna); padding: 0 4px;
+    }
     .qty-val { font-weight: 700; font-size: 16px; min-width: 24px; text-align: center; }
     .add-to-cart-big {
       background: var(--color-rosso); color: var(--color-bianco); border: none;
@@ -52,18 +63,120 @@
       cursor: pointer; transition: all 0.25s; font-family: var(--font-body); width: 100%;
     }
     .add-to-cart-big:hover { background: var(--color-arancio-scuro); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .add-to-cart-big:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     .trust-badges-inline {
       display: flex; flex-wrap: wrap; gap: 20px; margin-top: 24px; padding-top: 24px;
-      border-top: 1px solid rgba(var(--color-nero-rgb), 0.08);
+      border-top: 1px solid rgba(26,26,26,0.08);
     }
     .t-badge { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; color: var(--color-castagna); }
     .t-badge svg { color: var(--color-rosso); flex-shrink: 0; }
+
+    /* ── Related products ── */
     .related { padding: 60px 0 80px; background: var(--color-crema); }
     .related-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 32px; }
     @media (min-width: 768px) { .related-grid { grid-template-columns: repeat(3, 1fr); } }
-    .format-pill {
-      display: inline-flex; align-items: center; gap: 8px; background: var(--color-verde-chiaro);
-      border-radius: var(--radius-pill); padding: 6px 14px; font-size: 12px; font-weight: 700; color: var(--color-nero);
+
+    /* ── Skeleton (shimmer) ── */
+    @keyframes pp-shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position: 600px 0; }
+    }
+    .pp-skel {
+      background: linear-gradient(90deg, #e8e2cd 25%, #f5f0e4 50%, #e8e2cd 75%);
+      background-size: 600px 100%;
+      animation: pp-shimmer 1.4s infinite linear;
+      border-radius: var(--radius-md);
+    }
+    .pp-skel-img {
+      aspect-ratio: 1 / 1; border-radius: var(--radius-lg); width: 100%;
+    }
+    .pp-skel-thumbs { display: flex; gap: 10px; margin-top: 12px; }
+    .pp-skel-thumb { width: 72px; height: 72px; border-radius: var(--radius-md); flex-shrink: 0; }
+    .pp-skel-line { height: 16px; margin-bottom: 12px; }
+    .pp-skel-line.short  { width: 40%; }
+    .pp-skel-line.medium { width: 65%; }
+    .pp-skel-line.long   { width: 90%; }
+    .pp-skel-title { height: 48px; width: 80%; margin-bottom: 16px; }
+    .pp-skel-price { height: 40px; width: 30%; margin-bottom: 20px; border-radius: var(--radius-pill); }
+    .pp-skel-btn   { height: 52px; width: 100%; border-radius: var(--radius-pill); }
+
+    /* ── Breadcrumb ── */
+    .pp-breadcrumb {
+      background: var(--color-crema); padding: 12px 0;
+      border-bottom: 1px solid rgba(217,75,50,0.1);
+      font-size: 12px; color: var(--color-castagna);
+    }
+    .pp-breadcrumb a { color: var(--color-castagna); text-decoration: none; }
+    .pp-breadcrumb a:hover { color: var(--color-rosso); }
+    .pp-breadcrumb span { color: var(--color-nero); }
+
+    /* ── Variant option selector ── */
+    .pp-option-group { display: flex; flex-direction: column; gap: 10px; }
+    .pp-option-label {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--color-nero); margin: 0;
+    }
+    .pp-option-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pp-option-btn {
+      padding: 8px 18px; border-radius: var(--radius-pill);
+      border: 1.5px solid rgba(26,26,26,0.2); background: var(--color-bianco);
+      font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.18s; color: var(--color-nero);
+    }
+    .pp-option-btn:hover {
+      border-color: var(--color-rosso); color: var(--color-rosso);
+    }
+    .pp-option-btn.active {
+      background: var(--color-rosso); color: var(--color-bianco);
+      border-color: var(--color-rosso);
+    }
+    .pp-option-btn.unavailable {
+      opacity: 0.4; text-decoration: line-through; cursor: not-allowed;
+    }
+
+    /* ── Tabs (descrizione / ingredienti) ── */
+    .pp-tabs { border-bottom: 2px solid rgba(26,26,26,0.1); display: flex; gap: 0; margin-bottom: 24px; }
+    .pp-tab-btn {
+      background: none; border: none; padding: 12px 20px; font-family: var(--font-body);
+      font-size: 14px; font-weight: 700; cursor: pointer; color: var(--color-castagna);
+      border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.18s;
+    }
+    .pp-tab-btn.active { color: var(--color-rosso); border-bottom-color: var(--color-rosso); }
+    .pp-tab-panel { display: none; }
+    .pp-tab-panel.active { display: block; }
+    .pp-desc-html { font-size: 15px; line-height: 1.7; color: var(--color-castagna); }
+    .pp-desc-html p  { margin-bottom: 12px; }
+    .pp-desc-html ul { padding-left: 20px; margin-bottom: 12px; }
+    .pp-desc-html li { margin-bottom: 6px; }
+
+    /* ── Badge "NUOVO" ── */
+    .pp-badge-new {
+      display: inline-block; background: var(--color-giallo); color: var(--color-nero);
+      font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: var(--radius-pill);
+    }
+
+    /* ── Variant unavailable notice ── */
+    .pp-unavail-notice {
+      background: rgba(217,75,50,0.08); border: 1px solid rgba(217,75,50,0.2);
+      border-radius: var(--radius-md); padding: 12px 16px;
+      font-size: 13px; color: var(--color-rosso); font-weight: 600;
+    }
+
+    /* ── Error state ── */
+    .pp-error {
+      text-align: center; padding: 80px 24px;
+    }
+    .pp-error-icon { font-size: 48px; margin-bottom: 16px; }
+    .pp-error h2 {
+      font-family: var(--font-display); font-size: 28px; font-weight: 700;
+      color: var(--color-nero); margin-bottom: 12px;
+    }
+    .pp-error p { color: var(--color-castagna); margin-bottom: 28px; font-size: 16px; }
+    .pp-error a {
+      background: var(--color-rosso); color: var(--color-bianco);
+      padding: 14px 32px; border-radius: var(--radius-pill);
+      font-weight: 700; text-decoration: none; font-family: var(--font-body);
     }
   </style>
 </head>
@@ -105,175 +218,9 @@
     </div>
   </header>
 
-  <main>
-    <!-- Breadcrumb -->
-    <div style="background:var(--color-crema);padding:12px 0;border-bottom:1px solid rgba(217,75,50,0.1)">
-      <div class="container" style="font-size:12px;color:var(--color-castagna)">
-        <a href="index.html" style="color:var(--color-castagna)">Home</a> ›
-        <a href="shop.html" style="color:var(--color-castagna)">Shop</a> ›
-        <span>Cassatina Siciliana</span>
-      </div>
-    </div>
-
-    <section class="product-hero texture">
-      <div class="container">
-        <div class="product-hero-grid">
-
-          <!-- Galleria -->
-          <div class="product-gallery">
-            <div class="main-image" id="mainImg">
-              <img src="assets/images/Cassatina Siciliana.jpg" id="mainImgEl" alt="Cassatina Siciliana artigianale">
-            </div>
-            <div class="thumb-row">
-              <div class="thumb active" onclick="switchImg('assets/images/Cassatina Siciliana.jpg', this)">
-                <img src="assets/images/Cassatina Siciliana.jpg" alt="Cassatina 1">
-              </div>
-              <div class="thumb" onclick="switchImg('assets/images/Cassatina Siciliana 1.jpg', this)">
-                <img src="assets/images/Cassatina Siciliana 1.jpg" alt="Cassatina 2">
-              </div>
-              <div class="thumb" onclick="switchImg('assets/images/Cassatina Siciliana 2.jpg', this)">
-                <img src="assets/images/Cassatina Siciliana 2.jpg" alt="Cassatina 3">
-              </div>
-            </div>
-          </div>
-
-          <!-- Info -->
-          <div class="product-essentials">
-            <p class="product-eyebrow">
-              <span class="card-cat" style="font-size:11px">Monoporzioni</span>
-              · Dolci al cucchiaio
-            </p>
-            <h1>Cassatina<br>Siciliana</h1>
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-              <p class="product-price-tag" style="margin:0">€16,00</p>
-              <span class="format-pill">conf. da 6 pz · ~110g cad.</span>
-            </div>
-
-            <p class="product-short-desc">
-              La cassata in versione monoporzione: pan di Spagna inzuppato di sciroppo alla frutta, ricotta di pecora fresca e zuccata, glassa reale liscia e frutta candita siciliana. La tradizione palermitana, pronta da gustare.
-            </p>
-
-            <div class="cta-area">
-              <div class="quantity-selector">
-                <button class="qty-btn" onclick="updateQty(-1)">−</button>
-                <span class="qty-val" id="qty">1</span>
-                <button class="qty-btn" onclick="updateQty(1)">+</button>
-              </div>
-              <button class="add-to-cart-big" onclick="addToCartPage()">
-                Aggiungi al carrello — €<span id="totalPrice">16,00</span>
-              </button>
-            </div>
-
-            <div class="trust-badges-inline">
-              <div class="t-badge">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Spedizione refrigerata
-              </div>
-              <div class="t-badge">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-                Ricotta di pecora fresca
-              </div>
-              <div class="t-badge">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                Consegna 24–48h
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="product-tabs">
-          <ul class="tabs-nav" role="tablist">
-            <li><button class="tab-btn active" data-target="tab-desc" role="tab">Descrizione</button></li>
-            <li><button class="tab-btn" data-target="tab-ingred" role="tab">Ingredienti</button></li>
-            <li><button class="tab-btn" data-target="tab-conserv" role="tab">Conservazione</button></li>
-            <li><button class="tab-btn" data-target="tab-sped" role="tab">Spedizioni</button></li>
-          </ul>
-
-          <div class="tab-panel show" id="tab-desc">
-            <h4>La regina dei dolci siciliani, in monoporzione</h4>
-            <p>La cassata è il dolce simbolo della pasticceria siciliana, nato a Palermo nell'antichità e codificato dai conventi nel XVIII secolo. La nostra versione monoporzione — la cassatina — rispetta la ricetta tradizionale in ogni dettaglio: strati di pan di Spagna soffice, ricotta di pecora fresca lavorata a mano con zucchero e zuccata di cedro, glassa reale e decorazione con frutta candita siciliana.</p>
-            <p>Ogni confezione contiene 6 cassatine da circa 110g, perfette da condividere o da gustare in più giorni. Pronte da servire, direttamente dal frigorifero.</p>
-          </div>
-
-          <div class="tab-panel" id="tab-ingred">
-            <h4>Ingredienti e Allergeni</h4>
-            <p><strong>Pan di Spagna:</strong> Uova fresche, farina di grano tipo 00, zucchero semolato, aroma di vaniglia.</p>
-            <p><strong>Farcitura:</strong> Ricotta di pecora pastorizzata, zucchero, zuccata di cedro candito, gocce di cioccolato fondente.</p>
-            <p><strong>Glassa:</strong> Zucchero a velo, succo di limone.</p>
-            <p><strong>Decorazione:</strong> Frutta candita siciliana (ciliegia, arancia, zucca).</p>
-            <p><strong>Allergeni:</strong> <strong>GLUTINE</strong>, <strong>UOVA</strong>, <strong>LATTE</strong>. Può contenere tracce di <strong>FRUTTA A GUSCIO</strong> (pistacchio, mandorle), <strong>SOIA</strong> e <strong>SESAMO</strong>.</p>
-          </div>
-
-          <div class="tab-panel" id="tab-conserv">
-            <h4>Come conservarla</h4>
-            <p>Conservare in frigorifero a +4°C. Consumare entro 5–7 giorni dalla data di confezionamento (indicata sulla confezione). Non congelare.</p>
-            <p>Prima di servire, lasciare a temperatura ambiente per 10–15 minuti per esaltare al massimo gli aromi della ricotta e della frutta candita.</p>
-          </div>
-
-          <div class="tab-panel" id="tab-sped">
-            <h4>Spedizione e Catena del Freddo</h4>
-            <p>Spediamo esclusivamente il <strong>Lunedì e il Martedì</strong> per garantire che i prodotti freschi non restino nei magazzini dei corrieri durante il weekend.</p>
-            <p><strong>Imballaggio:</strong> Box isotermico in polistirene ad alta densità con ghiaccio secco incluso. La catena del freddo è garantita per 48–72 ore. Non spediamo nei periodi con temperature esterne previste superiori a 30°C.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Prodotti correlati -->
-    <section class="related">
-      <div class="container">
-        <div class="section-header">
-          <p class="eyebrow">Potrebbero piacerti</p>
-          <h2 class="section-title">Scopri anche</h2>
-        </div>
-        <div class="related-grid">
-          <article class="product-card featured">
-            <a href="kit-cannolo.html" class="card-img" style="display:block;text-decoration:none">
-              <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit Cannoli" loading="lazy" style="object-position:center center">
-              <span class="badge">BEST<br>SELLER</span>
-            </a>
-            <div class="card-body">
-              <span class="card-cannoleria">la Cannoleria</span>
-              <h3 class="card-name"><a href="kit-cannolo.html" style="color:inherit;text-decoration:none">Kit Cannoli</a></h3>
-              <p class="card-desc">Farcisci tu stesso con ricotta fresca e creme artigianali. Il rituale siciliano a casa tua.</p>
-              <div class="card-footer">
-                <span class="card-price">€17,50</span>
-                <button class="add-btn" onclick="addToCart('kit-cannolo')">Aggiungi</button>
-              </div>
-            </div>
-          </article>
-          <article class="product-card">
-            <a href="torta-cassata.html" class="card-img" style="display:block;text-decoration:none">
-              <img src="assets/images/Torta Cassata Siciliana.jpg" alt="Torta Cassata Siciliana" loading="lazy" style="object-position:center 52%">
-            </a>
-            <div class="card-body">
-              <span class="card-cat">Torte</span>
-              <h3 class="card-name"><a href="torta-cassata.html" style="color:inherit;text-decoration:none">Torta Cassata Siciliana</a></h3>
-              <p class="card-desc">La versione intera della cassata. Perfetta per celebrare con tutta la Sicilia in tavola.</p>
-              <div class="card-footer">
-                <span class="card-price">€35,00</span>
-                <button class="add-btn" onclick="addToCart('torta-cassata')">Aggiungi</button>
-              </div>
-            </div>
-          </article>
-          <article class="product-card">
-            <a href="cannolo-ricotta.html" class="card-img" style="display:block;text-decoration:none">
-              <img src="assets/images/Cannolo Ricotta.jpg" alt="Cannolo Ricotta" loading="lazy" style="object-position:center 82%">
-            </a>
-            <div class="card-body">
-              <span class="card-cannoleria">la Cannoleria</span>
-              <h3 class="card-name"><a href="cannolo-ricotta.html" style="color:inherit;text-decoration:none">Cannolo alla Ricotta</a></h3>
-              <p class="card-desc">La ricetta originale. Ricotta di pecora fresca in una cialda dorata e croccante.</p>
-              <div class="card-footer">
-                <span class="card-price">€3,50</span>
-                <button class="add-btn" onclick="addToCart('cannolo-ricotta')">Aggiungi</button>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
+  <!-- MAIN — populated entirely by product-page.js -->
+  <main id="product-main" aria-live="polite">
+    <!-- initProductPage() renders the breadcrumb, product hero and related section here -->
   </main>
 
   <!-- FOOTER -->
@@ -315,7 +262,7 @@
   </footer>
 
   <script>
-    // Hamburger
+    // Hamburger menu
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
     hamburger.addEventListener('click', () => {
@@ -323,43 +270,9 @@
       hamburger.classList.toggle('open', isOpen);
       hamburger.setAttribute('aria-expanded', String(isOpen));
     });
-
-    // Qty
-    const currentHandle = 'cassatina-siciliana';
-    const unitPrice = 16.00;
-    const qtyEl = document.getElementById('qty');
-    const totalEl = document.getElementById('totalPrice');
-
-    function updateQty(delta) {
-      let v = parseInt(qtyEl.textContent) + delta;
-      if (v < 1) v = 1;
-      qtyEl.textContent = v;
-      totalEl.textContent = (v * unitPrice).toFixed(2).replace('.', ',');
-    }
-
-    function addToCartPage() {
-      const qty = parseInt(qtyEl.textContent) || 1;
-      addToCart(currentHandle, qty);
-    }
-
-    // Gallery thumbnails
-    function switchImg(src, thumb) {
-      document.getElementById('mainImgEl').src = src;
-      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-      thumb.classList.add('active');
-    }
-
-    // Tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.target).classList.add('show');
-      });
-    });
   </script>
   <script src="shopify.js"></script>
   <script src="cart.js"></script>
+  <script src="product-page.js"></script>
 </body>
 </html>

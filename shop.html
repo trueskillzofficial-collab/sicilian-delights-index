@@ -272,8 +272,8 @@
     // ── Rendering card prodotto ──
     function renderProductCard(product) {
       const isBestSeller = product.tags?.includes('best-seller');
-      const imgSrc = `assets/images/${product.image}`;
-      const pageUrl = product.page || 'shop.html';
+      const imgSrc = product.image?.startsWith('http') ? product.image : `assets/images/${product.image}`;
+      const pageUrl = product.page || `product.html?handle=${product.handle}`;
 
       return `
         <article class="product-card${isBestSeller ? ' featured' : ''}" aria-label="${product.title}">
@@ -295,12 +295,45 @@
       `;
     }
 
+    // Converte un prodotto Shopify nel formato atteso da renderProductCard
+    // e lo registra in DS_CATALOG così il carrello trova nome/prezzo/immagine
+    function _fromShopify(p) {
+      const price = p.priceRange?.minVariantPrice?.amount ?? '0';
+      const image = p.images?.edges?.[0]?.node?.url ?? '';
+      const desc  = (p.description || '').slice(0, 120);
+      if (typeof DS_CATALOG !== 'undefined') {
+        DS_CATALOG[p.handle] = {
+          name:  p.title,
+          price: parseFloat(price),
+          image: image,
+          page:  `product.html?handle=${p.handle}`,
+        };
+      }
+      return {
+        title:       p.title,
+        handle:      p.handle,
+        description: desc,
+        price:       price,
+        tags:        p.tags ?? [],
+        image:       image,
+        page:        `product.html?handle=${p.handle}`,
+      };
+    }
+
     // ── Caricamento prodotti ──
-    function loadProducts() {
-      setTimeout(() => {
-        allProducts = staticProducts;
-        renderGrid(allProducts);
-      }, 350);
+    async function loadProducts() {
+      let shopifyProducts = [];
+      try {
+        const data = await fetchProducts();
+        if (data && data.length) shopifyProducts = data.map(_fromShopify);
+      } catch (e) {
+        console.warn('[shop] Shopify fetch fallito, uso solo prodotti statici:', e);
+      }
+      // Unisci: Shopify prima, poi statici che non hanno lo stesso handle su Shopify
+      const shopifyHandles = new Set(shopifyProducts.map(p => p.handle));
+      const staticOnly = staticProducts.filter(p => !shopifyHandles.has(p.handle));
+      allProducts = [...shopifyProducts, ...staticOnly];
+      renderGrid(allProducts);
     }
 
     // ── Rendering griglia ──
