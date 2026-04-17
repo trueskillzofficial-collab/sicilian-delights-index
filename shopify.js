@@ -337,6 +337,7 @@ const PRODUCT_METAFIELD_IDS = [
   { namespace: "custom", key: "cross_gruppo"       },
   { namespace: "custom", key: "cross_gruppo_label" },
   { namespace: "custom", key: "cross_etichetta"    },
+  { namespace: "custom", key: "brevettato"         },
 ];
 
 async function fetchProductByHandle(handle) {

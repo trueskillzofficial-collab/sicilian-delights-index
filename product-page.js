@@ -368,13 +368,26 @@ function _getCrossGroup(product) {
    ═══════════════════════════════════════════════════════════ */
 
 function _renderProduct(container, product) {
-  const variants  = _flatVariants(product);
-  const images    = product.images.edges.map(e => e.node);
-  const variant   = _getCurrentVariant();
-  const isBest    = product.tags?.includes('best-seller');
-  const isNew     = product.tags?.includes('new');
-  const isCann    = _hasCannoleriaTag(product);
-  const unitLabel = _getUnitLabel(product);
+  const variants       = _flatVariants(product);
+  const images         = product.images.edges.map(e => e.node);
+  const variant        = _getCurrentVariant();
+  const isBest         = product.tags?.includes('best-seller');
+  const isNew          = product.tags?.includes('new');
+  const isCann         = _hasCannoleriaTag(product);
+  const isBrevettato   = _getTextMetafield(product, 'custom', 'brevettato') === 'true';
+  const unitLabel      = _getUnitLabel(product);
+
+  // Banner brevetto full-width — iniettato prima del #product-main
+  const oldBanner = document.getElementById('pp-brevetto-banner');
+  if (oldBanner) oldBanner.remove();
+  if (isBrevettato) {
+    const banner = document.createElement('div');
+    banner.id        = 'pp-brevetto-banner';
+    banner.className = 'brevetto-banner';
+    banner.setAttribute('role', 'complementary');
+    banner.innerHTML = '<span>★</span> Prodotto <span>brevettato</span> — Invenzione originale di Delizie Siciliane <span>★</span>';
+    container.before(banner);
+  }
 
   container.innerHTML = `
 
@@ -407,8 +420,9 @@ function _renderProduct(container, product) {
                         fetchpriority="high">`
                 : `<div class="card-img-placeholder">${product.title}</div>`
               }
-              ${isBest ? `<span class="badge" style="position:absolute;top:16px;left:16px">BEST<br>SELLER</span>` : ''}
-              ${isNew  ? `<span class="badge pp-badge-new" style="position:absolute;top:16px;left:16px">NUOVO</span>` : ''}
+              ${isBest        ? `<span class="badge" style="position:absolute;top:16px;left:16px">BEST<br>SELLER</span>` : ''}
+              ${isNew         ? `<span class="badge pp-badge-new" style="position:absolute;top:16px;left:16px">NUOVO</span>` : ''}
+              ${isBrevettato  ? `<span class="badge badge-left">Brevettato</span>` : ''}
             </div>
 
             ${images.length > 1 ? `
@@ -449,6 +463,8 @@ function _renderProduct(container, product) {
               : ''
             }
 
+            ${isBrevettato ? `<div class="brevetto-tag">Brevetto esclusivo Delizie Siciliane</div>` : ''}
+
             <!-- Switcher tra prodotti fratelli (es. cannolo ricotta / pistacchio / cioccolato) -->
             ${_buildCrossGroupHTML(product)}
 
@@ -483,7 +499,7 @@ function _renderProduct(container, product) {
               </div>
               <div class="t-badge">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                100% artigianale
+                ${isBrevettato ? 'Ricetta brevettata' : '100% artigianale'}
               </div>
               <div class="t-badge">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
