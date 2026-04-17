@@ -129,7 +129,7 @@
   <!-- MOBILE NAV DRAWER -->
   <nav class="mobile-nav" id="mobileNav" aria-label="Menu mobile">
     <a href="index.html">Home</a>
-    <a href="kit-cannolo.html">Kit Cannolo</a>
+    <a href="product.html?handle=kit-cannolo">Kit Cannolo</a>
     <a href="shop.html">Shop</a>
     <a href="chi-siamo.html">Chi siamo</a>
     <a href="spedizioni.html">Spedizioni</a>
@@ -147,7 +147,7 @@
       </a>
       <ul class="nav-links" role="list">
         <li><a href="index.html">Home</a></li>
-        <li><a href="kit-cannolo.html">Kit Cannolo</a></li>
+        <li><a href="product.html?handle=kit-cannolo">Kit Cannolo</a></li>
         <li><a href="shop.html">Shop</a></li>
         <li><a href="chi-siamo.html">Chi siamo</a></li>
         <li><a href="spedizioni.html">Spedizioni</a></li>
@@ -214,16 +214,16 @@
           <h4>Negozio</h4>
           <ul>
             <li><a href="shop.html">Tutti i prodotti</a></li>
-            <li><a href="shop.html">Cannoli</a></li>
-            <li><a href="shop.html">Torte</a></li>
-            <li><a href="shop.html">Pasta di Mandorla</a></li>
+            <li><a href="shop.html?filter=kit-cannolo">Cannoli</a></li>
+            <li><a href="shop.html?filter=torte">Torte</a></li>
+            <li><a href="shop.html?filter=pasta-di-mandorla">Pasta di Mandorla</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Informazioni</h4>
           <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="kit-cannolo.html">Kit Cannolo</a></li>
+            <li><a href="product.html?handle=kit-cannolo">Kit Cannolo</a></li>
             <li><a href="chi-siamo.html">Chi siamo</a></li>
             <li><a href="spedizioni.html">Spedizioni</a></li>
             <li><a href="contatti.html">Contatti</a></li>
@@ -257,14 +257,14 @@
 
     // ── Prodotti statici — immagini reali da assets/images/ ──
     const staticProducts = [
-      { title:"Kit Cannoli Siciliani", handle:"kit-cannolo", description:"5 cialde croccanti, ricotta di pecora fresca e creme artigianali. Il rituale siciliano a casa tua.", price:"17.50", tags:["kit-cannolo","best-seller"], category:"kit-cannolo", image:"Kit Cannolo 1.jpg", page:"kit-cannolo.html", imgPos:"center center" },
-      { title:"Cannolo Grande — Ricotta Classica", handle:"cannolo-ricotta", description:"La cialda friabile ripiena di soffice ricotta di pecora siciliana. La versione autentica e intramontabile.", price:"3.50", tags:["kit-cannolo"], category:"kit-cannolo", image:"Cannolo Ricotta.jpg", page:"cannolo-ricotta.html", imgPos:"center 82%" },
-      { title:"Cannolo Grande — Pistacchio", handle:"cannolo-pistacchio", description:"Cialda artigianale con crema vellutata al pistacchio di Bronte DOP. Intenso e memorabile.", price:"3.50", tags:["kit-cannolo"], category:"kit-cannolo", image:"Cannolo Pistacchio.jpg", page:"cannolo-pistacchio.html", imgPos:"center 58%" },
-      { title:"Cannolo Grande — Cioccolato", handle:"cannolo-cioccolato", description:"Cialda fragrante con ricotta e pepite di cioccolato fondente al 54%. Per gli amanti del fondente.", price:"3.50", tags:["kit-cannolo"], category:"kit-cannolo", image:"Cannolo Cioccolato.jpg", page:"cannolo-ricotta.html", imgPos:"center 80%" },
-      { title:"Cassatina Siciliana", handle:"cassatina-siciliana", description:"110g di tradizione pura: pan di Spagna, ricotta fresca, glassa reale e scorze d'arancia candite. Conf. 6 pz.", price:"16.00", tags:["cassatina"], category:"cassatina", image:"Cassatina Siciliana.jpg", page:"cassatina-siciliana.html", imgPos:"center 72%" },
-      { title:"Vulcano Etna", handle:"vulcano", description:"La nostra invenzione brevettata. Pasta di mandorla vulcanica, cuore cremoso e glassa scura: un'eruzione di gusto. 150g · 6 pz.", price:"18.00", tags:["vulcano","best-seller"], category:"vulcano", image:"Vulcano.jpg", page:"vulcano.html", imgPos:"center center" },
+      { title:"Kit Cannoli Siciliani", handle:"kit-cannolo", description:"5 cialde croccanti, ricotta di pecora fresca e creme artigianali. Il rituale siciliano a casa tua.", price:"17.50", tags:["kit-cannolo","best-seller"], category:"kit-cannolo", image:"Kit Cannolo 1.jpg", page:"product.html?handle=kit-cannolo", imgPos:"center center" },
+      { title:"Cannolo Grande — Ricotta Classica", handle:"cannolo-ricotta", description:"La cialda friabile ripiena di soffice ricotta di pecora siciliana. La versione autentica e intramontabile.", price:"3.50", tags:["kit-cannolo"], category:"kit-cannolo", image:"Cannolo Ricotta.jpg", page:"product.html?handle=cannolo-ricotta", imgPos:"center 82%" },
+      { title:"Cannolo Grande — Pistacchio", handle:"cannolo-pistacchio", description:"Cialda artigianale con crema vellutata al pistacchio di Bronte DOP. Intenso e memorabile.", price:"3.50", tags:["kit-cannolo"], category:"kit-cannolo", image:"Cannolo Pistacchio.jpg", page:"product.html?handle=cannolo-pistacchio", imgPos:"center 58%" },
+      { title:"Cannolo Grande — Cioccolato", handle:"cannolo-cioccolato", description:"Cialda fragrante con ricotta e pepite di cioccolato fondente al 54%. Per gli amanti del fondente.", price:"3.50", tags:["kit-cannolo"], category:"kit-cannolo", image:"Cannolo Cioccolato.jpg", page:"product.html?handle=cannolo-ricotta", imgPos:"center 80%" },
+      { title:"Cassatina Siciliana", handle:"cassatina-siciliana", description:"110g di tradizione pura: pan di Spagna, ricotta fresca, glassa reale e scorze d'arancia candite. Conf. 6 pz.", price:"16.00", tags:["cassatina"], category:"cassatina", image:"Cassatina Siciliana.jpg", page:"product.html?handle=cassatina-siciliana", imgPos:"center 72%" },
+      { title:"Vulcano Etna", handle:"vulcano", description:"La nostra invenzione brevettata. Pasta di mandorla vulcanica, cuore cremoso e glassa scura: un'eruzione di gusto. 150g · 6 pz.", price:"18.00", tags:["vulcano","best-seller"], category:"vulcano", image:"Vulcano.jpg", page:"product.html?handle=vulcano", imgPos:"center center" },
       { title:"Pasta di Mandorla", handle:"pasta-di-mandorla", description:"Dolcetti di pasta di mandorla siciliana lavorata a mano. Morbidi, profumati, irresistibili.", price:"12.00", tags:["pasta-di-mandorla"], category:"pasta-di-mandorla", image:"Pasta di Mandorla.jpg", page:"shop.html", imgPos:"center 68%" },
-      { title:"Torta Cassata Siciliana", handle:"torta-cassata", description:"La regina dei dolci siciliani in formato intero da 1kg. Pan di Spagna, ricotta, pasta reale, frutta candita.", price:"35.00", tags:["torte"], category:"torte", image:"Torta Cassata Siciliana.jpg", page:"torta-cassata.html", imgPos:"center 52%" },
+      { title:"Torta Cassata Siciliana", handle:"torta-cassata", description:"La regina dei dolci siciliani in formato intero da 1kg. Pan di Spagna, ricotta, pasta reale, frutta candita.", price:"35.00", tags:["torte"], category:"torte", image:"Torta Cassata Siciliana.jpg", page:"product.html?handle=torta-cassata", imgPos:"center 52%" },
       { title:"Torta Fedora", handle:"torta-fedora", description:"Mandorle al limone, mandorle filettate tostate, pan di Spagna al limoncello. Elegante e profumata. 1kg.", price:"34.00", tags:["torte"], category:"torte", image:"Torta Fedora 1.jpg", page:"shop.html", imgPos:"center 52%" },
       { title:"Torta Pasta di Mandorla", handle:"torta-pasta-mandorla", description:"Interamente a base di pasta di mandorla siciliana DOP. Senza farina, senza compromessi. 1kg.", price:"32.00", tags:["torte"], category:"torte", image:"Torta Pasta di Mandorla 1.jpg", page:"shop.html", imgPos:"center 58%" },
       { title:"Tronchetto Cassata", handle:"tronchetto-cassata", description:"La cassata siciliana in formato tronchetto. Un'idea regalo originale e golosa. 1kg.", price:"33.00", tags:["torte"], category:"torte", image:"Tronchetto Cassata 1.jpg", page:"shop.html", imgPos:"center 62%" }
@@ -328,12 +328,16 @@
         const data = await fetchProducts();
         if (data && data.length) shopifyProducts = data.map(_fromShopify);
       } catch (e) {
-        console.warn('[shop] Shopify fetch fallito, uso solo prodotti statici:', e);
+        console.warn('[shop] Shopify fetch fallito, uso prodotti statici:', e);
       }
-      // Unisci: Shopify prima, poi statici che non hanno lo stesso handle su Shopify
-      const shopifyHandles = new Set(shopifyProducts.map(p => p.handle));
-      const staticOnly = staticProducts.filter(p => !shopifyHandles.has(p.handle));
-      allProducts = [...shopifyProducts, ...staticOnly];
+
+      if (shopifyProducts.length) {
+        // Shopify risponde → mostra SOLO i prodotti reali, nessun fallback statico
+        allProducts = shopifyProducts;
+      } else {
+        // Shopify non disponibile → fallback ai prodotti statici
+        allProducts = staticProducts;
+      }
       renderGrid(allProducts);
     }
 

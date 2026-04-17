@@ -245,6 +245,10 @@ async function removeCartItem(cartId, lineId) {
 
 /* ── Fetch products / single product ─────────────────────── */
 
+// Cache per fetchProducts() senza collectionHandle — evita chiamate API duplicate
+let _dsAllProductsCache     = null;
+let _dsAllProductsPending   = null;
+
 async function fetchProducts(collectionHandle = null) {
   if (collectionHandle) {
     const data = await shopifyFetch(`
@@ -268,7 +272,13 @@ async function fetchProducts(collectionHandle = null) {
     return data.collection?.products?.edges?.map(e => e.node) ?? [];
   }
 
-  const data = await shopifyFetch(`
+  // Cache hit
+  if (_dsAllProductsCache) return _dsAllProductsCache;
+
+  // Richiesta in corso: restituisce la stessa Promise per evitare chiamate parallele
+  if (_dsAllProductsPending) return _dsAllProductsPending;
+
+  _dsAllProductsPending = shopifyFetch(`
     query GetAllProducts {
       products(first: 50) {
         edges {
@@ -283,8 +293,13 @@ async function fetchProducts(collectionHandle = null) {
         }
       }
     }
-  `);
-  return data.products?.edges?.map(e => e.node) ?? [];
+  `).then(data => {
+    _dsAllProductsCache   = data.products?.edges?.map(e => e.node) ?? [];
+    _dsAllProductsPending = null;
+    return _dsAllProductsCache;
+  });
+
+  return _dsAllProductsPending;
 }
 
 /* ── Metafields richiesti sulle pagine prodotto ──────────────

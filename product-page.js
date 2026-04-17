@@ -23,8 +23,15 @@ const _state = {
    ENTRY POINT
    ═══════════════════════════════════════════════════════════ */
 
-function initProductPage() {
-  const handle = new URLSearchParams(window.location.search).get('handle');
+function _lcp(a, b) {
+  let i = 0;
+  while (i < a.length && i < b.length && a[i] === b[i]) i++;
+  return i;
+}
+
+async function initProductPage() {
+  const params = new URLSearchParams(window.location.search);
+  let   handle = params.get('handle');
   const main   = document.getElementById('product-main');
   if (!main) return;
 
@@ -45,34 +52,50 @@ function initProductPage() {
   document.title = 'Caricamento… — Delizie Siciliane';
   _renderSkeleton(main);
 
-  fetchProductByHandle(handle)
-    .then(product => {
-      if (!product) {
-        _renderError(main, 'Prodotto non trovato.', `Nessun prodotto con handle "${handle}" su Shopify.`);
-        return;
+  try {
+    let product = await fetchProductByHandle(handle);
+
+    if (!product) {
+      // Handle non trovato: cerca il prodotto più simile tra tutti quelli su Shopify
+      const all = await fetchProducts().catch(() => []);
+      let best = null, bestScore = 2;
+      all.forEach(p => {
+        const s = _lcp(handle, p.handle);
+        if (s > bestScore) { best = p.handle; bestScore = s; }
+      });
+      if (best) {
+        handle = best;
+        history.replaceState(null, '', '?handle=' + encodeURIComponent(best));
+        product = await fetchProductByHandle(best);
       }
-      _state.product = product;
-      _initDefaultOptions(product);
-      // Registra il prodotto nel catalogo locale così il carrello trova nome/prezzo/immagine
-      if (typeof DS_CATALOG !== 'undefined') {
-        DS_CATALOG[product.handle] = {
-          name:  product.title,
-          price: parseFloat(product.priceRange.minVariantPrice.amount),
-          image: product.images.edges[0]?.node?.url ?? '',
-          page:  `product.html?handle=${product.handle}`,
-        };
-      }
-      _renderProduct(main, product);
-      _updatePageMeta(product);
-    })
-    .catch(err => {
-      console.error('[product-page] fetchProductByHandle:', err);
-      _renderError(
-        main,
-        'Errore nel caricamento.',
-        'Controlla la connessione e riprova. Se il problema persiste, contattaci.'
-      );
-    });
+    }
+
+    if (!product) {
+      _renderError(main, 'Prodotto non trovato.', 'Nessun prodotto corrispondente trovato nel catalogo.');
+      return;
+    }
+
+    _state.product = product;
+    _initDefaultOptions(product);
+    if (typeof DS_CATALOG !== 'undefined') {
+      DS_CATALOG[product.handle] = {
+        name:  product.title,
+        price: parseFloat(product.priceRange.minVariantPrice.amount),
+        image: product.images.edges[0]?.node?.url ?? '',
+        page:  `product.html?handle=${product.handle}`,
+      };
+    }
+    _renderProduct(main, product);
+    _updatePageMeta(product);
+
+  } catch (err) {
+    console.error('[product-page] initProductPage:', err);
+    _renderError(
+      main,
+      'Errore nel caricamento.',
+      'Controlla la connessione e riprova. Se il problema persiste, contattaci.'
+    );
+  }
 }
 
 

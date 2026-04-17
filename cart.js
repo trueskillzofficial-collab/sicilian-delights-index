@@ -8,20 +8,8 @@
 
 'use strict';
 
-/* ── Catalogo prodotti statici ─────────────────────────────── */
-const DS_CATALOG = {
-  'kit-cannolo':          { name: 'Kit Cannoli Artigianali',      price: 17.50, image: 'Kit Cannolo 1.jpg',             page: 'kit-cannolo.html' },
-  'cannolo-ricotta':      { name: 'Cannolo Grande — Ricotta',      price: 3.50,  image: 'Cannolo Ricotta.jpg',           page: 'cannolo-ricotta.html' },
-  'cannolo-pistacchio':   { name: 'Cannolo Grande — Pistacchio',   price: 3.50,  image: 'Cannolo Pistacchio.jpg',        page: 'cannolo-pistacchio.html' },
-  'cannolo-cioccolato':   { name: 'Cannolo Grande — Cioccolato',   price: 3.50,  image: 'Cannolo Cioccolato.jpg',        page: 'shop.html' },
-  'cassatina-siciliana':  { name: 'Cassatina Siciliana',           price: 16.00, image: 'Cassatina Siciliana.jpg',       page: 'cassatina-siciliana.html' },
-  'pasta-di-mandorla':    { name: 'Pasta di Mandorla',             price: 12.00, image: 'Pasta di Mandorla.jpg',         page: 'shop.html' },
-  'sole-di-sicilia':      { name: 'Sole di Sicilia',               price: 16.00, image: 'Sole di Sicilia 1.jpg',         page: 'shop.html' },
-  'torta-cassata':        { name: 'Torta Cassata Siciliana',       price: 35.00, image: 'Torta Cassata Siciliana.jpg',   page: 'torta-cassata.html' },
-  'torta-fedora':         { name: 'Torta Fedora',                  price: 34.00, image: 'Torta Fedora 1.jpg',            page: 'shop.html' },
-  'torta-pasta-mandorla': { name: 'Torta Pasta di Mandorla',       price: 32.00, image: 'Torta Pasta di Mandorla 1.jpg', page: 'shop.html' },
-  'tronchetto-cassata':   { name: 'Tronchetto Cassata',            price: 33.00, image: 'Tronchetto Cassata 1.jpg',      page: 'shop.html' },
-};
+/* ── Catalogo prodotti — popolato a runtime da Shopify ─────── */
+const DS_CATALOG = {};
 
 /* ── Escape sicuro per stringhe dentro onclick="foo('...')" ─
    Evita che virgolette o backslash rompano l'attributo HTML o
