@@ -418,7 +418,7 @@ function _renderProduct(container, product) {
     <div class="pp-breadcrumb">
       <div class="container">
         <nav aria-label="Percorso di navigazione" style="font-size:12px;color:var(--color-castagna)">
-          <a href="index.html">Home</a>
+          <a href="home.html">Home</a>
           <span aria-hidden="true" style="margin:0 6px">›</span>
           <a href="shop.html">Shop</a>
           <span aria-hidden="true" style="margin:0 6px">›</span>

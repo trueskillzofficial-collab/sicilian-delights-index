@@ -3,758 +3,270 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delizie Siciliane — Sicilia bedda, a casa tua.</title>
-  <meta name="description" content="Dolci artigianali siciliani con spedizione refrigerata in tutta Italia. Cannoli, cassate, pasta di mandorla dal laboratorio di Ariano Irpino.">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <title>Delizie Siciliane — Sicilia bedda, a casa tua. (Coming soon)</title>
+  <meta name="description" content="Stiamo preparando qualcosa di bello. Delizie Siciliane — dolci artigianali siciliani spediti in tutta Italia.">
+  <meta name="robots" content="noindex">
+
+  <!--
+    ================================================================
+    COMING SOON · Delizie Siciliane
+    ----------------------------------------------------------------
+    Come disattivare velocemente:
+      1) Rinomina (o ripristina) i file:
+           mv index.html coming-soon.html
+           mv home.html  index.html
+         poi: git add -A && git commit -m "disable coming soon" && git push
+      2) Oppure ripristina con git revert sull'ultimo commit.
+
+    Come vedere comunque il sito completo (preview):
+      - Vai a:  https://TUO-DOMINIO/?preview=delizie
+        (verrai rediretto a /home.html e la preview resta attiva
+         sul tuo browser finché non la disattivi)
+      - Per disattivare la preview:  https://TUO-DOMINIO/?preview=off
+      - Il sito completo è sempre accessibile anche direttamente:
+        /home.html, /shop.html, /chi-siamo.html, /spedizioni.html, /contatti.html
+    ================================================================
+  -->
+
+  <!-- PREVIEW / BYPASS: eseguito il prima possibile -->
+  <script>
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var preview = params.get('preview');
+
+        if (preview === 'off') {
+          localStorage.removeItem('ds-preview');
+          // rimuove il query string per pulizia
+          window.history.replaceState({}, '', window.location.pathname);
+        } else if (preview && preview.length) {
+          // qualsiasi valore (es. ?preview=delizie, ?preview=1) attiva la preview
+          localStorage.setItem('ds-preview', '1');
+          window.location.replace('home.html');
+          return;
+        }
+
+        if (localStorage.getItem('ds-preview') === '1') {
+          window.location.replace('home.html');
+        }
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
+
   <link rel="icon" type="image/png" href="assets/Favicon.png">
-  <link rel="stylesheet" href="style.css">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-rosso: #D94B32;
+      --color-crema: #E8E2CD;
+      --color-giallo: #F1DD4E;
+      --color-arancio-scuro: #DA6C39;
+      --color-castagna: #B5876F;
+      --color-nero: #1A1A1A;
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-script: 'Dancing Script', cursive;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-nero);
+      background-color: var(--color-crema);
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(241, 221, 78, 0.18), transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(217, 75, 50, 0.12), transparent 50%);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* subtle noise texture */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .logo-wrap {
+      width: min(320px, 70vw);
+      margin-bottom: 40px;
+      animation: fadeInUp 0.9s ease-out both;
+    }
+
+    .logo-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-rosso);
+      background: var(--color-giallo);
+      padding: 8px 18px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      animation: fadeInUp 1s ease-out 0.1s both;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(2.2rem, 6vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-rosso);
+      margin: 0 0 16px;
+      max-width: 18ch;
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .script {
+      font-family: var(--font-script);
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      color: var(--color-arancio-scuro);
+      line-height: 1;
+      margin: 0 0 28px;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    p.lead {
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      line-height: 1.6;
+      color: #3a2f2a;
+      max-width: 52ch;
+      margin: 0 auto 36px;
+      animation: fadeInUp 1s ease-out 0.4s both;
+    }
+
+    .divider {
+      width: 64px;
+      height: 2px;
+      background: var(--color-rosso);
+      margin: 0 auto 28px;
+      border-radius: 2px;
+      opacity: 0.6;
+      animation: fadeInUp 1s ease-out 0.45s both;
+    }
+
+    .info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 28px;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.92rem;
+      color: var(--color-castagna);
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+
+    .info strong {
+      color: var(--color-nero);
+      font-weight: 700;
+    }
+
+    .info .dot {
+      width: 5px; height: 5px;
+      background: var(--color-castagna);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px 16px 28px;
+      font-size: 0.85rem;
+      color: var(--color-castagna);
+    }
+
+    footer .heart { color: var(--color-rosso); }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .logo-wrap { margin-bottom: 28px; }
+      .info { flex-direction: column; gap: 6px; }
+      .info .dot { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- MOBILE NAV DRAWER -->
-  <nav class="mobile-nav" id="mobileNav" aria-label="Menu mobile">
-    <a href="index.html">Home</a>
-    <a href="product.html?handle=kit-cannolo">Kit Cannolo</a>
-    <a href="shop.html">Shop</a>
-    <a href="chi-siamo.html">Chi siamo</a>
-    <a href="spedizioni.html">Spedizioni</a>
-    <a href="contatti.html">Contatti</a>
-  </nav>
-
-  <!-- NAVBAR -->
-  <header class="navbar" role="banner">
-    <div class="navbar-inner">
-
-      <a href="index.html" class="navbar-logo" aria-label="Delizie Siciliane — homepage">
-        <!-- INLINE SVG LOGO — colors scoped to navbar context -->
-        <svg id="logo-nav" data-name="Livello 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1649.93 1080" aria-label="Delizie Siciliane" role="img">
-          <defs>
-            <style>
-              #logo-nav .cls-1 { fill: var(--color-giallo); }
-              #logo-nav .cls-2 { fill: var(--color-rosso); }
-            </style>
-          </defs>
-          <g>
-            <path class="cls-1" d="M1398.95,522.23c-3.65,4.55-7.93,22.82-8.56,29.23-1.31,13.26-2.07,71.96,1.14,82.15,3.51,11.16,35.54,27.29,46.92,31.21,12.14,4.18,46.17,5.68,44.47,23.62-2,21.1-22.65,8.36-31.86,12.01-17.72,7.02-15.79,27.41-6.08,40.49,1.23,1.65,26.6,27.78,28.56,29.44,12.17,10.29,41.69,4.58,39.33,28.37-.73,7.35-13.42,10.84-10.69,20.66.89,4.08,13.46-.36,13.48,15.91.02,15.52-12.04,13.22-20.3,20.35-4.81,4.15-9.48,14.5-15.52,19.62-8.33,7.07-23.11,11.68-30.91,18.57-28.69,25.31-40.41,87.15-34.95,123.6,2.05,13.73,24.58,49.64-.21,59.99-29.21,12.19-28.82-23.06-40.82-26.78-16.85-5.22-16.83,14.58-35.4,12-2.62-.36-20.17-9.33-22.51-11.37-8.35-7.3-6.68-19.29-25-18.21-23.32,1.37-26.22,37.61-60.93,23.39-8.73-3.58-28.65-12.95-37.39-17.3-8.26-4.11-16.02-15.94-26.46-20.42-30.7-13.2-69.43,1.19-86.95-30.25-29.2-52.4-23.36-73.04-73.35-119.38-52.48-48.65-99.73-85.02-175.55-73.91-27.01,3.96-47.02,21.16-74.34.85-9.03-6.71-10.57-15.28-20.98-20.69-20.06-10.4-38.35-2.34-54.6-7.9-5.21-1.78-32.2-20.16-37.82-24.69-16.48-13.27-37.94-46.9-55.4-51.38-13.52-3.46-32.09-1.97-45.53-6.56-12.48-4.27-22.69-20.5-33.47-29.04-13.76-10.89-32.27-17.63-45.36-27.57-22.87-17.37-45.54-48.63-67.12-68.54-23.62-11.85-50.34-4.88-75.59-7.51-10.12-3.01-22.95-28.7-31.74-35.98-20.31-16.82-57.85-20.45-83.35-18.14-29.66,2.68-55.21,24.41-86.58,5.76-9.47-5.63-13.55-24.71-20.4-34.29-18.3-25.56-56.84-24.51-74.11-56.11-5.7-10.43-5.22-24.82-10.32-36.56C10.21,371.15-.22,359.28,0,356.57c.97-11.84,26.78-17.38,31.75-33.44,8.18-26.46-13.72-26.88-8.7-53,1.21-6.31,9.34-7.79,13.58-15.05,8.65-14.84,6.78-29.46,11.26-40.83,6.01-15.24,22.73-29.32,37.73-35.19,29.56-11.55,24.63-11.75,48.55-26.98,4.76-3.03,20.76-7.6,21.37-8.58,2.51-4.05-2.08-28.53,7.13-30.73,29.39,9.78,27.91,48.66,46.49,67.65,11.64,11.9,40.3,30.07,57.11,28.42,24.94-2.44,52.12-23.47,65.28-44.28,14.73-23.28-14.22-23.72-11.33-34.62,1.61-6.07,11.55-7.5,15.25-10.96,8.36-7.8,6.9-20.87,24.89-22.18,27.05-1.97,21.22,24.43,38.77,23.49,12.2-.66,9.41-10.32,15.01-19.01,10.81-16.76,34.98-26.95,53.08-14.86,4.26,2.85,22.05,28.64,23.42,33.88,1.88,7.18-.13,14.86,2.54,20.9,4.2,9.48,25.94,19.22,36.17,18.23,16.12-1.56,18.74-20.81,38.17-14.43,2.83.93,16.31,11.04,17.81,13.43,4.48,7.16,2.87,21.38,6.17,26.38.8,1.21,19.88,13.13,23.96,16.4,31.45,25.19,61.08,43.42,104.32,36.45,17.49-2.82,40.97-27.13,58.43-35.32,10.29-4.83,18.59-4.98,28.03-8.44,7.29-2.67,12.31-9.53,20.39-10.86,19.88-3.26,20.7,7.83,34.13,15.06,19.37,10.43,31.62-4.99,54.35-2.22,11.68,1.42,13.69,9.07,20.82,10.41,5.17.97,39.04,3.01,43.62,2.08,10.81-2.2,34.04-19.24,49.31-23.65,18.23-5.26,37.33-3.93,54.85-7.65,28.31-6.01,62.39-29.81,83.94-48.88,11.02-9.76,19.45-32.07,38.98-28.67,5.75,1,7.59,6.59,11.06,7.53,7.87,2.12,24.05-12.78,31.35-14.67,7.35-1.9,15.51.86,22.3-1.14,5.01-1.48,6.43-8.42,13.58-9.83,24.66-4.89,18.95,8.48,31.79,14.97,8.26,4.17,20.31,3.83,28.62,7.84,11.29,5.45,11.69,18.46,30.14,13.01,17.54-18.02,49.75-22.47,59.36-47.41,3.12-8.11,3.75-46.77,15.46-41.91,15.3,6.35-5.43,40.15,23.94,37.27,28.74-2.83,83.88-49.32,111.55-63.16,6.1-2.07,21.03-2.58,27.2-1.37,5.33,1.05,7.09,5.7,11.12,7.1,5.21,1.82,27.96,4.28,25.64,13.81-2.91,11.94-32.99,13.59-39.26,31.28-3.84,10.82,3,17.16,2.92,26.75-.53,63.06-105.76,176.94-138.21,233.74-7.38,12.92-10.51,25.43-16.63,38.07-2.72,5.63-10.33,11.3-12.12,16.53-5.57,16.32-.43,47.77-7.41,68.11-1.98,5.78-7.7,10.52-9.04,17.01-4.15,20.15,3.93,30.73-11.02,51.48-5.16,7.16-16.33,13.04-20.05,17.69Z"/>
-            <g>
-              <path class="cls-2" d="M0,666.01v-252s14.82,0,14.82,0c16.01,0,31.72,3.26,46.55,10.08,14.23,6.52,26.68,15.42,37.65,27.28,10.67,11.56,19.27,24.9,25.2,40.02,6.23,15.42,9.19,31.72,9.19,48.62,0,16.9-2.96,33.21-9.19,48.62-5.93,15.12-14.53,28.46-25.2,40.02-10.97,11.86-23.42,21.05-37.65,27.28-14.82,6.82-30.54,10.08-46.55,10.08H0ZM29.65,635.18c17.79-3.26,34.39-12.45,47.73-26.68,16.9-18.08,26.39-42.4,26.39-68.49,0-25.79-9.49-50.1-26.39-68.49-13.34-14.23-29.94-23.42-47.73-26.39v190.04Z"/>
-              <path class="cls-2" d="M185.3,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/>
-              <path class="cls-2" d="M266.84,666.01v-252s29.65,0,29.65,0v222.36s59.29,0,59.29,0v29.65s-88.94,0-88.94,0Z"/>
-              <path class="cls-2" d="M378.02,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/>
-              <path class="cls-2" d="M429.9,666.01l64.33-222.36h-64.33s0-29.65,0-29.65h103.77s-64.33,222.36-64.33,222.36h64.33s0,29.65,0,29.65h-103.77Z"/>
-              <path class="cls-2" d="M555.91,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/>
-              <path class="cls-2" d="M637.44,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/>
-              <path class="cls-2" d="M770.86,664.53l.89-29.65c8.6.3,17.49-1.78,25.2-5.63,7.71-4.15,14.53-10.67,19.27-18.38,4.74-7.41,7.41-16.31,7.71-25.2,0-8.89-1.78-17.49-5.93-25.2l-.3-.3-20.75-44.17c-5.63-10.38-8.3-22.24-8-34.09.3-12.45,3.85-24.31,10.38-34.98,6.52-10.67,15.71-19.27,26.68-24.9,10.67-5.63,22.53-8.3,34.39-8h3.85s-.3,29.65-.3,29.65h-4.45c-14.23-.3-27.57,6.82-34.98,18.97-3.85,5.93-5.93,13.04-5.93,19.86-.3,7.12,1.48,13.93,4.45,19.86l.3.3,21.05,44.17c6.23,12.16,9.49,25.79,9.19,39.43-.3,14.23-4.45,28.17-12.16,40.32-7.41,12.16-18.08,22.24-30.83,28.76-11.56,5.93-24.31,9.19-37.36,9.19-.59,0-1.48,0-2.37,0Z"/>
-              <path class="cls-2" d="M886.49,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/>
-              <path class="cls-2" d="M1010.41,655.93c-14.23-6.23-26.68-15.42-37.65-27.28-10.97-11.56-19.27-24.9-25.2-40.02-6.23-15.42-9.19-31.72-9.19-48.62,0-16.9,2.96-33.21,9.19-48.62,5.93-15.12,14.23-28.46,25.2-40.02,10.97-11.86,23.42-20.75,37.65-27.28,14.82-6.82,30.54-10.08,46.55-10.08v29.65c-23.72,0-45.66,9.78-62.56,27.87-16.9,18.38-26.39,42.69-26.39,68.49,0,26.09,9.49,50.4,26.39,68.49,16.9,18.08,38.84,27.87,62.56,27.87v29.65c-16.01,0-31.72-3.26-46.55-10.08Z"/>
-              <path class="cls-2" d="M1079.2,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/>
-              <path class="cls-2" d="M1131.09,666.01v-252s29.65,0,29.65,0v222.36s59.29,0,59.29,0v29.65s-88.94,0-88.94,0Z"/>
-              <path class="cls-2" d="M1242.27,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/>
-              <path class="cls-2" d="M1397.92,465.89v200.12s-29.65,0-29.65,0v-59.29s-44.47,0-44.47,0v59.29s-29.65,0-29.65,0v-200.12c0-28.46,23.12-51.88,51.88-51.88,28.46,0,51.88,23.42,51.88,51.88ZM1368.27,577.07v-111.18c0-12.16-10.08-22.24-22.23-22.24-12.16,0-22.24,10.08-22.24,22.24v111.18s44.47,0,44.47,0Z"/>
-              <path class="cls-2" d="M1538.75,414.01v252s-29.65,0-29.65,0v-169.88s-59.29-45.06-59.29-45.06v214.94s-29.65,0-29.65,0v-252s29.65,0,29.65,0l59.29,44.77v-44.77s29.65,0,29.65,0Z"/>
-              <path class="cls-2" d="M1590.64,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/>
-            </g>
-            <path class="cls-2" d="M956.55,199.18c-14.82-22.93-41.98-33.08-67.14-27.34.04-.32.04-.68.04-1,.72-34.91-27.02-63.76-61.93-64.48-34.91-.72-63.8,27.02-64.48,61.93-.04.32-.04.68,0,.97-24.94-6.71-52.46,2.33-68.21,24.65-20.09,28.53-13.24,68,15.29,88.09,0,0,71.05,50.02,112.28,79.05,45.36-29.28,115.33-74.46,115.33-74.46,29.32-18.95,37.75-58.06,18.84-87.41Z"/>
-            <path class="cls-1" d="M889.87,271.52l-52.96,34.16c-7.89,5.13-18.16,4.92-25.87-.5l-51.53-36.31c-18.66-13.13-9.04-42.48,13.81-42.02l104.45,2.08c22.82.47,31.29,30.21,12.09,42.59Z"/>
-          </g>
-        </svg>
-      </a>
-
-      <ul class="nav-links" role="list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="product.html?handle=kit-cannolo">Kit Cannolo</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="chi-siamo.html">Chi siamo</a></li>
-        <li><a href="spedizioni.html">Spedizioni</a></li>
-        <li><a href="contatti.html">Contatti</a></li>
-      </ul>
-
-      <div class="navbar-right">
-        <button class="cart-btn" aria-label="Carrello, 0 prodotti">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-          <span class="cart-count" aria-live="polite">0</span>
-        </button>
-        <button class="hamburger" id="hamburger" aria-label="Apri menu" aria-expanded="false" aria-controls="mobileNav">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-
-    </div>
-  </header>
-
   <main>
-
-    <!-- ── HERO ─────────────────────────────────────────────────── -->
-    <section class="hero" aria-label="Benvenuto">
-      <div class="hero-img">
-        <img src="assets/images/HERO IMAGE.jpg" alt="Dolci artigianali siciliani" loading="eager" fetchpriority="high">
-      </div>
-      <div class="hero-frame" aria-hidden="true"><div class="hero-frame-inner"></div></div>
-      <div class="hero-body">
-        <p class="hero-eyebrow">Artigianale — Laboratorio — Spedizione refrigerata</p>
-        <h1 class="hero-h1">
-          Sicilia <em>bedda</em>,<br>a casa tua.
-        </h1>
-        <p class="hero-sub">Dolci artigianali siciliani realizzati con ingredienti autentici, spediti freschi in tutta Italia in imballaggi isotermici.</p>
-        <div class="hero-cta">
-          <a href="#shop" class="btn btn-primary">Scopri i dolci</a>
-          <a href="spedizioni.html" class="btn btn-ghost">Come spediamo</a>
-        </div>
-      </div>
-      <div class="hero-scroll-hint" aria-hidden="true">
-        <span>Scorri</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-      </div>
-    </section>
-
-    <!-- ── WAVE: hero → trust bar (crema) ─────────────────────────── -->
-    <div class="inter-wave" style="margin-top:-40px;position:relative;z-index:5;" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 64" preserveAspectRatio="none">
-        <path d="M0 32 C240 0, 480 64, 720 32 C960 0, 1200 64, 1440 32 C1680 0, 1920 64, 2160 32 C2400 0, 2640 64, 2880 32 L2880 64 L0 64 Z" fill="#E8E2CD"/>
-      </svg>
+    <div class="logo-wrap">
+      <img src="Logo.svg" alt="Delizie Siciliane">
     </div>
 
-    <!-- ── TRUST BAR ──────────────────────────────────────────────── -->
-    <div class="trust-bar" role="complementary" aria-label="Le nostre garanzie">
-      <div class="trust-inner">
-        <div class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 2 4 5.5 4 10c0 6 8 12 8 12s8-6 8-12c0-4.5-4-8-8-8z"/><circle cx="12" cy="10" r="2.5"/></svg>
-          </span>
-          <div class="trust-label">
-            <strong>Spedizione refrigerata</strong>
-            <small>Ghiaccio secco incluso</small>
-          </div>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-          </span>
-          <div class="trust-label">
-            <strong>Packaging certificato</strong>
-            <small>Box isotermico alimentare</small>
-          </div>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          </span>
-          <div class="trust-label">
-            <strong>Consegna 24–48h</strong>
-            <small>In tutta Italia</small>
-          </div>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </span>
-          <div class="trust-label">
-            <strong>100% artigianale</strong>
-            <small>Dal nostro laboratorio</small>
-          </div>
-        </div>
-      </div>
+    <span class="eyebrow">Presto online</span>
+
+    <h1>Stiamo preparando qualcosa di bello.</h1>
+
+    <p class="script">Sicilia bedda, a casa tua.</p>
+
+    <div class="divider" aria-hidden="true"></div>
+
+    <p class="lead">
+      Il nostro laboratorio è al lavoro: cannoli, cassate, pasta di mandorla e tutta la tradizione siciliana
+      stanno per arrivare anche online. Torna a trovarci a breve&nbsp;— <strong>sarà dolcissimo</strong>.
+    </p>
+
+    <div class="info" role="contentinfo">
+      <span><strong>Delizie Siciliane</strong></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span>Ariano Irpino (AV)</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span>Spedizione refrigerata in tutta Italia</span>
     </div>
-
-    <!-- ── BEST SELLERS CAROUSEL ────────────────────────────────── -->
-    <section class="section texture bg-crema" id="shop" aria-labelledby="bestsellers-title">
-      <div class="container">
-        <div class="section-header">
-          <p class="eyebrow">I nostri prodotti</p>
-          <h2 class="section-title" id="bestsellers-title">I più amati dai siciliani nel mondo</h2>
-          <p class="section-sub">Scelti ogni giorno da chi vuole portare un pezzo di Sicilia sulla propria tavola.</p>
-        </div>
-      </div>
-
-      <!-- Carousel (full-width, overflow hidden) -->
-      <div class="products-carousel-wrap" aria-label="Prodotti in evidenza">
-        <div class="products-carousel-track" id="carouselTrack">
-          <!-- Skeleton cards mostrate durante il caricamento da Shopify -->
-          <article class="product-card" aria-hidden="true"><div class="card-img" style="background:var(--color-crema);"></div><div class="card-body"><div style="height:10px;width:50%;background:var(--color-crema);border-radius:4px;margin-bottom:10px;"></div><div style="height:18px;width:75%;background:var(--color-crema);border-radius:4px;margin-bottom:8px;"></div><div style="height:10px;background:var(--color-crema);border-radius:4px;"></div></div></article>
-          <article class="product-card" aria-hidden="true"><div class="card-img" style="background:var(--color-crema);"></div><div class="card-body"><div style="height:10px;width:50%;background:var(--color-crema);border-radius:4px;margin-bottom:10px;"></div><div style="height:18px;width:75%;background:var(--color-crema);border-radius:4px;margin-bottom:8px;"></div><div style="height:10px;background:var(--color-crema);border-radius:4px;"></div></div></article>
-          <article class="product-card" aria-hidden="true"><div class="card-img" style="background:var(--color-crema);"></div><div class="card-body"><div style="height:10px;width:50%;background:var(--color-crema);border-radius:4px;margin-bottom:10px;"></div><div style="height:18px;width:75%;background:var(--color-crema);border-radius:4px;margin-bottom:8px;"></div><div style="height:10px;background:var(--color-crema);border-radius:4px;"></div></div></article>
-          <article class="product-card" aria-hidden="true"><div class="card-img" style="background:var(--color-crema);"></div><div class="card-body"><div style="height:10px;width:50%;background:var(--color-crema);border-radius:4px;margin-bottom:10px;"></div><div style="height:18px;width:75%;background:var(--color-crema);border-radius:4px;margin-bottom:8px;"></div><div style="height:10px;background:var(--color-crema);border-radius:4px;"></div></div></article>
-          <article class="product-card" aria-hidden="true"><div class="card-img" style="background:var(--color-crema);"></div><div class="card-body"><div style="height:10px;width:50%;background:var(--color-crema);border-radius:4px;margin-bottom:10px;"></div><div style="height:18px;width:75%;background:var(--color-crema);border-radius:4px;margin-bottom:8px;"></div><div style="height:10px;background:var(--color-crema);border-radius:4px;"></div></div></article>
-          <article class="product-card" aria-hidden="true"><div class="card-img" style="background:var(--color-crema);"></div><div class="card-body"><div style="height:10px;width:50%;background:var(--color-crema);border-radius:4px;margin-bottom:10px;"></div><div style="height:18px;width:75%;background:var(--color-crema);border-radius:4px;margin-bottom:8px;"></div><div style="height:10px;background:var(--color-crema);border-radius:4px;"></div></div></article>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="view-all">
-          <a href="shop.html" class="btn btn-outline">Scopri tutti i prodotti</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── CATEGORIES ─────────────────────────────────────────────── -->
-    <section class="section categories" id="categorie" aria-labelledby="categorie-title">
-      <div class="container">
-        <div class="section-header">
-          <p class="eyebrow">Esplora</p>
-          <h2 class="section-title" id="categorie-title">Le nostre categorie</h2>
-        </div>
-
-        <div class="cat-grid cat-grid-3">
-          <a href="product.html?handle=kit-cannolo" class="cat-card" aria-label="Esplora Kit Cannolo">
-            <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit Cannoli Siciliani Artigianali" loading="lazy" style="object-position:center center">
-            <div class="cat-overlay"><h3>Kit Cannolo</h3></div>
-          </a>
-          <a href="shop.html" class="cat-card cat-card-featured" aria-label="Esplora tutta la Pasticceria Siciliana">
-            <img src="assets/images/Cannoli Siciliani.jpg" alt="Pasticceria siciliana artigianale" loading="lazy" style="object-position:center 55%">
-            <div class="cat-overlay"><h3>Pasticceria Siciliana</h3></div>
-          </a>
-          <a href="shop.html?filter=torte" class="cat-card" aria-label="Esplora Torte intere">
-            <img src="assets/images/Torta Cassata Siciliana.jpg" alt="Torte intere siciliane artigianali" loading="lazy" style="object-position:center 52%">
-            <div class="cat-overlay"><h3>Torte</h3></div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── SPIKE DIVIDER: categorie (bianco) → Vulcano (nero) ──────── -->
-    <div class="spike-band spike-band-full" aria-hidden="true"></div>
-
-    <!-- ── VULCANO ETNA ───────────────────────────────────────────── -->
-    <section class="vulcano-feature" aria-labelledby="vulcano-title">
-      <div class="vulcano-inner">
-        <div class="vulcano-image-col">
-          <div class="vulcano-img-wrap">
-            <img src="assets/images/Vulcano.jpg" alt="Vulcano Etna — il dolce brevettato di Delizie Siciliane" loading="lazy">
-          </div>
-          <div class="vulcano-img-secondary">
-            <img src="assets/images/Vulcano 1.jpg" alt="Vulcano Etna dettaglio" loading="lazy">
-          </div>
-        </div>
-        <div class="vulcano-text-col">
-          <span class="vulcano-badge">Brevetto esclusivo</span>
-          <p class="eyebrow eyebrow-light">Invenzione originale</p>
-          <h2 class="vulcano-title" id="vulcano-title">Vulcano<br><em>Etna</em></h2>
-          <p class="vulcano-desc">Non lo trovi da nessun'altra parte. Il Vulcano Etna è la nostra invenzione brevettata: pasta di mandorla vulcanica con cuore cremoso voluttuoso e glassa scura che cola come la lava dell'Etna. Un'eruzione di sapore in ogni morso.</p>
-          <ul class="vulcano-features">
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Ricetta e forma brevettate</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> 150g · confezione da 6 pz.</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Solo da Delizie Siciliane</li>
-          </ul>
-          <a href="product.html?handle=vulcano" class="btn btn-primary vulcano-cta">Scopri il Vulcano Etna</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── BRAND STORY ────────────────────────────────────────────── -->
-    <section class="section brand-story texture" aria-labelledby="story-title">
-      <div class="container">
-        <div class="story-grid">
-          <div class="story-text">
-            <p class="eyebrow eyebrow-light">Chi siamo</p>
-            <h2 class="section-title" id="story-title">Da Ariano Irpino,<br>con l'anima<br>della Sicilia.</h2>
-            <blockquote class="quote">Ogni morso è un viaggio. Da queste colline irpine, fin nel cuore dell'isola più bella del mondo.</blockquote>
-            <p>Siamo nati dall'incontro di due anime forti: la tenacia dell'Irpinia e la dolcezza della Sicilia. Nel nostro laboratorio ad Ariano Irpino trasformiamo ricette tramandate da generazioni in dolci che viaggiano in tutta Italia.</p>
-            <p>Ogni cannolo viene chiuso al momento della spedizione. Ogni cassata è realizzata con ricotta fresca di pecora. Ogni mandorla è selezionata una ad una. Non è solo pasticceria — è artigianalità che parla siciliano.</p>
-            <a href="chi-siamo.html" class="btn btn-ghost">La nostra storia</a>
-          </div>
-
-          <div class="story-photos" aria-hidden="true">
-            <div class="story-photo">
-              <img src="assets/images/Kit Cannolo 1.jpg" alt="Kit cannoli nel laboratorio artigianale" loading="lazy" style="object-position:center center">
-            </div>
-            <div class="story-photo">
-              <img src="assets/images/Cannolo Pistacchio.jpg" alt="Cannolo al pistacchio artigianale" loading="lazy" style="object-position:center 58%">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── WAVE: brand story (rosso) → shipping (crema) ──────────── -->
-    <div class="inter-wave wave-reverse" aria-hidden="true" style="background:var(--color-rosso);margin-top:-30px;position:relative;z-index:5;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 64" preserveAspectRatio="none">
-        <path d="M0 32 C240 0, 480 64, 720 32 C960 0, 1200 64, 1440 32 C1680 0, 1920 64, 2160 32 C2400 0, 2640 64, 2880 32 L2880 64 L0 64 Z" fill="#E8E2CD"/>
-      </svg>
-    </div>
-
-    <!-- ── SHIPPING ───────────────────────────────────────────────── -->
-    <section class="section shipping texture" aria-labelledby="spedizioni-title">
-      <div class="container">
-        <div class="section-header">
-          <p class="eyebrow">Spedizioni</p>
-          <h2 class="section-title" id="spedizioni-title">Il fresco arriva a casa tua,<br>intatto.</h2>
-          <p class="section-sub">Sappiamo quanto è prezioso ricevere un dolce integro. Ogni pacco viene preparato con la stessa cura del prodotto che contiene.</p>
-        </div>
-
-        <div class="shipping-grid">
-          <div class="ship-card fade-up">
-            <span class="ship-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 2 4 5.5 4 10c0 6 8 12 8 12s8-6 8-12c0-4.5-4-8-8-8z"/><circle cx="12" cy="10" r="2.5"/></svg>
-            </span>
-            <h3>Imballaggio isotermico</h3>
-            <p>Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso. Mantiene il fresco per 48–72 ore.</p>
-          </div>
-          <div class="ship-card fade-up">
-            <span class="ship-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            </span>
-            <h3>Express 24–48h</h3>
-            <p>Spediamo con corriere espresso in tutta Italia. Tracking in tempo reale dalla nostra email di conferma.</p>
-          </div>
-          <div class="ship-card fade-up">
-            <span class="ship-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
-            </span>
-            <h3>Sicurezza alimentare</h3>
-            <p>Non spediamo nei periodi con temperature esterne previste superiori a 30°C. La tua sicurezza viene prima di tutto.</p>
-          </div>
-          <div class="ship-card fade-up">
-            <span class="ship-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            </span>
-            <h3>Packaging certificato</h3>
-            <p>Tutti i materiali sono conformi alla normativa CE per il contatto con alimenti. Sicuri per te, rispettosi dell'ambiente.</p>
-          </div>
-        </div>
-
-        <div class="ship-cta">
-          <a href="spedizioni.html" class="btn btn-outline">Tutte le info sulle spedizioni</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── WAVE: shipping (crema) → reviews (bianco) ─────────────── -->
-    <div class="inter-wave" style="background:var(--color-crema);" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 64" preserveAspectRatio="none">
-        <path d="M0 32 C240 64, 480 0, 720 32 C960 64, 1200 0, 1440 32 C1680 64, 1920 0, 2160 32 C2400 64, 2640 0, 2880 32 L2880 64 L0 64 Z" fill="#FFFFFF"/>
-      </svg>
-    </div>
-
-    <!-- ── REVIEWS ────────────────────────────────────────────────── -->
-    <section class="section reviews" aria-labelledby="reviews-title">
-      <div class="container">
-        <div class="section-header">
-          <p class="eyebrow">Testimonianze</p>
-          <h2 class="section-title" id="reviews-title">Cosa dicono i nostri clienti</h2>
-        </div>
-
-        <div class="reviews-grid">
-          <div class="review-card fade-up">
-            <div class="review-stars" aria-label="5 stelle su 5">Eccellente</div>
-            <p class="review-text">"Ho ordinato il Kit Cannoli per una cena in famiglia. Sono arrivati perfetti, freschi, e il rituale di farcirli insieme è diventato il momento più bello della serata. La ricotta di pecora è straordinaria."</p>
-            <div class="review-author">
-              <div class="review-avatar" aria-hidden="true">ML</div>
-              <div class="review-info">
-                <strong>Maria L.</strong>
-                <small>Roma — Kit Cannoli</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="review-card fade-up">
-            <div class="review-stars" aria-label="5 stelle su 5">Eccellente</div>
-            <p class="review-text">"Finalmente una pasticceria che capisce come si spedisce il cibo. Il pacco era perfettamente refrigerato, i cannoli intatti e croccantissimi. Non comprerò più cannoli altrove."</p>
-            <div class="review-author">
-              <div class="review-avatar" aria-hidden="true">GP</div>
-              <div class="review-info">
-                <strong>Giuseppe P.</strong>
-                <small>Milano — Cannolo Grande</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="review-card fade-up">
-            <div class="review-stars" aria-label="5 stelle su 5">Eccellente</div>
-            <p class="review-text">"Ho spedito la cassata ai miei genitori a Torino come regalo d'anniversario. Erano commossi — dicevano di non assaggiare una cassata vera da quando avevano lasciato la Sicilia trent'anni fa."</p>
-            <div class="review-author">
-              <div class="review-avatar" aria-hidden="true">AS</div>
-              <div class="review-info">
-                <strong>Adriana S.</strong>
-                <small>Bologna — Torta Cassata</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── CONTATTI CTA ─────────────────────────────────────────── -->
-    <section class="section contatti-cta texture bg-crema" aria-labelledby="contatti-cta-title">
-      <div class="container">
-        <div class="contatti-cta-inner">
-          <div class="contatti-cta-text">
-            <p class="eyebrow">Richieste speciali</p>
-            <h2 class="section-title" id="contatti-cta-title">Hai un'idea o un evento?<br>Scrivici.</h2>
-            <p class="section-sub">Matrimoni, compleanni, eventi aziendali — realizziamo ordini personalizzati e confezioni regalo su misura. Contattaci per sapere come possiamo portare la Sicilia nel tuo momento speciale.</p>
-          </div>
-          <div class="contatti-cta-action">
-            <a href="contatti.html" class="btn btn-primary">Contattaci</a>
-            <p class="contatti-cta-hint">Risposta garantita entro 24 ore</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
-  <!-- ── FOOTER ─────────────────────────────────────────────────── -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer-grid">
-
-        <div class="footer-brand">
-          <a href="index.html" aria-label="Delizie Siciliane — torna alla homepage">
-            <svg id="logo-footer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1649.93 1080" aria-label="Delizie Siciliane" role="img">
-              <defs><style>#logo-footer .cls-1{fill:var(--color-giallo)}#logo-footer .cls-2{fill:var(--color-rosso)}</style></defs>
-              <g><path class="cls-1" d="M1398.95,522.23c-3.65,4.55-7.93,22.82-8.56,29.23-1.31,13.26-2.07,71.96,1.14,82.15,3.51,11.16,35.54,27.29,46.92,31.21,12.14,4.18,46.17,5.68,44.47,23.62-2,21.1-22.65,8.36-31.86,12.01-17.72,7.02-15.79,27.41-6.08,40.49,1.23,1.65,26.6,27.78,28.56,29.44,12.17,10.29,41.69,4.58,39.33,28.37-.73,7.35-13.42,10.84-10.69,20.66.89,4.08,13.46-.36,13.48,15.91.02,15.52-12.04,13.22-20.3,20.35-4.81,4.15-9.48,14.5-15.52,19.62-8.33,7.07-23.11,11.68-30.91,18.57-28.69,25.31-40.41,87.15-34.95,123.6,2.05,13.73,24.58,49.64-.21,59.99-29.21,12.19-28.82-23.06-40.82-26.78-16.85-5.22-16.83,14.58-35.4,12-2.62-.36-20.17-9.33-22.51-11.37-8.35-7.3-6.68-19.29-25-18.21-23.32,1.37-26.22,37.61-60.93,23.39-8.73-3.58-28.65-12.95-37.39-17.3-8.26-4.11-16.02-15.94-26.46-20.42-30.7-13.2-69.43,1.19-86.95-30.25-29.2-52.4-23.36-73.04-73.35-119.38-52.48-48.65-99.73-85.02-175.55-73.91-27.01,3.96-47.02,21.16-74.34.85-9.03-6.71-10.57-15.28-20.98-20.69-20.06-10.4-38.35-2.34-54.6-7.9-5.21-1.78-32.2-20.16-37.82-24.69-16.48-13.27-37.94-46.9-55.4-51.38-13.52-3.46-32.09-1.97-45.53-6.56-12.48-4.27-22.69-20.5-33.47-29.04-13.76-10.89-32.27-17.63-45.36-27.57-22.87-17.37-45.54-48.63-67.12-68.54-23.62-11.85-50.34-4.88-75.59-7.51-10.12-3.01-22.95-28.7-31.74-35.98-20.31-16.82-57.85-20.45-83.35-18.14-29.66,2.68-55.21,24.41-86.58,5.76-9.47-5.63-13.55-24.71-20.4-34.29-18.3-25.56-56.84-24.51-74.11-56.11-5.7-10.43-5.22-24.82-10.32-36.56C10.21,371.15-.22,359.28,0,356.57c.97-11.84,26.78-17.38,31.75-33.44,8.18-26.46-13.72-26.88-8.7-53,1.21-6.31,9.34-7.79,13.58-15.05,8.65-14.84,6.78-29.46,11.26-40.83,6.01-15.24,22.73-29.32,37.73-35.19,29.56-11.55,24.63-11.75,48.55-26.98,4.76-3.03,20.76-7.6,21.37-8.58,2.51-4.05-2.08-28.53,7.13-30.73,29.39,9.78,27.91,48.66,46.49,67.65,11.64,11.9,40.3,30.07,57.11,28.42,24.94-2.44,52.12-23.47,65.28-44.28,14.73-23.28-14.22-23.72-11.33-34.62,1.61-6.07,11.55-7.5,15.25-10.96,8.36-7.8,6.9-20.87,24.89-22.18,27.05-1.97,21.22,24.43,38.77,23.49,12.2-.66,9.41-10.32,15.01-19.01,10.81-16.76,34.98-26.95,53.08-14.86,4.26,2.85,22.05,28.64,23.42,33.88,1.88,7.18-.13,14.86,2.54,20.9,4.2,9.48,25.94,19.22,36.17,18.23,16.12-1.56,18.74-20.81,38.17-14.43,2.83.93,16.31,11.04,17.81,13.43,4.48,7.16,2.87,21.38,6.17,26.38.8,1.21,19.88,13.13,23.96,16.4,31.45,25.19,61.08,43.42,104.32,36.45,17.49-2.82,40.97-27.13,58.43-35.32,10.29-4.83,18.59-4.98,28.03-8.44,7.29-2.67,12.31-9.53,20.39-10.86,19.88-3.26,20.7,7.83,34.13,15.06,19.37,10.43,31.62-4.99,54.35-2.22,11.68,1.42,13.69,9.07,20.82,10.41,5.17.97,39.04,3.01,43.62,2.08,10.81-2.2,34.04-19.24,49.31-23.65,18.23-5.26,37.33-3.93,54.85-7.65,28.31-6.01,62.39-29.81,83.94-48.88,11.02-9.76,19.45-32.07,38.98-28.67,5.75,1,7.59,6.59,11.06,7.53,7.87,2.12,24.05-12.78,31.35-14.67,7.35-1.9,15.51.86,22.3-1.14,5.01-1.48,6.43-8.42,13.58-9.83,24.66-4.89,18.95,8.48,31.79,14.97,8.26,4.17,20.31,3.83,28.62,7.84,11.29,5.45,11.69,18.46,30.14,13.01,17.54-18.02,49.75-22.47,59.36-47.41,3.12-8.11,3.75-46.77,15.46-41.91,15.3,6.35-5.43,40.15,23.94,37.27,28.74-2.83,83.88-49.32,111.55-63.16,6.1-2.07,21.03-2.58,27.2-1.37,5.33,1.05,7.09,5.7,11.12,7.1,5.21,1.82,27.96,4.28,25.64,13.81-2.91,11.94-32.99,13.59-39.26,31.28-3.84,10.82,3,17.16,2.92,26.75-.53,63.06-105.76,176.94-138.21,233.74-7.38,12.92-10.51,25.43-16.63,38.07-2.72,5.63-10.33,11.3-12.12,16.53-5.57,16.32-.43,47.77-7.41,68.11-1.98,5.78-7.7,10.52-9.04,17.01-4.15,20.15,3.93,30.73-11.02,51.48-5.16,7.16-16.33,13.04-20.05,17.69Z"/><g><path class="cls-2" d="M0,666.01v-252s14.82,0,14.82,0c16.01,0,31.72,3.26,46.55,10.08,14.23,6.52,26.68,15.42,37.65,27.28,10.67,11.56,19.27,24.9,25.2,40.02,6.23,15.42,9.19,31.72,9.19,48.62,0,16.9-2.96,33.21-9.19,48.62-5.93,15.12-14.53,28.46-25.2,40.02-10.97,11.86-23.42,21.05-37.65,27.28-14.82,6.82-30.54,10.08-46.55,10.08H0ZM29.65,635.18c17.79-3.26,34.39-12.45,47.73-26.68,16.9-18.08,26.39-42.4,26.39-68.49,0-25.79-9.49-50.1-26.39-68.49-13.34-14.23-29.94-23.42-47.73-26.39v190.04Z"/><path class="cls-2" d="M185.3,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/><path class="cls-2" d="M266.84,666.01v-252s29.65,0,29.65,0v222.36s59.29,0,59.29,0v29.65s-88.94,0-88.94,0Z"/><path class="cls-2" d="M378.02,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M429.9,666.01l64.33-222.36h-64.33s0-29.65,0-29.65h103.77s-64.33,222.36-64.33,222.36h64.33s0,29.65,0,29.65h-103.77Z"/><path class="cls-2" d="M555.91,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M637.44,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/><path class="cls-2" d="M770.86,664.53l.89-29.65c8.6.3,17.49-1.78,25.2-5.63,7.71-4.15,14.53-10.67,19.27-18.38,4.74-7.41,7.41-16.31,7.71-25.2,0-8.89-1.78-17.49-5.93-25.2l-.3-.3-20.75-44.17c-5.63-10.38-8.3-22.24-8-34.09.3-12.45,3.85-24.31,10.38-34.98,6.52-10.67,15.71-19.27,26.68-24.9,10.67-5.63,22.53-8.3,34.39-8h3.85s-.3,29.65-.3,29.65h-4.45c-14.23-.3-27.57,6.82-34.98,18.97-3.85,5.93-5.93,13.04-5.93,19.86-.3,7.12,1.48,13.93,4.45,19.86l.3.3,21.05,44.17c6.23,12.16,9.49,25.79,9.19,39.43-.3,14.23-4.45,28.17-12.16,40.32-7.41,12.16-18.08,22.24-30.83,28.76-11.56,5.93-24.31,9.19-37.36,9.19-.59,0-1.48,0-2.37,0Z"/><path class="cls-2" d="M886.49,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M1010.41,655.93c-14.23-6.23-26.68-15.42-37.65-27.28-10.97-11.56-19.27-24.9-25.2-40.02-6.23-15.42-9.19-31.72-9.19-48.62,0-16.9,2.96-33.21,9.19-48.62,5.93-15.12,14.23-28.46,25.2-40.02,10.97-11.86,23.42-20.75,37.65-27.28,14.82,6.82,30.54,10.08,46.55,10.08v29.65c-23.72,0-45.66,9.78-62.56,27.87-16.9,18.38-26.39,42.69-26.39,68.49,0,26.09,9.49,50.4,26.39,68.49,16.9,18.08,38.84,27.87,62.56,27.87v29.65c-16.01,0-31.72-3.26-46.55-10.08Z"/><path class="cls-2" d="M1079.2,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M1131.09,666.01v-252s29.65,0,29.65,0v222.36s59.29,0,59.29,0v29.65s-88.94,0-88.94,0Z"/><path class="cls-2" d="M1242.27,666.01v-252s29.65,0,29.65,0v252s-29.65,0-29.65,0Z"/><path class="cls-2" d="M1397.92,465.89v200.12s-29.65,0-29.65,0v-59.29s-44.47,0-44.47,0v59.29s-29.65,0-29.65,0v-200.12c0-28.46,23.12-51.88,51.88-51.88,28.46,0,51.88,23.42,51.88,51.88ZM1368.27,577.07v-111.18c0-12.16-10.08-22.24-22.23-22.24-12.16,0-22.24,10.08-22.24,22.24v111.18s44.47,0,44.47,0Z"/><path class="cls-2" d="M1538.75,414.01v252s-29.65,0-29.65,0v-169.88s-59.29-45.06-59.29-45.06v214.94s-29.65,0-29.65,0v-252s29.65,0,29.65,0l59.29,44.77v-44.77s29.65,0,29.65,0Z"/><path class="cls-2" d="M1590.64,443.66v44.47s44.47,0,44.47,0v29.65s-44.47,0-44.47,0v118.59s59.29,0,59.29,0v29.65s-88.94,0-88.94,0v-252s88.94,0,88.94,0v29.65s-59.29,0-59.29,0Z"/></g><path class="cls-2" d="M956.55,199.18c-14.82-22.93-41.98-33.08-67.14-27.34.04-.32.04-.68.04-1,.72-34.91-27.02-63.76-61.93-64.48-34.91-.72-63.8,27.02-64.48,61.93-.04.32-.04.68,0,.97-24.94-6.71-52.46,2.33-68.21,24.65-20.09,28.53-13.24,68,15.29,88.09,0,0,71.05,50.02,112.28,79.05,45.36-29.28,115.33-74.46,115.33-74.46,29.32-18.95,37.75-58.06,18.84-87.41Z"/><path class="cls-1" d="M889.87,271.52l-52.96,34.16c-7.89,5.13-18.16,4.92-25.87-.5l-51.53-36.31c-18.66-13.13-9.04-42.48,13.81-42.02l104.45,2.08c22.82.47,31.29,30.21,12.09,42.59Z"/></g>
-            </svg>
-          </a>
-          <p>Dolci artigianali siciliani spediti freschi in tutta Italia. Dal nostro laboratorio ad Ariano Irpino, con l'anima della Sicilia.</p>
-        </div>
-
-        <div class="footer-col">
-          <h4>Negozio</h4>
-          <ul>
-            <li><a href="shop.html">Tutti i prodotti</a></li>
-            <li><a href="shop.html?filter=kit-cannolo">Cannoli</a></li>
-            <li><a href="shop.html?filter=torte">Torte</a></li>
-            <li><a href="shop.html?filter=pasta-di-mandorla">Pasta di Mandorla</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Informazioni</h4>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="product.html?handle=kit-cannolo">Kit Cannolo</a></li>
-            <li><a href="shop.html">Shop</a></li>
-            <li><a href="chi-siamo.html">Chi siamo</a></li>
-            <li><a href="spedizioni.html">Spedizioni</a></li>
-            <li><a href="contatti.html">Contatti</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="footer-bottom">
-        <div>
-          <p><strong>Delizie Siciliane</strong> — Ariano Irpino (AV) — P.IVA: 00000000000</p>
-          <p>Allergeni: <strong>LATTE, UOVA, FRUTTA A GUSCIO</strong> (mandorle, pistacchi), <strong>GLUTINE</strong>. Informazioni complete su ogni prodotto.</p>
-        </div>
-        <p class="footer-tagline">Sicilia bedda</p>
-      </div>
-    </div>
+  <footer>
+    © <span id="year"></span> Delizie Siciliane — fatto con <span class="heart">❤︎</span> in Sicilia.
   </footer>
 
   <script>
-    // ── Hamburger menu ────────────────────────────────────────────
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobileNav');
-
-    hamburger.addEventListener('click', () => {
-      const isOpen = mobileNav.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', String(isOpen));
-      hamburger.setAttribute('aria-label', isOpen ? 'Chiudi menu' : 'Apri menu');
-    });
-
-    mobileNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        hamburger.setAttribute('aria-label', 'Apri menu');
-      });
-    });
-
-    // ── Scroll fade-up animations ─────────────────────────────────
-    const fadeEls = document.querySelectorAll('.fade-up');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    fadeEls.forEach(el => observer.observe(el));
-
-    // ── Smooth scroll for anchor links ────────────────────────────
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', (e) => {
-        const target = document.querySelector(anchor.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-
-    // ── Carousel infinito — JS puro con RAF ──────────────────────
-    // Niente CSS animation: posizione gestita interamente da JS.
-    // Auto-scroll continuo + drag (mouse e touch) + inerzia post-rilascio.
-    (function () {
-      const wrap  = document.querySelector('.products-carousel-wrap');
-      const track = document.querySelector('.products-carousel-track');
-      if (!wrap || !track) return;
-
-      // Disabilita l'animazione CSS — da ora il JS governa la posizione
-      track.style.animation = 'none';
-      track.style.willChange = 'transform';
-
-      const AUTO_SPEED = 0.65; // px/frame a 60fps (≈39px/s)
-      const FRICTION   = 0.92; // decelerazione inerzia post-drag
-
-      let posX      = 0;    // posizione corrente (translateX, sempre ≤ 0)
-      let halfWidth = 0;    // metà della larghezza totale della traccia
-      let velX      = 0;    // velocità inerzia (px/frame)
-
-      // Stato drag
-      let dragging  = false;
-      let hasMoved  = false;
-      let startX    = 0;
-      let startY    = 0;
-      let startPos  = 0;
-      let prevX     = 0;
-      let prevT     = 0;
-      let lockAxis  = null; // 'h' | 'v' | null — bloccato dopo prime mosse
-      let rafId     = null;
-
-      // Stato scroll trackpad
-      let isWheeling  = false;
-      let wheelTimer  = null;
-
-      /* ── Utilità ───────────────────────────────────────────── */
-      function measure() {
-        halfWidth = track.scrollWidth / 2;
-      }
-
-      function wrap_(x) {
-        // Mantiene x nell'intervallo (-halfWidth, 0]
-        if (!halfWidth) return x;
-        x = x % halfWidth;
-        if (x > 0)  x -= halfWidth;
-        if (x <= -halfWidth) x += halfWidth;
-        return x;
-      }
-
-      function setPos(x) {
-        posX = wrap_(x);
-        track.style.transform = `translateX(${posX}px)`;
-      }
-
-      /* ── Loop RAF ──────────────────────────────────────────── */
-      function loop() {
-        if (!dragging && !isWheeling) {
-          if (Math.abs(velX) > 0.08) {
-            // Fase inerzia
-            velX *= FRICTION;
-            setPos(posX + velX);
-          } else {
-            // Auto-scroll continuo
-            velX = 0;
-            setPos(posX - AUTO_SPEED);
-          }
-        }
-        rafId = requestAnimationFrame(loop);
-      }
-
-      /* ── Inizio drag ───────────────────────────────────────── */
-      function onStart(e) {
-        if (e.button > 0) return;                 // solo tasto sinistro
-        if (e.target.closest('button')) return;   // non interferire con i bottoni
-        if (e.touches && e.touches.length > 1) return; // no pinch
-        const t = e.touches ? e.touches[0] : e;
-        dragging  = true;
-        hasMoved  = false;
-        lockAxis  = null;
-        startX    = t.clientX;
-        startY    = t.clientY;
-        startPos  = posX;
-        velX      = 0;
-        prevX     = startX;
-        prevT     = performance.now();
-        wrap.classList.add('is-grabbing');
-      }
-
-      /* ── Movimento drag ────────────────────────────────────── */
-      function onMove(e) {
-        if (!dragging) return;
-        const t   = e.touches ? e.touches[0] : e;
-        const cx  = t.clientX;
-        const cy  = t.clientY;
-        const dx  = cx - startX;
-        const dy  = cy - startY;
-
-        // Determina asse dominante solo al primo movimento significativo
-        if (!lockAxis && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
-          lockAxis = Math.abs(dx) >= Math.abs(dy) ? 'h' : 'v';
-        }
-
-        // Se l'asse è verticale, lascia scorrere la pagina
-        if (lockAxis === 'v') {
-          dragging = false;
-          wrap.classList.remove('is-grabbing');
-          return;
-        }
-        if (lockAxis !== 'h') return;
-
-        // Blocca scroll verticale solo quando siamo in modalità orizzontale
-        if (e.cancelable) e.preventDefault();
-
-        const now = performance.now();
-        const dt  = Math.max(now - prevT, 1);
-        velX      = (cx - prevX) / dt * 16; // scala a ~60fps
-        prevX     = cx;
-        prevT     = now;
-
-        if (Math.abs(dx) > 4) hasMoved = true;
-        setPos(startPos + dx);
-      }
-
-      /* ── Fine drag ─────────────────────────────────────────── */
-      function onEnd() {
-        if (!dragging) return;
-        dragging = false;
-        wrap.classList.remove('is-grabbing');
-        // velX rimane impostato → il loop RAF userà l'inerzia
-      }
-
-      /* ── Listener ──────────────────────────────────────────── */
-      // Mouse (desktop)
-      wrap.addEventListener('mousedown', onStart);
-      window.addEventListener('mousemove', onMove);
-      window.addEventListener('mouseup', onEnd);
-
-      // Touch (mobile) — passive:false su touchmove per poter chiamare preventDefault
-      wrap.addEventListener('touchstart', onStart, { passive: true });
-      wrap.addEventListener('touchmove',  onMove,  { passive: false });
-      wrap.addEventListener('touchend',   onEnd,   { passive: true });
-      wrap.addEventListener('touchcancel', onEnd,  { passive: true });
-
-      // Trackpad (Mac) — scroll orizzontale con due dita
-      // Intercetta solo se dx è presente e dy non è chiaramente dominante (rapporto 3:1)
-      wrap.addEventListener('wheel', (e) => {
-        const dx = e.deltaX;
-        const dy = e.deltaY;
-        if (Math.abs(dx) < 3) return;
-        if (Math.abs(dy) > Math.abs(dx) * 1.5) return;
-        e.preventDefault();
-        isWheeling = true;
-        velX = 0;
-        setPos(posX - dx);
-        clearTimeout(wheelTimer);
-        wheelTimer = setTimeout(() => { isWheeling = false; }, 150);
-      }, { passive: false });
-
-      // Blocca navigazione link se c'è stato drag; i bottoni non vengono mai bloccati
-      wrap.addEventListener('click', (e) => {
-        if (hasMoved) {
-          if (e.target.closest('button')) {
-            hasMoved = false;
-            return;
-          }
-          e.preventDefault();
-          e.stopPropagation();
-          hasMoved = false;
-        }
-      }, true);
-
-      /* ── Init ──────────────────────────────────────────────── */
-      // Aspetta il load completo (immagini comprese) per misurare correttamente
-      function start() {
-        measure();
-        if (!halfWidth) { requestAnimationFrame(start); return; }
-        cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(loop);
-      }
-
-      if (document.readyState === 'complete') {
-        requestAnimationFrame(start);
-      } else {
-        window.addEventListener('load', () => requestAnimationFrame(start));
-      }
-
-      // Aggiorna halfWidth se il layout cambia (resize, font load, ecc.)
-      new ResizeObserver(measure).observe(track);
-    })();
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-  <script src="shopify.js"></script>
-  <script src="cart.js"></script>
-  <script>
-    // ── Carosello dinamico: carica prodotti da Shopify ───────────
-    (async function () {
-      const track = document.getElementById('carouselTrack');
-      if (!track) return;
 
-      function fmt(amount) {
-        return '€' + parseFloat(amount).toFixed(2).replace('.', ',');
-      }
-
-      function catLabel(p) {
-        const h = p.handle || '';
-        const tags = p.tags || [];
-        if (h.includes('cannolo') || h.includes('cannoli')) {
-          return '<span class="card-cannoleria">la Cannoleria</span>';
-        }
-        if (tags.includes('torte')) return '<span class="card-cat">Torte</span>';
-        if (tags.includes('pasta-di-mandorla')) return '<span class="card-cat">Pasta di Mandorla</span>';
-        if (h.includes('cassatina') || tags.includes('monoporzioni')) return '<span class="card-cat">Monoporzioni</span>';
-        if (tags.includes('vulcano')) return '<span class="card-cat">Specialità Brevettata</span>';
-        return '';
-      }
-
-      function buildCard(p, hidden) {
-        const imgNode = p.images?.edges?.[0]?.node;
-        const imgSrc  = imgNode?.url ?? '';
-        const imgAlt  = hidden ? '' : (imgNode?.altText || p.title);
-        const url     = 'product.html?handle=' + p.handle;
-        const price   = fmt(p.priceRange?.minVariantPrice?.amount ?? 0);
-        const bs      = p.tags?.includes('best-seller');
-        const badge   = bs ? '<span class="badge" aria-label="Prodotto più venduto">BEST<br>SELLER</span>' : '';
-        const tab     = hidden ? ' tabindex="-1"' : '';
-        const aria    = hidden ? ' aria-hidden="true"' : ' aria-label="' + p.title + '"';
-        const addLabel = hidden ? '' : ' aria-label="Aggiungi ' + p.title + ' al carrello"';
-        const desc    = (p.description || '').slice(0, 110);
-
-        return '<article class="product-card' + (bs ? ' featured' : '') + '"' + aria + '>' +
-          '<a href="' + url + '" class="card-img" style="display:block;text-decoration:none">' +
-            '<img src="' + imgSrc + '" alt="' + imgAlt + '" loading="lazy">' +
-            badge +
-          '</a>' +
-          '<div class="card-body">' +
-            catLabel(p) +
-            '<h3 class="card-name"><a href="' + url + '" style="color:inherit;text-decoration:none">' + p.title + '</a></h3>' +
-            '<p class="card-desc">' + desc + '</p>' +
-            '<div class="card-footer">' +
-              '<span class="card-price">' + price + '</span>' +
-              '<button class="add-btn"' + tab + addLabel + ' onclick="addToCart(\'' + p.handle + '\')">Aggiungi</button>' +
-            '</div>' +
-          '</div>' +
-        '</article>';
-      }
-
-      try {
-        const products = await fetchProducts();
-        if (!products.length) return;
-
-        // Aggiorna DS_CATALOG con i dati reali di Shopify (handle, prezzo, immagine)
-        // così addToCart() trova sempre i prodotti indipendentemente dal handle
-        products.forEach(p => {
-          if (typeof DS_CATALOG !== 'undefined') {
-            const imgNode = p.images?.edges?.[0]?.node;
-            DS_CATALOG[p.handle] = {
-              name:  p.title,
-              price: parseFloat(p.priceRange?.minVariantPrice?.amount ?? 0),
-              image: imgNode?.url ?? '',
-              page:  'product.html?handle=' + p.handle,
-            };
-          }
-        });
-
-        track.innerHTML = products.map(p => buildCard(p, false)).join('') +
-                          products.map(p => buildCard(p, true)).join('');
-      } catch (e) {
-        console.warn('[carousel]', e);
-      }
-    })();
-  </script>
 </body>
 </html>
