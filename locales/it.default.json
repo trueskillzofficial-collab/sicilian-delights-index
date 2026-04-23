@@ -1,0 +1,137 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Etichettato {{ tags }}",
+      "page": "Pagina {{ page }}"
+    },
+    "breadcrumb": {
+      "home": "Home"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Vai al contenuto"
+  },
+  "sections": {
+    "header": {
+      "mobile_nav": "Menu mobile",
+      "home": "Home",
+      "shop": "Shop",
+      "about": "Chi siamo",
+      "shipping": "Spedizioni",
+      "logo_home": "Delizie Siciliane — homepage",
+      "cart_label": "Carrello, {{ count }} prodotti",
+      "open_menu": "Apri menu"
+    },
+    "footer": {
+      "brand_default": "Dolci artigianali siciliani spediti freschi in tutta Italia. Dal nostro laboratorio ad Ariano Irpino, con l'anima della Sicilia.",
+      "all_products": "Tutti i prodotti",
+      "cannoli": "Cannoli",
+      "cakes": "Torte",
+      "almond_paste": "Pasta di Mandorla",
+      "location": "Ariano Irpino (AV)",
+      "allergens": "Allergeni: LATTE, UOVA, FRUTTA A GUSCIO (mandorle, pistacchi), GLUTINE. Informazioni complete su ogni prodotto."
+    },
+    "hero": {
+      "a11y": "Benvenuto",
+      "scroll": "Scorri"
+    },
+    "trust": {
+      "a11y": "Le nostre garanzie"
+    },
+    "best_sellers": {
+      "carousel": "Prodotti in evidenza",
+      "empty": "Seleziona una collezione con prodotti nel tema editor (sezione Best seller)."
+    },
+    "social_proof": {
+      "stars_a11y": "Cinque stelle su cinque"
+    }
+  },
+  "products": {
+    "badge_best_seller": "Prodotto più venduto",
+    "cannoleria": "la Cannoleria",
+    "cat_cakes": "Torte",
+    "add": "Aggiungi",
+    "add_to_cart": "Aggiungi al carrello",
+    "photo_n": "Foto {{ n }}",
+    "decrease_qty": "Diminuisci quantità",
+    "increase_qty": "Aumenta quantità",
+    "trust_cold": "Spedizione refrigerata",
+    "trust_ship": "Consegna 24–48h",
+    "tab_description": "Descrizione",
+    "tab_details": "Ingredienti e dettagli",
+    "ingredients_placeholder": "Consulta l'etichetta del prodotto e la scheda fornita in pacco per ingredienti e allergeni.",
+    "choose_variant": "Scegli variante",
+    "related": "Consigliati",
+    "related_title": "Potrebbero interessarti"
+  },
+  "collections": {
+    "label": "Catalogo",
+    "empty": "Nessun prodotto in questa collezione.",
+    "pagination": "Paginazione",
+    "prev": "Precedente",
+    "next": "Successiva"
+  },
+  "pages": {
+    "chi_siamo": {
+      "eyebrow": "Chi siamo",
+      "title": "Da Ariano Irpino, con l'anima della Sicilia.",
+      "lead": "La nostra storia è un viaggio tra due terre, unite dalla passione per i dolci fatti a mano.",
+      "story_h2": "L'incontro tra due terre",
+      "story_p1": "Tutto nasce dall'incontro tra due anime forti: la tenacia dell'Irpinia e la dolcezza della Sicilia. Due tradizioni diverse, ma accomunate dalla stessa devozione per le cose fatte bene, con ingredienti semplici e genuini.",
+      "story_p2": "Nel nostro laboratorio ad Ariano Irpino trasformiamo ricette tramandate da generazioni in dolci che viaggiano in tutta Italia. La ricotta arriva fresca dalla Sicilia, le mandorle sono selezionate una ad una, il pistacchio è solo quello di Bronte.",
+      "story_p3": "Ogni cannolo viene chiuso al momento della spedizione. Ogni cassata è modellata a mano. Non è solo pasticceria — è artigianalità che parla siciliano, con il cuore irpino.",
+      "photo_alt": "Cannoli siciliani artigianali — il nostro laboratorio",
+      "values_eyebrow": "I nostri valori",
+      "values_title": "Cosa ci guida ogni giorno",
+      "v1_title": "Artigianalità",
+      "v1_text": "Ogni prodotto è fatto a mano nel nostro laboratorio. Niente linee industriali, niente scorciatoie. Solo mani esperte, tempo e ingredienti veri.",
+      "v2_title": "Territorio",
+      "v2_text": "La ricotta di pecora dalla Sicilia, le mandorle di Avola, il pistacchio di Bronte. Scegliamo fornitori che condividono la nostra ossessione per la qualità.",
+      "v3_title": "Passione",
+      "v3_text": "Facciamo dolci perché ci emozionano. Ogni pacco che parte dal laboratorio porta con sé un pezzo della nostra storia — e speriamo che si senta al primo morso.",
+      "payoff_title": "Sicilia bedda",
+      "payoff_text": "La bellezza della Sicilia, a casa tua. Ogni giorno.",
+      "cta_title": "Pronti ad assaggiare?",
+      "cta_btn": "Scopri i nostri dolci"
+    },
+    "spedizioni": {
+      "eyebrow": "Spedizioni",
+      "title": "Come spediamo i tuoi dolci",
+      "lead": "Sappiamo quanto è prezioso ricevere un dolce integro. Ogni pacco viene preparato con la stessa cura del prodotto che contiene.",
+      "card1_title": "Imballaggio isotermico",
+      "card1_text": "Box termoisolante con pannello in polistirene alimentare. Mantiene il fresco per 24–36 ore dal momento della spedizione.",
+      "card2_title": "Ghiaccio secco incluso",
+      "card2_text": "Ogni pacco contiene ghiaccio secco per garantire la catena del freddo fino all'arrivo. Nessun costo aggiuntivo per te.",
+      "card3_title": "Consegna express 24–48h",
+      "card3_text": "Spediamo con corriere espresso in tutta Italia. Ricevi il tracking via email appena il pacco parte dal laboratorio.",
+      "card4_title": "Pausa per caldo estremo",
+      "card4_text": "Quando le temperature esterne superano i 30°C sospendiamo le spedizioni. La sicurezza alimentare viene prima di tutto.",
+      "table_title": "Tempi di consegna stimati",
+      "th_zone": "Zona",
+      "th_regions": "Regioni",
+      "th_times": "Tempi stimati",
+      "row1_zone": "Sud e Isole",
+      "row1_regions": "Campania, Calabria, Puglia, Basilicata, Sicilia, Sardegna",
+      "row1_time": "24 ore",
+      "row2_zone": "Centro",
+      "row2_regions": "Lazio, Toscana, Umbria, Marche, Abruzzo, Molise",
+      "row2_time": "24–36 ore",
+      "row3_zone": "Nord",
+      "row3_regions": "Lombardia, Piemonte, Veneto, Emilia-Romagna, Liguria, Friuli V.G., Trentino A.A.",
+      "row3_time": "36–48 ore",
+      "faq_title": "Domande frequenti",
+      "faq1_q": "I dolci arrivano integri?",
+      "faq1_a": "Assolutamente sì! Ogni prodotto viene sistemato con cura nel box isotermico usando separatori alimentari. I cannoli vengono protetti singolarmente. In anni di spedizioni, il tasso di danneggiamento è inferiore all'1%.",
+      "faq2_q": "Posso scegliere il giorno di consegna?",
+      "faq2_a": "Spediamo dal lunedì al mercoledì per garantire che il pacco non resti fermo nel weekend. Se hai esigenze particolari (compleanno, evento), scrivici e faremo il possibile per accontentarti.",
+      "faq3_q": "Cosa succede d'estate?",
+      "faq3_a": "Quando le previsioni indicano temperature superiori a 30°C nella zona di destinazione, sospendiamo temporaneamente le spedizioni. Ti avvisiamo via email e riprendiamo appena le condizioni lo permettono. La qualità del prodotto viene sempre prima.",
+      "faq4_q": "Come viene imballato il cannolo?",
+      "faq4_a": "Le cialde vuote vengono avvolte singolarmente in carta alimentare e posizionate in un vassoio rigido. Le creme e la ricotta viaggiano in contenitori sigillati a contatto con il ghiaccio secco. Farcisci tu al momento: croccantezza garantita!",
+      "faq5_q": "Posso spedire come regalo?",
+      "faq5_a": "Certo! In fase di checkout puoi indicare un indirizzo diverso dal tuo. Aggiungiamo un bigliettino con il tuo messaggio personalizzato — basta scriverlo nelle note dell'ordine. Non includiamo nessun riferimento al prezzo nel pacco regalo.",
+      "cta_title": "Pronti a portare la Sicilia a casa tua?",
+      "cta_btn": "Vai allo shop"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign kit_product = all_products['kit-cannoli-siciliani-artigianali-1']
+  if kit_product == blank
+    assign kit_product = all_products['kit-cannolo']
+  endif
+  if kit_product == blank
+    assign kit_product = all_products['kit-cannoli']
+  endif
+  if kit_product == blank
+    assign kit_product = all_products['kit-cannoli-siciliani']
+  endif
+
+  assign kit_url = section.settings.kit_cannolo_url | default: ''
+  if kit_product != blank
+    assign kit_url = kit_product.url
+  elsif kit_url == blank
+    assign kit_url = routes.all_products_collection_url
+  endif
+-%}
+
+<nav class="mobile-nav" id="mobileNav" aria-label="{{ 'sections.header.mobile_nav' | t }}">
+  <a href="{{ routes.root_url }}">{{ 'sections.header.home' | t }}</a>
+  {% if menu != blank %}
+    {% for link in linklists[menu].links %}
+      {%- assign mobile_link_url = link.url -%}
+      {%- assign mobile_link_title = link.title | downcase -%}
+      {%- if mobile_link_title contains 'kit' and mobile_link_title contains 'cannol' -%}
+        {%- assign mobile_link_url = kit_url -%}
+      {%- endif -%}
+      <a href="{{ mobile_link_url }}">{{ link.title }}</a>
+    {% endfor %}
+  {% else %}
+    <a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.shop' | t }}</a>
+    {% assign pg_chi = pages['chi-siamo'] %}
+    {% assign pg_sped = pages['spedizioni'] %}
+    <a href="{% if pg_chi %}{{ pg_chi.url }}{% else %}#{% endif %}">{{ 'sections.header.about' | t }}</a>
+    <a href="{% if pg_sped %}{{ pg_sped.url }}{% else %}#{% endif %}">{{ 'sections.header.shipping' | t }}</a>
+  {% endif %}
+</nav>
+
+<header class="navbar" role="banner">
+  <div class="navbar-inner">
+    <a href="{{ routes.root_url }}" class="navbar-logo" aria-label="{{ 'sections.header.logo_home' | t }}">
+      {% render 'logo-inline', variant: 'nav' %}
+    </a>
+
+    {% if menu != blank %}
+      <ul class="nav-links" role="list">
+        {% for link in linklists[menu].links %}
+          {%- assign desktop_link_url = link.url -%}
+          {%- assign desktop_link_title = link.title | downcase -%}
+          {%- if desktop_link_title contains 'kit' and desktop_link_title contains 'cannol' -%}
+            {%- assign desktop_link_url = kit_url -%}
+          {%- endif -%}
+          <li>
+            <a href="{{ desktop_link_url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+          </li>
+        {% endfor %}
+        <li><a href="{{ kit_url }}">Kit Cannolo</a></li>
+      </ul>
+    {% else %}
+      <ul class="nav-links" role="list">
+        <li><a href="{{ routes.root_url }}">{{ 'sections.header.home' | t }}</a></li>
+        <li><a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.shop' | t }}</a></li>
+        <li><a href="{{ kit_url }}">Kit Cannolo</a></li>
+        <li><a href="{{ pages.chi-siamo.url | default: '#' }}">{{ 'sections.header.about' | t }}</a></li>
+        <li><a href="{{ pages.spedizioni.url | default: '#' }}">{{ 'sections.header.shipping' | t }}</a></li>
+      </ul>
+    {% endif %}
+
+    <div class="navbar-right">
+      <a href="{{ routes.cart_url }}" class="cart-btn" aria-label="{{ 'sections.header.cart_label' | t: count: cart.item_count }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+      </a>
+      <button type="button" class="hamburger" id="hamburger" aria-label="{{ 'sections.header.open_menu' | t }}" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header-wrap",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu principale"
+    },
+    {
+      "type": "url",
+      "id": "kit_cannolo_url",
+      "label": "Link Kit Cannolo",
+      "info": "Default: /products/kit-cannolo"
+    }
+  ]
+}
+{% endschema %}

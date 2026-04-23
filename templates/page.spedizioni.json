@@ -1,0 +1,10 @@
+{
+  "layout": "theme",
+  "sections": {
+    "main": {
+      "type": "page-spedizioni",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

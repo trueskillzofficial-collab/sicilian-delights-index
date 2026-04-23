@@ -1,0 +1,119 @@
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ routes.root_url }}" aria-label="{{ 'sections.header.logo_home' | t }}">
+          {% render 'logo-inline', variant: 'footer' %}
+        </a>
+        {% if section.settings.brand_text != blank %}
+          <p>{{ section.settings.brand_text }}</p>
+        {% else %}
+          <p>{{ 'sections.footer.brand_default' | t }}</p>
+        {% endif %}
+      </div>
+
+      <div class="footer-col">
+        <h4>{{ section.settings.col_shop_title | default: 'Negozio' }}</h4>
+        {% if section.settings.menu_shop != blank %}
+          <ul>
+            {% for link in linklists[section.settings.menu_shop].links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <ul>
+            <li><a href="{{ routes.all_products_collection_url }}">{{ 'sections.footer.all_products' | t }}</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter=p.tipo-cannoli">{{ 'sections.footer.cannoli' | t }}</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter=p.tipo-torte">{{ 'sections.footer.cakes' | t }}</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}">{{ 'sections.footer.almond_paste' | t }}</a></li>
+          </ul>
+        {% endif %}
+      </div>
+
+      <div class="footer-col">
+        <h4>{{ section.settings.col_info_title | default: 'Informazioni' }}</h4>
+        {% if section.settings.menu_info != blank %}
+          <ul>
+            {% for link in linklists[section.settings.menu_info].links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <ul>
+            <li><a href="{{ routes.root_url }}">{{ 'sections.header.home' | t }}</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.shop' | t }}</a></li>
+            {% assign pg_chi = pages['chi-siamo'] %}
+            {% assign pg_sped = pages['spedizioni'] %}
+            <li><a href="{% if pg_chi %}{{ pg_chi.url }}{% else %}{{ routes.root_url }}{% endif %}">{{ 'sections.header.about' | t }}</a></li>
+            <li><a href="{% if pg_sped %}{{ pg_sped.url }}{% else %}{{ routes.root_url }}{% endif %}">{{ 'sections.header.shipping' | t }}</a></li>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        {% if section.settings.footer_line != blank %}
+          <p>{{ section.settings.footer_line }}</p>
+        {% else %}
+          <p><strong>{{ shop.name }}</strong> — {{ 'sections.footer.location' | t }} — P.IVA: {{ section.settings.piva | default: '00000000000' }}</p>
+        {% endif %}
+        <p>{{ 'sections.footer.allergens' | t }}</p>
+      </div>
+      <p class="footer-tagline">{{ section.settings.tagline | default: 'Sicilia bedda' }}</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "brand_text",
+      "label": "Testo brand",
+      "default": "Dolci artigianali siciliani spediti freschi in tutta Italia. Dal nostro laboratorio ad Ariano Irpino, con l'anima della Sicilia."
+    },
+    {
+      "type": "text",
+      "id": "col_shop_title",
+      "label": "Titolo colonna negozio",
+      "default": "Negozio"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_shop",
+      "label": "Menu negozio (opzionale)"
+    },
+    {
+      "type": "text",
+      "id": "col_info_title",
+      "label": "Titolo colonna informazioni",
+      "default": "Informazioni"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_info",
+      "label": "Menu informazioni (opzionale)"
+    },
+    {
+      "type": "text",
+      "id": "footer_line",
+      "label": "Riga copyright (opzionale, sovrascrive default)"
+    },
+    {
+      "type": "text",
+      "id": "piva",
+      "label": "P.IVA",
+      "default": "00000000000"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline footer",
+      "default": "Sicilia bedda"
+    }
+  ]
+}
+{% endschema %}

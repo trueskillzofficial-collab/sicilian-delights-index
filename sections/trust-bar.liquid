@@ -1,0 +1,81 @@
+<div class="trust-bar" role="complementary" aria-label="{{ 'sections.trust.a11y' | t }}">
+  <div class="trust-inner">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'item' %}
+          <div class="trust-item" {{ block.shopify_attributes }}>
+            <span class="trust-icon" aria-hidden="true">
+              {% if block.settings.icon == 'cold' %}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 2 4 5.5 4 10c0 6 8 12 8 12s8-6 8-12c0-4.5-4-8-8-8z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              {% elsif block.settings.icon == 'box' %}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+              {% elsif block.settings.icon == 'truck' %}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              {% else %}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              {% endif %}
+            </span>
+            <div class="trust-label">
+              {% if block.settings.title != blank %}
+                <strong>{{ block.settings.title }}</strong>
+              {% endif %}
+              {% if block.settings.subtitle != blank %}
+                <small>{{ block.settings.subtitle }}</small>
+              {% endif %}
+            </div>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Barra fiducia",
+  "tag": "section",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Elemento",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icona",
+          "options": [
+            { "value": "cold", "label": "Ghiaccio / freddo" },
+            { "value": "box", "label": "Scatola" },
+            { "value": "truck", "label": "Corriere" },
+            { "value": "heart", "label": "Cuore" }
+          ],
+          "default": "cold"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Spedizione refrigerata"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sottotitolo",
+          "default": "Ghiaccio secco incluso"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barra fiducia",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "cold", "title": "Spedizione refrigerata", "subtitle": "Ghiaccio secco incluso" } },
+        { "type": "item", "settings": { "icon": "box", "title": "Packaging certificato", "subtitle": "Box isotermico alimentare" } },
+        { "type": "item", "settings": { "icon": "truck", "title": "Consegna 24–48h", "subtitle": "In tutta Italia" } },
+        { "type": "item", "settings": { "icon": "heart", "title": "100% artigianale", "subtitle": "Dal nostro laboratorio" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

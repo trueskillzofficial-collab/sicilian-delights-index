@@ -1,0 +1,106 @@
+{% liquid
+  assign coll = section.settings.collection
+  if coll == blank
+    assign coll = collections.all
+  endif
+  assign limit = section.settings.products_to_show | default: 12
+  assign has_products = false
+  for _probe in coll.products limit: 1
+    assign has_products = true
+  endfor
+%}
+
+<section class="section texture bg-crema" id="shop" aria-labelledby="bestsellers-title-{{ section.id }}">
+  <div class="container">
+    <div class="section-header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="section-title" id="bestsellers-title-{{ section.id }}">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="section-sub">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if has_products %}
+    <div class="products-carousel-wrap" data-best-sellers-carousel aria-label="{{ 'sections.best_sellers.carousel' | t }}">
+      <div class="products-carousel-track" data-carousel-track>
+        {% for product in coll.products limit: limit %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+        {% for product in coll.products limit: limit %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="container">
+      <p class="text-center section-sub">{{ 'sections.best_sellers.empty' | t }}</p>
+    </div>
+  {% endif %}
+
+  <div class="container">
+    <div class="view-all">
+      {% if section.settings.view_all_label != blank %}
+        <a href="{{ section.settings.view_all_link | default: routes.all_products_collection_url }}" class="btn btn-outline">{{ section.settings.view_all_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Best seller",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collezione",
+      "info": "Se vuoto, viene usata la collezione Tutti i prodotti."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "label": "Prodotti da mostrare",
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "I nostri prodotti"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "I più amati dai siciliani nel mondo"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sottotitolo",
+      "default": "Scelti ogni giorno da chi vuole portare un pezzo di Sicilia sulla propria tavola."
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Testo pulsante",
+      "default": "Scopri tutti i prodotti"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link pulsante"
+    }
+  ],
+  "presets": [{ "name": "Best seller" }]
+}
+{% endschema %}

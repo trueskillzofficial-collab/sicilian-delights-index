@@ -1,0 +1,68 @@
+{%- assign pg_contatti = pages['contatti'] -%}
+{%- assign cont_url = section.settings.cta_link | default: pg_contatti.url | default: 'mailto:info@deliziesiciliane.it' -%}
+
+<section class="section contatti-cta texture bg-crema" aria-labelledby="contatti-cta-title-{{ section.id }}">
+  <div class="container">
+    <div class="contatti-cta-inner">
+
+      <div class="contatti-cta-text">
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="section-title" id="contatti-cta-title-{{ section.id }}">
+          {{ section.settings.title }}
+        </h2>
+        <p class="section-sub">{{ section.settings.subtitle }}</p>
+      </div>
+
+      <div class="contatti-cta-action">
+        <a href="{{ cont_url }}" class="btn btn-primary">{{ section.settings.cta_label }}</a>
+        <p class="contatti-cta-hint">{{ section.settings.hint }}</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contatti CTA",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Richieste speciali"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Titolo",
+      "default": "<p>Hai un'idea o un evento?<br>Scrivici.</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sottotitolo",
+      "default": "Matrimoni, compleanni, eventi aziendali — realizziamo ordini personalizzati e confezioni regalo su misura. Contattaci per sapere come possiamo portare la Sicilia nel tuo momento speciale."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Testo pulsante",
+      "default": "Contattaci"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link pulsante"
+    },
+    {
+      "type": "text",
+      "id": "hint",
+      "label": "Nota sotto pulsante",
+      "default": "Risposta garantita entro 24 ore"
+    }
+  ],
+  "presets": [{ "name": "Contatti CTA" }]
+}
+{% endschema %}

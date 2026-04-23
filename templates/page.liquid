@@ -1,0 +1,10 @@
+{%- if page.handle == 'chi-siamo' -%}
+  {% section 'page-chi-siamo' %}
+{%- elsif page.handle == 'spedizioni' -%}
+  {% section 'page-spedizioni' %}
+{%- else -%}
+  <div class="container" style="padding: 80px 20px; max-width: 800px;">
+    <h1 style="font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1.5rem;">{{ page.title }}</h1>
+    <div class="rte">{{ page.content }}</div>
+  </div>
+{%- endif -%}

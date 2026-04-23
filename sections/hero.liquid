@@ -1,0 +1,113 @@
+<section class="hero" aria-label="{{ 'sections.hero.a11y' | t }}">
+  <div class="hero-img">
+    {% if section.settings.image != blank %}
+      <img
+        src="{{ section.settings.image | image_url: width: 2400 }}"
+        alt="{{ section.settings.image.alt | default: section.settings.image_alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+      >
+    {% else %}
+      <img
+        src="{{ 'images/HERO IMAGE.jpg' | asset_url }}"
+        alt="{{ section.settings.image_alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {% endif %}
+  </div>
+  <div class="hero-frame" aria-hidden="true"><div class="hero-frame-inner"></div></div>
+  <div class="hero-body">
+    {% if section.settings.eyebrow != blank %}
+      <p class="hero-eyebrow">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <div class="rte-hero-heading" role="heading" aria-level="1">{{ section.settings.heading }}</div>
+    {% endif %}
+    {% if section.settings.subtitle != blank %}
+      <p class="hero-sub">{{ section.settings.subtitle }}</p>
+    {% endif %}
+    <div class="hero-cta">
+      {% if section.settings.cta_primary_label != blank %}
+        <a href="{{ section.settings.cta_primary_link | default: '#' }}" class="btn btn-primary">{{ section.settings.cta_primary_label }}</a>
+      {% endif %}
+      {% if section.settings.cta_secondary_label != blank %}
+        <a href="{{ section.settings.cta_secondary_link | default: '#' }}" class="btn btn-ghost">{{ section.settings.cta_secondary_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>{{ 'sections.hero.scroll' | t }}</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<div class="inter-wave" style="margin-top:-40px;position:relative;z-index:5;" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 64" preserveAspectRatio="none">
+    <path d="M0 32 C240 0, 480 64, 720 32 C960 0, 1200 64, 1440 32 C1680 0, 1920 64, 2160 32 C2400 0, 2640 64, 2880 32 L2880 64 L0 64 Z" fill="{{ settings.color_crema }}"/>
+  </svg>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine hero"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Alt immagine",
+      "default": "Dolci artigianali siciliani"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Artigianale — Laboratorio — Spedizione refrigerata"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "<p>Sicilia <em>bedda</em>,<br>a casa tua.</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sottotitolo",
+      "default": "Dolci artigianali siciliani realizzati con ingredienti autentici, spediti freschi in tutta Italia in imballaggi isotermici."
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "CTA primaria — testo",
+      "default": "Scopri i dolci"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_link",
+      "label": "CTA primaria — link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "CTA secondaria — testo",
+      "default": "Come spediamo"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_link",
+      "label": "CTA secondaria — link"
+    }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

@@ -1,0 +1,109 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Delizie Siciliane",
+    "theme_version": "1.0.0",
+    "theme_author": "Delizie Siciliane",
+    "theme_documentation_url": "https://delizie-siciliane.it",
+    "theme_support_url": "https://delizie-siciliane.it"
+  },
+  {
+    "name": "Colori brand",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Palette (CLAUDE.md)"
+      },
+      {
+        "type": "color",
+        "id": "color_rosso",
+        "label": "U Russu (primario)",
+        "default": "#D94B32"
+      },
+      {
+        "type": "color",
+        "id": "color_crema",
+        "label": "La Crèma",
+        "default": "#E8E2CD"
+      },
+      {
+        "type": "color",
+        "id": "color_giallo",
+        "label": "Lu Giàrdu",
+        "default": "#F1DD4E"
+      },
+      {
+        "type": "color",
+        "id": "color_arancio_scuro",
+        "label": "L'Aranciu Scùru",
+        "default": "#DA6C39"
+      },
+      {
+        "type": "color",
+        "id": "color_arancio",
+        "label": "L'Aranciu",
+        "default": "#E99B3F"
+      },
+      {
+        "type": "color",
+        "id": "color_verde_salvia",
+        "label": "Lu Virdi Sàvia",
+        "default": "#B9BB90"
+      },
+      {
+        "type": "color",
+        "id": "color_verde_chiaro",
+        "label": "Lu Virdi Chiaru",
+        "default": "#DBD4A1"
+      },
+      {
+        "type": "color",
+        "id": "color_castagna",
+        "label": "Lu Castagni Ruci",
+        "default": "#B5876F"
+      },
+      {
+        "type": "color",
+        "id": "color_rosa",
+        "label": "Lu Ròsa Pacatu",
+        "default": "#D7B7A3"
+      },
+      {
+        "type": "color",
+        "id": "color_bianco",
+        "label": "Bianco",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_nero",
+        "label": "Testo / footer",
+        "default": "#1A1A1A"
+      }
+    ]
+  },
+  {
+    "name": "Tipografia",
+    "settings": [
+      {
+        "type": "text",
+        "id": "font_display",
+        "label": "Font titoli (CSS stack)",
+        "default": "'Playfair Display'",
+        "info": "Importato da Google Fonts nel layout."
+      },
+      {
+        "type": "text",
+        "id": "font_body",
+        "label": "Font corpo",
+        "default": "'DM Sans'"
+      },
+      {
+        "type": "text",
+        "id": "font_script",
+        "label": "Font script (Cannoleria)",
+        "default": "'Dancing Script'"
+      }
+    ]
+  }
+]

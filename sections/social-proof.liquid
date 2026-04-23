@@ -1,0 +1,130 @@
+<section class="section reviews" aria-labelledby="reviews-title-{{ section.id }}">
+  <div class="container">
+    <div class="section-header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="section-title" id="reviews-title-{{ section.id }}">{{ section.settings.title }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="reviews-grid">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'review' %}
+            <div class="review-card fade-up" {{ block.shopify_attributes }}>
+              <div class="review-stars" aria-label="{{ 'sections.social_proof.stars_a11y' | t }}">{{ block.settings.stars_label | default: '★★★★★' }}</div>
+              {% if block.settings.quote != blank %}
+                <p class="review-text">{{ block.settings.quote }}</p>
+              {% endif %}
+              <div class="review-author">
+                <div class="review-avatar" aria-hidden="true">{{ block.settings.initials | default: 'DS' }}</div>
+                <div class="review-info">
+                  {% if block.settings.author != blank %}
+                    <strong>{{ block.settings.author }}</strong>
+                  {% endif %}
+                  {% if block.settings.meta != blank %}
+                    <small>{{ block.settings.meta }}</small>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Social proof",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Testimonianze"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "Cosa dicono i nostri clienti"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Recensione",
+      "settings": [
+        {
+          "type": "text",
+          "id": "stars_label",
+          "label": "Stelle (testo)",
+          "default": "★★★★★"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Testo",
+          "default": "\"Ho ordinato il Kit Cannoli per una cena in famiglia. Sono arrivati perfetti e freschi.\""
+        },
+        {
+          "type": "text",
+          "id": "initials",
+          "label": "Iniziali",
+          "default": "ML"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Nome",
+          "default": "Maria L."
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Dettaglio",
+          "default": "Roma — Kit Cannoli"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social proof",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "quote": "\"Ho ordinato il Kit Cannoli per una cena in famiglia. Sono arrivati perfetti, freschi, e il rituale di farcirli insieme è diventato il momento più bello della serata. La ricotta di pecora è straordinaria.\"",
+            "initials": "ML",
+            "author": "Maria L.",
+            "meta": "Roma — Kit Cannoli"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "\"Finalmente una pasticceria che capisce come si spedisce il cibo. Il pacco era perfettamente refrigerato, i cannoli intatti e croccantissimi.\"",
+            "initials": "GP",
+            "author": "Giuseppe P.",
+            "meta": "Milano — Cannolo Grande"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "\"Ho spedito la cassata ai miei genitori a Torino come regalo d'anniversario. Erano commossi — dicevano di non assaggiare una cassata vera da quando avevano lasciato la Sicilia trent'anni fa.\"",
+            "initials": "AS",
+            "author": "Adriana S.",
+            "meta": "Bologna — Torta Cassata"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

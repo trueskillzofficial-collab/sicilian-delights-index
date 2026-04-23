@@ -1,0 +1,48 @@
+{% style %}
+  :root {
+    --color-rosso: {{ settings.color_rosso }};
+    --color-crema: {{ settings.color_crema }};
+    --color-giallo: {{ settings.color_giallo }};
+    --color-arancio-scuro: {{ settings.color_arancio_scuro }};
+    --color-arancio: {{ settings.color_arancio }};
+    --color-verde-salvia: {{ settings.color_verde_salvia }};
+    --color-verde-chiaro: {{ settings.color_verde_chiaro }};
+    --color-castagna: {{ settings.color_castagna }};
+    --color-rosa: {{ settings.color_rosa }};
+    --color-bianco: {{ settings.color_bianco }};
+    --color-nero: {{ settings.color_nero }};
+
+    --color-rosso-rgb: {{ settings.color_rosso | color_extract: 'red' }}, {{ settings.color_rosso | color_extract: 'green' }}, {{ settings.color_rosso | color_extract: 'blue' }};
+    --color-crema-rgb: {{ settings.color_crema | color_extract: 'red' }}, {{ settings.color_crema | color_extract: 'green' }}, {{ settings.color_crema | color_extract: 'blue' }};
+    --color-giallo-rgb: {{ settings.color_giallo | color_extract: 'red' }}, {{ settings.color_giallo | color_extract: 'green' }}, {{ settings.color_giallo | color_extract: 'blue' }};
+    --color-nero-rgb: {{ settings.color_nero | color_extract: 'red' }}, {{ settings.color_nero | color_extract: 'green' }}, {{ settings.color_nero | color_extract: 'blue' }};
+
+    --font-display: {{ settings.font_display }}, Georgia, serif;
+    --font-body: {{ settings.font_body }}, system-ui, sans-serif;
+    --font-script: {{ settings.font_script }}, cursive;
+  }
+
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .skip-to-content:focus {
+    position: fixed;
+    z-index: 9999;
+    left: 12px;
+    top: 12px;
+    width: auto;
+    height: auto;
+    clip: auto;
+    padding: 12px 18px;
+    background: var(--color-rosso);
+    color: var(--color-crema);
+    font-weight: 700;
+    border-radius: var(--radius-sm, 8px);
+  }
+{% endstyle %}

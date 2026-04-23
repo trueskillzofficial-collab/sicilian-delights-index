@@ -1,0 +1,104 @@
+<section class="section categories" id="categorie" aria-labelledby="categorie-title-{{ section.id }}">
+  <div class="container">
+    <div class="section-header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="section-title" id="categorie-title-{{ section.id }}">{{ section.settings.title }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="cat-grid cat-grid-3">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'category' %}
+            <a href="{{ block.settings.link | default: '#' }}" class="cat-card{% if block.settings.featured %} cat-card-featured{% endif %}" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <img
+                  src="{{ block.settings.image | image_url: width: 900 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  {% if block.settings.focal %}style="object-position: {{ block.settings.focal }}"{% endif %}
+                >
+              {% else %}
+                <div class="card-img-placeholder">{{ block.settings.title }}</div>
+              {% endif %}
+              <div class="cat-overlay"><h3>{{ block.settings.title }}</h3></div>
+            </a>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<div class="spike-band spike-band-full" aria-hidden="true"></div>
+
+{% schema %}
+{
+  "name": "Categorie",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Esplora"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "Le nostre categorie"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoria",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Immagine"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Categoria"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "focal",
+          "label": "Object position (CSS)",
+          "info": "es. center 55%"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Stile in evidenza",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categorie",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Kit Cannolo" } },
+        { "type": "category", "settings": { "title": "Pasticceria Siciliana", "featured": true } },
+        { "type": "category", "settings": { "title": "Torte" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

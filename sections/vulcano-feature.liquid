@@ -1,0 +1,114 @@
+{%- assign vp = section.settings.product -%}
+{%- assign vp_url = section.settings.cta_link | default: vp.url | default: '/products/vulcano-etna' -%}
+
+<section class="vulcano-feature" aria-labelledby="vulcano-title-{{ section.id }}">
+  <div class="vulcano-inner">
+
+    <div class="vulcano-image-col">
+      <div class="vulcano-img-wrap">
+        {% if section.settings.image_main != blank %}
+          <img
+            src="{{ section.settings.image_main | image_url: width: 900 }}"
+            alt="{{ section.settings.image_main.alt | default: 'Vulcano Etna' | escape }}"
+            loading="lazy">
+        {% elsif vp and vp.featured_media %}
+          <img
+            src="{{ vp.featured_media | image_url: width: 900 }}"
+            alt="{{ vp.title | escape }}"
+            loading="lazy">
+        {% else %}
+          <div class="card-img-placeholder" style="height:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center">Vulcano Etna</div>
+        {% endif %}
+      </div>
+      <div class="vulcano-img-secondary">
+        {% if section.settings.image_secondary != blank %}
+          <img
+            src="{{ section.settings.image_secondary | image_url: width: 600 }}"
+            alt="{{ section.settings.image_secondary.alt | default: 'Vulcano Etna dettaglio' | escape }}"
+            loading="lazy">
+        {% else %}
+          <div class="card-img-placeholder" style="height:100%;display:flex;align-items:center;justify-content:center">Dettaglio</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="vulcano-text-col">
+      <span class="vulcano-badge">{{ section.settings.badge }}</span>
+      <p class="eyebrow eyebrow-light">{{ section.settings.eyebrow }}</p>
+      <h2 class="vulcano-title" id="vulcano-title-{{ section.id }}">
+        Vulcano<br><em>Etna</em>
+      </h2>
+      <p class="vulcano-desc">{{ section.settings.description }}</p>
+      <ul class="vulcano-features">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+          Ricetta e forma brevettate
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+          150g · confezione da 6 pz.
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+          Solo da Delizie Siciliane
+        </li>
+      </ul>
+      <a href="{{ vp_url }}" class="btn btn-primary vulcano-cta">{{ section.settings.cta_label }}</a>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vulcano Feature",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Prodotto Vulcano"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_main",
+      "label": "Immagine principale"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_secondary",
+      "label": "Immagine secondaria (piccola)"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "Brevetto esclusivo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Invenzione originale"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descrizione",
+      "default": "Non lo trovi da nessun'altra parte. Il Vulcano Etna è la nostra invenzione brevettata: pasta di mandorla vulcanica con cuore cremoso voluttuoso e glassa scura che cola come la lava dell'Etna. Un'eruzione di sapore in ogni morso."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Testo CTA",
+      "default": "Scopri il Vulcano Etna"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link CTA (sovrascrive il prodotto selezionato)"
+    }
+  ],
+  "presets": [{ "name": "Vulcano Feature" }]
+}
+{% endschema %}

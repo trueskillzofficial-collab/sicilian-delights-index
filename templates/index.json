@@ -1,0 +1,128 @@
+{
+  "layout": "theme",
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "image_alt": "Dolci artigianali siciliani",
+        "eyebrow": "Artigianale — Laboratorio — Spedizione refrigerata",
+        "heading": "<p>Sicilia <em>bedda</em>,<br>a casa tua.</p>",
+        "subtitle": "Dolci artigianali siciliani realizzati con ingredienti autentici, spediti freschi in tutta Italia in imballaggi isotermici.",
+        "cta_primary_label": "Scopri i dolci",
+        "cta_primary_link": "/collections/all",
+        "cta_secondary_label": "Come spediamo",
+        "cta_secondary_link": "/pages/spedizioni"
+      }
+    },
+    "trust_bar": {
+      "type": "trust-bar",
+      "blocks": {
+        "t1": { "type": "item", "settings": { "icon": "cold",  "title": "Spedizione refrigerata", "subtitle": "Ghiaccio secco incluso" } },
+        "t2": { "type": "item", "settings": { "icon": "box",   "title": "Packaging certificato",  "subtitle": "Box isotermico alimentare" } },
+        "t3": { "type": "item", "settings": { "icon": "truck", "title": "Consegna 24–48h",        "subtitle": "In tutta Italia" } },
+        "t4": { "type": "item", "settings": { "icon": "heart", "title": "100% artigianale",       "subtitle": "Dal nostro laboratorio" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "best_sellers": {
+      "type": "best-sellers",
+      "settings": {
+        "collection": "all",
+        "products_to_show": 12,
+        "eyebrow": "I nostri prodotti",
+        "title": "I più amati dai siciliani nel mondo",
+        "subtitle": "Scelti ogni giorno da chi vuole portare un pezzo di Sicilia sulla propria tavola.",
+        "view_all_label": "Scopri tutti i prodotti",
+        "view_all_link": "/collections/all"
+      }
+    },
+    "categories": {
+      "type": "categories",
+      "settings": {
+        "eyebrow": "Esplora",
+        "title": "Le nostre categorie"
+      },
+      "blocks": {
+        "c1": { "type": "category", "settings": { "title": "Kit Cannolo",          "link": "/collections/all", "focal": "center center" } },
+        "c2": { "type": "category", "settings": { "title": "Pasticceria Siciliana","link": "/collections/all", "focal": "center 55%", "featured": true } },
+        "c3": { "type": "category", "settings": { "title": "Torte",                "link": "/collections/all", "focal": "center 52%" } }
+      },
+      "block_order": ["c1", "c2", "c3"]
+    },
+    "vulcano_feature": {
+      "type": "vulcano-feature",
+      "settings": {
+        "badge": "Brevetto esclusivo",
+        "eyebrow": "Invenzione originale",
+        "cta_label": "Scopri il Vulcano Etna"
+      }
+    },
+    "brand_story": {
+      "type": "brand-story",
+      "settings": {}
+    },
+    "shipping_section": {
+      "type": "shipping-section",
+      "settings": {}
+    },
+    "social_proof": {
+      "type": "social-proof",
+      "settings": {
+        "eyebrow": "Testimonianze",
+        "title": "Cosa dicono i nostri clienti"
+      },
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "stars_label": "★★★★★",
+            "quote": "\"Ho ordinato il Kit Cannoli per una cena in famiglia. Sono arrivati perfetti, freschi, e il rituale di farcirli insieme è diventato il momento più bello della serata. La ricotta di pecora è straordinaria.\"",
+            "initials": "ML",
+            "author": "Maria L.",
+            "meta": "Roma — Kit Cannoli"
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "stars_label": "★★★★★",
+            "quote": "\"Finalmente una pasticceria che capisce come si spedisce il cibo. Il pacco era perfettamente refrigerato, i cannoli intatti e croccantissimi. Non comprerò più cannoli altrove.\"",
+            "initials": "GP",
+            "author": "Giuseppe P.",
+            "meta": "Milano — Cannolo Grande"
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "stars_label": "★★★★★",
+            "quote": "\"Ho spedito la cassata ai miei genitori a Torino come regalo d'anniversario. Erano commossi — dicevano di non assaggiare una cassata vera da quando avevano lasciato la Sicilia trent'anni fa.\"",
+            "initials": "AS",
+            "author": "Adriana S.",
+            "meta": "Bologna — Torta Cassata"
+          }
+        }
+      },
+      "block_order": ["r1", "r2", "r3"]
+    },
+    "contatti_cta": {
+      "type": "contatti-cta",
+      "settings": {
+        "eyebrow": "Richieste speciali",
+        "cta_label": "Contattaci",
+        "hint": "Risposta garantita entro 24 ore"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust_bar",
+    "best_sellers",
+    "categories",
+    "vulcano_feature",
+    "brand_story",
+    "shipping_section",
+    "social_proof",
+    "contatti_cta"
+  ]
+}

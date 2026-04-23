@@ -1,0 +1,48 @@
+{% comment %}
+  @param product {Product} required
+  @param featured {Boolean} optional — card featured styling
+{% endcomment %}
+{% liquid
+  assign is_featured = featured | default: false
+  if product.tags contains 'best-seller'
+    assign is_featured = true
+  endif
+%}
+<article class="product-card{% if is_featured %} featured{% endif %}" data-product-id="{{ product.id }}">
+  <a href="{{ product.url }}" class="card-img" style="display:block;text-decoration:none">
+    {% if product.featured_media %}
+      <img
+        src="{{ product.featured_media | image_url: width: 800 }}"
+        alt="{{ product.featured_media.alt | default: product.title | escape }}"
+        loading="lazy"
+        width="{{ product.featured_media.preview_image.width }}"
+        height="{{ product.featured_media.preview_image.height }}"
+      >
+    {% else %}
+      <div class="card-img-placeholder">{{ product.title }}</div>
+    {% endif %}
+    {% if is_featured %}
+      <span class="badge" aria-label="{{ 'products.badge_best_seller' | t }}">BEST<br>SELLER</span>
+    {% endif %}
+  </a>
+  <div class="card-body">
+    {% if product.type != blank and product.type contains 'Cannol' %}
+      <span class="card-cannoleria">{{ 'products.cannoleria' | t }}</span>
+    {% elsif product.tags contains 'torte' %}
+      <span class="card-cat">{{ 'products.cat_cakes' | t }}</span>
+    {% endif %}
+    <h3 class="card-name">
+      <a href="{{ product.url }}" style="color:inherit;text-decoration:none">{{ product.title }}</a>
+    </h3>
+    <p class="card-desc">{{ product.description | strip_html | truncate: 110 }}</p>
+    <div class="card-footer">
+      <span class="card-price">{{ product.price | money }}</span>
+      {% form 'product', product, class: 'card-product-form', novalidate: 'novalidate' %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" name="add" class="add-btn" {% unless product.available %}disabled{% endunless %}>
+          {{ 'products.add' | t }}
+        </button>
+      {% endform %}
+    </div>
+  </div>
+</article>

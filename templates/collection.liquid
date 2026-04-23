@@ -1,0 +1,63 @@
+{% paginate collection.products by 24 %}
+
+  <div class="shop-hero texture">
+    <div class="container">
+      <p class="eyebrow">Delizie Siciliane</p>
+      <h1>I nostri dolci</h1>
+      <p class="section-sub" style="max-width:540px;margin:10px auto 0">Sfoglia il catalogo e porta la Sicilia sulla tua tavola.</p>
+    </div>
+  </div>
+
+  <div class="collection-filters-wrap">
+    <div class="filters" role="navigation" aria-label="Filtra per categoria">
+      <a href="{{ collection.url }}" class="filter-pill{% unless current_tags %} active{% endunless %}">
+        La pasticceria
+      </a>
+      {% for tag in collection.all_tags %}
+        {% unless tag == 'best-seller' or tag == 'bestseller' or tag contains '_' %}
+          <a
+            href="{{ collection.url }}/{{ tag | handle }}"
+            class="filter-pill{% if current_tags contains tag %} active{% endif %}"
+          >{{ tag | capitalize }}</a>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="collection-grid-wrap texture">
+    <div class="container">
+      <div class="collection-grid products-grid">
+        {% for product in collection.products %}
+          {% render 'product-card', product: product %}
+        {% else %}
+          <p style="grid-column:1/-1;text-align:center;color:var(--color-castagna);padding:40px 0">
+            {{ 'collections.empty' | t }}
+          </p>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <nav class="collection-pagination" aria-label="{{ 'collections.pagination' | t }}">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}">{{ 'collections.prev' | t }}</a>
+          {% endif %}
+          {% for part in paginate.parts %}
+            {% if part.is_link %}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {% else %}
+              {% if part.title == paginate.current_page %}
+                <span class="current" aria-current="page">{{ part.title }}</span>
+              {% else %}
+                <span>{{ part.title }}</span>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}">{{ 'collections.next' | t }}</a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    </div>
+  </div>
+
+{% endpaginate %}

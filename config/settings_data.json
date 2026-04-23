@@ -1,0 +1,18 @@
+{
+  "current": {
+    "color_rosso": "#d94b32",
+    "color_crema": "#e8e2cd",
+    "color_giallo": "#f1dd4e",
+    "color_arancio_scuro": "#da6c39",
+    "color_arancio": "#e99b3f",
+    "color_verde_salvia": "#b9bb90",
+    "color_verde_chiaro": "#dbd4a1",
+    "color_castagna": "#b5876f",
+    "color_rosa": "#d7b7a3",
+    "color_bianco": "#ffffff",
+    "color_nero": "#1a1a1a",
+    "font_display": "'Playfair Display'",
+    "font_body": "'DM Sans'",
+    "font_script": "'Dancing Script'"
+  }
+}

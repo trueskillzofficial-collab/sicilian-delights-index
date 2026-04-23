@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ request.locale.text_direction }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_rosso }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="icon" type="image/png" href="{{ 'Favicon.png' | asset_url }}">
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'theme-css-variables' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}-{{ template.suffix }}{% endif %} texture">
+    <a class="skip-to-content visually-hidden" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+    {% section 'header' %}
+
+    <main id="MainContent" class="main-content" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    <div class="ds-cart-overlay" id="dsCartOverlay" aria-hidden="true"></div>
+    <aside class="ds-cart-drawer" id="dsCartDrawer" role="dialog" aria-label="Carrello" aria-modal="true" hidden>
+      <div class="ds-cart-header">
+        <span class="ds-cart-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Carrello&nbsp;<span id="dsCartDrawerCount"></span>
+        </span>
+        <button class="ds-cart-close-btn" id="dsCartClose" type="button" aria-label="Chiudi carrello">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="ds-cart-list" id="dsCartList">
+        <div class="ds-cart-empty">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="opacity:0.3" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <p>Il carrello è vuoto</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline" style="margin-top:16px;font-size:13px">Scopri i dolci</a>
+        </div>
+      </div>
+      <div class="ds-cart-footer" id="dsCartFooter" hidden>
+        <div class="ds-cart-subtotal">
+          <span>Totale</span>
+          <span class="ds-cart-total-val" id="dsCartTotalVal">€0,00</span>
+        </div>
+        <p class="ds-cart-note">Spedizione calcolata al checkout · IVA inclusa</p>
+        <a href="/checkout" class="btn btn-primary ds-checkout-btn">Procedi al checkout</a>
+        <button class="ds-cart-continue" id="dsCartContinue" type="button">Continua gli acquisti</button>
+      </div>
+    </aside>
+
+    <div class="ds-toast" id="dsToast" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
