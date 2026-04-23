@@ -172,9 +172,10 @@
     {%- capture tab_ingr_content -%}{{ product.metafields.custom.ingredienti | metafield_tag }}{%- endcapture -%}
     {%- capture tab_conserv_content -%}{{ product.metafields.custom.conservazione | metafield_tag }}{%- endcapture -%}
     {%- capture tab_sped_content -%}{{ product.metafields.custom.spedizioni | metafield_tag }}{%- endcapture -%}
+    {%- assign tab_desc_meta_plain = tab_desc_meta | strip_html | strip -%}
 
     {%- capture tab_desc_content -%}
-      {%- if tab_desc_meta | strip_html | strip != blank -%}
+      {%- if tab_desc_meta_plain != blank -%}
         {{ tab_desc_meta }}
       {%- elsif product.description != blank -%}
         {{ product.description }}
