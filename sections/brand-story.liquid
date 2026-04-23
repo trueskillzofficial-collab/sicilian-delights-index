@@ -6,24 +6,20 @@
     <div class="story-grid">
 
       <div class="story-text">
-        <p class="eyebrow eyebrow-light">Chi siamo</p>
+        <p class="eyebrow eyebrow-light">{{ section.settings.eyebrow }}</p>
         <h2 class="section-title" id="story-title-{{ section.id }}">
-          Da Ariano Irpino,<br>con l'anima<br>della Sicilia.
+          {{ section.settings.title }}
         </h2>
-        <blockquote class="quote">
-          Ogni morso è un viaggio. Da queste colline irpine, fin nel cuore dell'isola più bella del mondo.
-        </blockquote>
-        <p>
-          Siamo nati dall'incontro di due anime forti: la tenacia dell'Irpinia e la dolcezza della Sicilia.
-          Nel nostro laboratorio ad Ariano Irpino trasformiamo ricette tramandate da generazioni
-          in dolci che viaggiano in tutta Italia.
-        </p>
-        <p>
-          Ogni cannolo viene chiuso al momento della spedizione. Ogni cassata è realizzata con ricotta
-          fresca di pecora. Ogni mandorla è selezionata una ad una. Non è solo pasticceria —
-          è artigianalità che parla siciliano.
-        </p>
-        <a href="{{ chi_url }}" class="btn btn-ghost">La nostra storia</a>
+        {% if section.settings.quote != blank %}
+          <blockquote class="quote">{{ section.settings.quote }}</blockquote>
+        {% endif %}
+        {% if section.settings.paragraph_1 != blank %}
+          <p>{{ section.settings.paragraph_1 }}</p>
+        {% endif %}
+        {% if section.settings.paragraph_2 != blank %}
+          <p>{{ section.settings.paragraph_2 }}</p>
+        {% endif %}
+        <a href="{{ chi_url }}" class="btn btn-ghost">{{ section.settings.cta_label }}</a>
       </div>
 
       <div class="story-photos" aria-hidden="true">
@@ -65,6 +61,36 @@
   "tag": "section",
   "settings": [
     {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Chi siamo"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Titolo",
+      "default": "Da Ariano Irpino,<br>con l'anima<br>della Sicilia."
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Citazione",
+      "default": "Ogni morso e un viaggio. Da queste colline irpine, fin nel cuore dell'isola piu bella del mondo."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_1",
+      "label": "Paragrafo 1",
+      "default": "Siamo nati dall'incontro di due anime forti: la tenacia dell'Irpinia e la dolcezza della Sicilia. Nel nostro laboratorio ad Ariano Irpino trasformiamo ricette tramandate da generazioni in dolci che viaggiano in tutta Italia."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_2",
+      "label": "Paragrafo 2",
+      "default": "Ogni cannolo viene chiuso al momento della spedizione. Ogni cassata e realizzata con ricotta fresca di pecora. Ogni mandorla e selezionata una ad una. Non e solo pasticceria: e artigianalita che parla siciliano."
+    },
+    {
       "type": "image_picker",
       "id": "image1",
       "label": "Foto sinistra (alto)"
@@ -73,6 +99,12 @@
       "type": "image_picker",
       "id": "image2",
       "label": "Foto destra (basso)"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Testo pulsante",
+      "default": "La nostra storia"
     },
     {
       "type": "url",

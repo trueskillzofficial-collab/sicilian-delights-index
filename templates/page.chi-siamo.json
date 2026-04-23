@@ -3,7 +3,34 @@
   "sections": {
     "main": {
       "type": "page-chi-siamo",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "value_1": {
+          "type": "value",
+          "settings": {
+            "icon": "hands",
+            "title": "Artigianalita",
+            "text": "Ogni dolce nasce da un lavoro manuale accurato e quotidiano."
+          }
+        },
+        "value_2": {
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "title": "Qualita",
+            "text": "Ingredienti selezionati e ricette siciliane autentiche."
+          }
+        },
+        "value_3": {
+          "type": "value",
+          "settings": {
+            "icon": "heart",
+            "title": "Passione",
+            "text": "Mettiamo il cuore in ogni spedizione e in ogni morso."
+          }
+        }
+      },
+      "block_order": ["value_1", "value_2", "value_3"]
     }
   },
   "order": ["main"]

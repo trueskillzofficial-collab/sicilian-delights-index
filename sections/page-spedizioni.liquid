@@ -1,45 +1,100 @@
+{%- liquid
+  assign hero_eyebrow = section.settings.hero_eyebrow
+  if hero_eyebrow == blank
+    assign hero_eyebrow = 'pages.spedizioni.eyebrow' | t
+  endif
+  assign hero_title = section.settings.hero_title
+  if hero_title == blank
+    assign hero_title = 'pages.spedizioni.title' | t
+  endif
+  assign hero_lead = section.settings.hero_lead
+  if hero_lead == blank
+    assign hero_lead = 'pages.spedizioni.lead' | t
+  endif
+  assign table_title = section.settings.table_title
+  if table_title == blank
+    assign table_title = 'pages.spedizioni.table_title' | t
+  endif
+  assign faq_title = section.settings.faq_title
+  if faq_title == blank
+    assign faq_title = 'pages.spedizioni.faq_title' | t
+  endif
+  assign cta_title = section.settings.cta_title
+  if cta_title == blank
+    assign cta_title = 'pages.spedizioni.cta_title' | t
+  endif
+  assign cta_label = section.settings.cta_label
+  if cta_label == blank
+    assign cta_label = 'pages.spedizioni.cta_btn' | t
+  endif
+  assign cta_link = section.settings.cta_link | default: routes.all_products_collection_url
+-%}
+
 <div class="page-spedizioni">
   <section class="sped-hero">
     <div class="container">
-      <p class="eyebrow eyebrow-light">{{ 'pages.spedizioni.eyebrow' | t }}</p>
-      <h1>{{ 'pages.spedizioni.title' | t }}</h1>
-      <p>{{ 'pages.spedizioni.lead' | t }}</p>
+      <p class="eyebrow eyebrow-light">{{ hero_eyebrow }}</p>
+      <h1>{{ hero_title }}</h1>
+      <p>{{ hero_lead }}</p>
     </div>
   </section>
 
   <div class="sped-cards">
-    <div class="sped-card">
-      <div class="sped-card-icon" aria-hidden="true">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="21" x2="7" y2="17"/><line x1="17" y1="21" x2="17" y2="17"/></svg>
+    {% assign has_ship_cards = false %}
+    {% for block in section.blocks %}
+      {% if block.type == 'ship_card' %}
+        {% assign has_ship_cards = true %}
+        <div class="sped-card" {{ block.shopify_attributes }}>
+          <div class="sped-card-icon" aria-hidden="true">
+            {% if block.settings.icon == 'package' %}
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="21" x2="7" y2="17"/><line x1="17" y1="21" x2="17" y2="17"/></svg>
+            {% elsif block.settings.icon == 'arrows' %}
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m2 12 5-5m0 10-5-5h20m-5-5 5 5-5 5"/></svg>
+            {% elsif block.settings.icon == 'truck' %}
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            {% else %}
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+            {% endif %}
+          </div>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% unless has_ship_cards %}
+      <div class="sped-card">
+        <div class="sped-card-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="21" x2="7" y2="17"/><line x1="17" y1="21" x2="17" y2="17"/></svg>
+        </div>
+        <h3>{{ 'pages.spedizioni.card1_title' | t }}</h3>
+        <p>{{ 'pages.spedizioni.card1_text' | t }}</p>
       </div>
-      <h3>{{ 'pages.spedizioni.card1_title' | t }}</h3>
-      <p>{{ 'pages.spedizioni.card1_text' | t }}</p>
-    </div>
-    <div class="sped-card">
-      <div class="sped-card-icon" aria-hidden="true">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m2 12 5-5m0 10-5-5h20m-5-5 5 5-5 5"/></svg>
+      <div class="sped-card">
+        <div class="sped-card-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m2 12 5-5m0 10-5-5h20m-5-5 5 5-5 5"/></svg>
+        </div>
+        <h3>{{ 'pages.spedizioni.card2_title' | t }}</h3>
+        <p>{{ 'pages.spedizioni.card2_text' | t }}</p>
       </div>
-      <h3>{{ 'pages.spedizioni.card2_title' | t }}</h3>
-      <p>{{ 'pages.spedizioni.card2_text' | t }}</p>
-    </div>
-    <div class="sped-card">
-      <div class="sped-card-icon" aria-hidden="true">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <div class="sped-card">
+        <div class="sped-card-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>{{ 'pages.spedizioni.card3_title' | t }}</h3>
+        <p>{{ 'pages.spedizioni.card3_text' | t }}</p>
       </div>
-      <h3>{{ 'pages.spedizioni.card3_title' | t }}</h3>
-      <p>{{ 'pages.spedizioni.card3_text' | t }}</p>
-    </div>
-    <div class="sped-card">
-      <div class="sped-card-icon" aria-hidden="true">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+      <div class="sped-card">
+        <div class="sped-card-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+        </div>
+        <h3>{{ 'pages.spedizioni.card4_title' | t }}</h3>
+        <p>{{ 'pages.spedizioni.card4_text' | t }}</p>
       </div>
-      <h3>{{ 'pages.spedizioni.card4_title' | t }}</h3>
-      <p>{{ 'pages.spedizioni.card4_text' | t }}</p>
-    </div>
+    {% endunless %}
   </div>
 
   <div class="zone-section">
-    <h2>{{ 'pages.spedizioni.table_title' | t }}</h2>
+    <h2>{{ table_title }}</h2>
     <table class="zone-table">
       <thead>
         <tr>
@@ -49,72 +104,96 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><strong>{{ 'pages.spedizioni.row1_zone' | t }}</strong></td>
-          <td>{{ 'pages.spedizioni.row1_regions' | t }}</td>
-          <td>{{ 'pages.spedizioni.row1_time' | t }}</td>
-        </tr>
-        <tr>
-          <td><strong>{{ 'pages.spedizioni.row2_zone' | t }}</strong></td>
-          <td>{{ 'pages.spedizioni.row2_regions' | t }}</td>
-          <td>{{ 'pages.spedizioni.row2_time' | t }}</td>
-        </tr>
-        <tr>
-          <td><strong>{{ 'pages.spedizioni.row3_zone' | t }}</strong></td>
-          <td>{{ 'pages.spedizioni.row3_regions' | t }}</td>
-          <td>{{ 'pages.spedizioni.row3_time' | t }}</td>
-        </tr>
+        {% assign has_zone_rows = false %}
+        {% for block in section.blocks %}
+          {% if block.type == 'zone_row' %}
+            {% assign has_zone_rows = true %}
+            <tr {{ block.shopify_attributes }}>
+              <td><strong>{{ block.settings.zone }}</strong></td>
+              <td>{{ block.settings.regions }}</td>
+              <td>{{ block.settings.times }}</td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+        {% unless has_zone_rows %}
+          <tr>
+            <td><strong>{{ 'pages.spedizioni.row1_zone' | t }}</strong></td>
+            <td>{{ 'pages.spedizioni.row1_regions' | t }}</td>
+            <td>{{ 'pages.spedizioni.row1_time' | t }}</td>
+          </tr>
+          <tr>
+            <td><strong>{{ 'pages.spedizioni.row2_zone' | t }}</strong></td>
+            <td>{{ 'pages.spedizioni.row2_regions' | t }}</td>
+            <td>{{ 'pages.spedizioni.row2_time' | t }}</td>
+          </tr>
+          <tr>
+            <td><strong>{{ 'pages.spedizioni.row3_zone' | t }}</strong></td>
+            <td>{{ 'pages.spedizioni.row3_regions' | t }}</td>
+            <td>{{ 'pages.spedizioni.row3_time' | t }}</td>
+          </tr>
+        {% endunless %}
       </tbody>
     </table>
   </div>
 
   <div class="faq-section" id="faq-{{ section.id }}">
-    <h2>{{ 'pages.spedizioni.faq_title' | t }}</h2>
+    <h2>{{ faq_title }}</h2>
 
-    <div class="faq-item">
-      <button type="button" class="faq-question" aria-expanded="false">
-        {{ 'pages.spedizioni.faq1_q' | t }}
-        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq1_a' | t }}</div></div>
-    </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question" aria-expanded="false">
-        {{ 'pages.spedizioni.faq2_q' | t }}
-        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq2_a' | t }}</div></div>
-    </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question" aria-expanded="false">
-        {{ 'pages.spedizioni.faq3_q' | t }}
-        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq3_a' | t }}</div></div>
-    </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question" aria-expanded="false">
-        {{ 'pages.spedizioni.faq4_q' | t }}
-        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq4_a' | t }}</div></div>
-    </div>
-
-    <div class="faq-item">
-      <button type="button" class="faq-question" aria-expanded="false">
-        {{ 'pages.spedizioni.faq5_q' | t }}
-        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq5_a' | t }}</div></div>
-    </div>
+    {% assign has_faq_items = false %}
+    {% for block in section.blocks %}
+      {% if block.type == 'faq' %}
+        {% assign has_faq_items = true %}
+        <div class="faq-item" {{ block.shopify_attributes }}>
+          <button type="button" class="faq-question" aria-expanded="false">
+            {{ block.settings.question }}
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">{{ block.settings.answer }}</div></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% unless has_faq_items %}
+      <div class="faq-item">
+        <button type="button" class="faq-question" aria-expanded="false">
+          {{ 'pages.spedizioni.faq1_q' | t }}
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq1_a' | t }}</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-question" aria-expanded="false">
+          {{ 'pages.spedizioni.faq2_q' | t }}
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq2_a' | t }}</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-question" aria-expanded="false">
+          {{ 'pages.spedizioni.faq3_q' | t }}
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq3_a' | t }}</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-question" aria-expanded="false">
+          {{ 'pages.spedizioni.faq4_q' | t }}
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq4_a' | t }}</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-question" aria-expanded="false">
+          {{ 'pages.spedizioni.faq5_q' | t }}
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">{{ 'pages.spedizioni.faq5_a' | t }}</div></div>
+      </div>
+    {% endunless %}
   </div>
 
   <section class="sped-cta">
-    <h2>{{ 'pages.spedizioni.cta_title' | t }}</h2>
-    <a href="{{ routes.all_products_collection_url }}" class="btn btn-ghost">{{ 'pages.spedizioni.cta_btn' | t }}</a>
+    <h2>{{ cta_title }}</h2>
+    <a href="{{ cta_link }}" class="btn btn-ghost">{{ cta_label }}</a>
   </section>
 
   {% if page.content != blank %}
@@ -129,7 +208,216 @@
   "name": "Pagina Spedizioni",
   "tag": "section",
   "class": "section-page-spedizioni",
-  "settings": [],
-  "presets": [{ "name": "Pagina Spedizioni" }]
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow hero",
+      "default": "Spedizioni"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Titolo hero",
+      "default": "Spediamo in tutta Italia"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_lead",
+      "label": "Testo hero",
+      "default": "Ogni ordine viene preparato in confezione isotermica per mantenere freschezza e integrita."
+    },
+    {
+      "type": "text",
+      "id": "table_title",
+      "label": "Titolo tabella zone",
+      "default": "Zone e tempi di consegna"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Titolo FAQ",
+      "default": "Domande frequenti"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Titolo CTA",
+      "default": "Hai bisogno di supporto prima di ordinare?"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Testo CTA",
+      "default": "Scopri i nostri prodotti"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link CTA"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ship_card",
+      "name": "Card spedizione",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icona",
+          "options": [
+            { "value": "package", "label": "Packaging" },
+            { "value": "arrows", "label": "Flusso consegna" },
+            { "value": "truck", "label": "Corriere" },
+            { "value": "temp", "label": "Temperatura" }
+          ],
+          "default": "package"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Imballaggio isotermico"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testo",
+          "default": "Box termoisolante con elementi refrigeranti per mantenere il prodotto fresco."
+        }
+      ]
+    },
+    {
+      "type": "zone_row",
+      "name": "Riga tabella zona",
+      "settings": [
+        {
+          "type": "text",
+          "id": "zone",
+          "label": "Zona",
+          "default": "Nord"
+        },
+        {
+          "type": "text",
+          "id": "regions",
+          "label": "Regioni",
+          "default": "Piemonte, Lombardia, Veneto"
+        },
+        {
+          "type": "text",
+          "id": "times",
+          "label": "Tempi",
+          "default": "24-48h"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Domanda",
+          "default": "Come conservare i prodotti all'arrivo?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Risposta",
+          "default": "Conserva in frigorifero e segui le indicazioni specifiche presenti nella scheda prodotto."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pagina Spedizioni",
+      "blocks": [
+        {
+          "type": "ship_card",
+          "settings": {
+            "icon": "package",
+            "title": "Imballaggio isotermico",
+            "text": "Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso. Mantiene il fresco per 48-72 ore."
+          }
+        },
+        {
+          "type": "ship_card",
+          "settings": {
+            "icon": "arrows",
+            "title": "Processo controllato",
+            "text": "Prepariamo e spediamo nello stesso giorno per ridurre i tempi di permanenza in transito."
+          }
+        },
+        {
+          "type": "ship_card",
+          "settings": {
+            "icon": "truck",
+            "title": "Express 24-48h",
+            "text": "Spedizione nazionale con corriere espresso e tracking in tempo reale."
+          }
+        },
+        {
+          "type": "ship_card",
+          "settings": {
+            "icon": "temp",
+            "title": "Sicurezza alimentare",
+            "text": "Non spediamo in giornate con temperature esterne troppo alte per tutelare il prodotto."
+          }
+        },
+        {
+          "type": "zone_row",
+          "settings": {
+            "zone": "Zona 1",
+            "regions": "Campania, Lazio, Molise, Puglia",
+            "times": "24h"
+          }
+        },
+        {
+          "type": "zone_row",
+          "settings": {
+            "zone": "Zona 2",
+            "regions": "Nord e Centro Italia",
+            "times": "24-48h"
+          }
+        },
+        {
+          "type": "zone_row",
+          "settings": {
+            "zone": "Zona 3",
+            "regions": "Isole e localita disagiate",
+            "times": "48-72h"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Come vengono confezionati i dolci?",
+            "answer": "In box isotermici certificati per il contatto alimentare, con supporti refrigeranti."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Posso tracciare la spedizione?",
+            "answer": "Si, inviamo tracking appena il pacco viene affidato al corriere."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Cosa succede se il corriere ritarda?",
+            "answer": "Monitoriamo ogni spedizione e forniamo supporto rapido per gestire eventuali anomalie."
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

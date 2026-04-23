@@ -1,65 +1,155 @@
+{%- liquid
+  assign hero_eyebrow = section.settings.hero_eyebrow
+  if hero_eyebrow == blank
+    assign hero_eyebrow = 'pages.chi_siamo.eyebrow' | t
+  endif
+  assign hero_title = section.settings.hero_title
+  if hero_title == blank
+    assign hero_title = 'pages.chi_siamo.title' | t
+  endif
+  assign hero_lead = section.settings.hero_lead
+  if hero_lead == blank
+    assign hero_lead = 'pages.chi_siamo.lead' | t
+  endif
+
+  assign story_title = section.settings.story_title
+  if story_title == blank
+    assign story_title = 'pages.chi_siamo.story_h2' | t
+  endif
+  assign story_p1 = section.settings.story_p1
+  if story_p1 == blank
+    assign story_p1 = 'pages.chi_siamo.story_p1' | t
+  endif
+  assign story_p2 = section.settings.story_p2
+  if story_p2 == blank
+    assign story_p2 = 'pages.chi_siamo.story_p2' | t
+  endif
+  assign story_p3 = section.settings.story_p3
+  if story_p3 == blank
+    assign story_p3 = 'pages.chi_siamo.story_p3' | t
+  endif
+  assign fallback_story_image_alt = 'pages.chi_siamo.photo_alt' | t
+
+  assign values_eyebrow = section.settings.values_eyebrow
+  if values_eyebrow == blank
+    assign values_eyebrow = 'pages.chi_siamo.values_eyebrow' | t
+  endif
+  assign values_title = section.settings.values_title
+  if values_title == blank
+    assign values_title = 'pages.chi_siamo.values_title' | t
+  endif
+
+  assign payoff_title = section.settings.payoff_title
+  if payoff_title == blank
+    assign payoff_title = 'pages.chi_siamo.payoff_title' | t
+  endif
+  assign payoff_text = section.settings.payoff_text
+  if payoff_text == blank
+    assign payoff_text = 'pages.chi_siamo.payoff_text' | t
+  endif
+
+  assign cta_title = section.settings.cta_title
+  if cta_title == blank
+    assign cta_title = 'pages.chi_siamo.cta_title' | t
+  endif
+  assign cta_label = section.settings.cta_label
+  if cta_label == blank
+    assign cta_label = 'pages.chi_siamo.cta_btn' | t
+  endif
+  assign cta_link = section.settings.cta_link | default: routes.all_products_collection_url
+-%}
+
 <div class="page-chi-siamo">
   <section class="chi-hero texture">
     <div class="container">
-      <p class="eyebrow">{{ 'pages.chi_siamo.eyebrow' | t }}</p>
-      <h1>{{ 'pages.chi_siamo.title' | t }}</h1>
-      <p>{{ 'pages.chi_siamo.lead' | t }}</p>
+      <p class="eyebrow">{{ hero_eyebrow }}</p>
+      <h1>{{ hero_title }}</h1>
+      <p>{{ hero_lead }}</p>
     </div>
   </section>
 
   <div class="storia">
     <div class="storia-text">
-      <h2>{{ 'pages.chi_siamo.story_h2' | t }}</h2>
-      <p>{{ 'pages.chi_siamo.story_p1' | t }}</p>
-      <p>{{ 'pages.chi_siamo.story_p2' | t }}</p>
-      <p>{{ 'pages.chi_siamo.story_p3' | t }}</p>
+      <h2>{{ story_title }}</h2>
+      <p>{{ story_p1 }}</p>
+      <p>{{ story_p2 }}</p>
+      <p>{{ story_p3 }}</p>
     </div>
     <div class="storia-photo">
-      <img src="{{ 'images/Cannoli Siciliani.jpg' | asset_url }}" alt="{{ 'pages.chi_siamo.photo_alt' | t }}" loading="lazy" width="800" height="1000">
+      {% if section.settings.story_image != blank %}
+        <img
+          src="{{ section.settings.story_image | image_url: width: 1200 }}"
+          alt="{{ section.settings.story_image.alt | default: section.settings.story_image_alt | escape }}"
+          loading="lazy"
+          width="{{ section.settings.story_image.width }}"
+          height="{{ section.settings.story_image.height }}">
+      {% else %}
+        <img src="{{ 'images/Cannoli Siciliani.jpg' | asset_url }}" alt="{{ section.settings.story_image_alt | default: fallback_story_image_alt | escape }}" loading="lazy" width="800" height="1000">
+      {% endif %}
     </div>
   </div>
 
   <section class="valori">
     <div class="container">
       <div class="section-header">
-        <p class="eyebrow">{{ 'pages.chi_siamo.values_eyebrow' | t }}</p>
-        <h2 class="section-title">{{ 'pages.chi_siamo.values_title' | t }}</h2>
+        <p class="eyebrow">{{ values_eyebrow }}</p>
+        <h2 class="section-title">{{ values_title }}</h2>
       </div>
       <div class="valori-grid">
-        <div class="valore-card">
-          <div class="valore-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            {% if block.type == 'value' %}
+              <div class="valore-card" {{ block.shopify_attributes }}>
+                <div class="valore-icon" aria-hidden="true">
+                  {% if block.settings.icon == 'hands' %}
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+                  {% elsif block.settings.icon == 'leaf' %}
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8a8 8 0 0 1-8 8h-2z"/><path d="M7 21a6 6 0 0 1-5.98-5.38C2 15 5 13 9 13.88"/></svg>
+                  {% else %}
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  {% endif %}
+                </div>
+                <h3>{{ block.settings.title }}</h3>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <div class="valore-card">
+            <div class="valore-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+            </div>
+            <h3>{{ 'pages.chi_siamo.v1_title' | t }}</h3>
+            <p>{{ 'pages.chi_siamo.v1_text' | t }}</p>
           </div>
-          <h3>{{ 'pages.chi_siamo.v1_title' | t }}</h3>
-          <p>{{ 'pages.chi_siamo.v1_text' | t }}</p>
-        </div>
-        <div class="valore-card">
-          <div class="valore-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8a8 8 0 0 1-8 8h-2z"/><path d="M7 21a6 6 0 0 1-5.98-5.38C2 15 5 13 9 13.88"/></svg>
+          <div class="valore-card">
+            <div class="valore-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8a8 8 0 0 1-8 8h-2z"/><path d="M7 21a6 6 0 0 1-5.98-5.38C2 15 5 13 9 13.88"/></svg>
+            </div>
+            <h3>{{ 'pages.chi_siamo.v2_title' | t }}</h3>
+            <p>{{ 'pages.chi_siamo.v2_text' | t }}</p>
           </div>
-          <h3>{{ 'pages.chi_siamo.v2_title' | t }}</h3>
-          <p>{{ 'pages.chi_siamo.v2_text' | t }}</p>
-        </div>
-        <div class="valore-card">
-          <div class="valore-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <div class="valore-card">
+            <div class="valore-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <h3>{{ 'pages.chi_siamo.v3_title' | t }}</h3>
+            <p>{{ 'pages.chi_siamo.v3_text' | t }}</p>
           </div>
-          <h3>{{ 'pages.chi_siamo.v3_title' | t }}</h3>
-          <p>{{ 'pages.chi_siamo.v3_text' | t }}</p>
-        </div>
+        {% endif %}
       </div>
     </div>
   </section>
 
   <section class="payoff">
-    <h2>{{ 'pages.chi_siamo.payoff_title' | t }}</h2>
-    <p>{{ 'pages.chi_siamo.payoff_text' | t }}</p>
+    <h2>{{ payoff_title }}</h2>
+    <p>{{ payoff_text }}</p>
   </section>
 
   <section class="chi-cta texture">
     <div class="container">
-      <h2>{{ 'pages.chi_siamo.cta_title' | t }}</h2>
-      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">{{ 'pages.chi_siamo.cta_btn' | t }}</a>
+      <h2>{{ cta_title }}</h2>
+      <a href="{{ cta_link }}" class="btn btn-primary">{{ cta_label }}</a>
     </div>
   </section>
 
@@ -75,7 +165,180 @@
   "name": "Pagina Chi siamo",
   "tag": "section",
   "class": "section-page-chi-siamo",
-  "settings": [],
-  "presets": [{ "name": "Pagina Chi siamo" }]
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow hero",
+      "default": "Chi siamo"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Titolo hero",
+      "default": "Da Ariano Irpino, con l'anima della Sicilia."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_lead",
+      "label": "Testo hero",
+      "default": "Delizie Siciliane nasce dall'incontro tra Irpinia e Sicilia, tra mani artigiane e ricette autentiche."
+    },
+    {
+      "type": "header",
+      "content": "Storia"
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Titolo storia",
+      "default": "La nostra storia"
+    },
+    {
+      "type": "textarea",
+      "id": "story_p1",
+      "label": "Paragrafo 1",
+      "default": "Siamo nati dall'incontro di due anime forti: la tenacia dell'Irpinia e la dolcezza della Sicilia."
+    },
+    {
+      "type": "textarea",
+      "id": "story_p2",
+      "label": "Paragrafo 2",
+      "default": "Nel nostro laboratorio ad Ariano Irpino trasformiamo ricette tramandate da generazioni in dolci che viaggiano in tutta Italia."
+    },
+    {
+      "type": "textarea",
+      "id": "story_p3",
+      "label": "Paragrafo 3",
+      "default": "Ogni prodotto nasce da materie prime selezionate e da una cura quotidiana per qualita e freschezza."
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Immagine storia"
+    },
+    {
+      "type": "text",
+      "id": "story_image_alt",
+      "label": "Alt immagine storia",
+      "default": "Laboratorio Delizie Siciliane"
+    },
+    {
+      "type": "header",
+      "content": "Valori"
+    },
+    {
+      "type": "text",
+      "id": "values_eyebrow",
+      "label": "Eyebrow valori",
+      "default": "I nostri valori"
+    },
+    {
+      "type": "text",
+      "id": "values_title",
+      "label": "Titolo valori",
+      "default": "Quello in cui crediamo"
+    },
+    {
+      "type": "header",
+      "content": "Payoff e CTA"
+    },
+    {
+      "type": "text",
+      "id": "payoff_title",
+      "label": "Titolo payoff",
+      "default": "Sicilia bedda"
+    },
+    {
+      "type": "textarea",
+      "id": "payoff_text",
+      "label": "Testo payoff",
+      "default": "Un viaggio tra tradizione e innovazione, ogni giorno."
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Titolo CTA finale",
+      "default": "Scopri le nostre delizie"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Pulsante CTA",
+      "default": "Vai allo shop"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link CTA"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Valore",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icona",
+          "options": [
+            { "value": "hands", "label": "Mani artigiane" },
+            { "value": "leaf", "label": "Ingredienti naturali" },
+            { "value": "heart", "label": "Cuore/passione" }
+          ],
+          "default": "hands"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Artigianalita"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testo",
+          "default": "Produzione fatta a mano nel nostro laboratorio."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Pagina Chi siamo",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "icon": "hands",
+            "title": "Artigianalita",
+            "text": "Ogni dolce nasce da un lavoro manuale accurato e quotidiano."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "title": "Qualita",
+            "text": "Ingredienti selezionati e ricette siciliane autentiche."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "icon": "heart",
+            "title": "Passione",
+            "text": "Mettiamo il cuore in ogni spedizione e in ogni morso."
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

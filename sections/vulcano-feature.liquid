@@ -36,22 +36,33 @@
       <span class="vulcano-badge">{{ section.settings.badge }}</span>
       <p class="eyebrow eyebrow-light">{{ section.settings.eyebrow }}</p>
       <h2 class="vulcano-title" id="vulcano-title-{{ section.id }}">
-        Vulcano<br><em>Etna</em>
+        {{ section.settings.title_line_1 }}<br><em>{{ section.settings.title_line_2 }}</em>
       </h2>
       <p class="vulcano-desc">{{ section.settings.description }}</p>
       <ul class="vulcano-features">
-        <li>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
-          Ricetta e forma brevettate
-        </li>
-        <li>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
-          150g · confezione da 6 pz.
-        </li>
-        <li>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
-          Solo da Delizie Siciliane
-        </li>
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            {% if block.type == 'feature' %}
+              <li {{ block.shopify_attributes }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+                {{ block.settings.text }}
+              </li>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            Ricetta e forma brevettate
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            150g · confezione da 6 pz.
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            Solo da Delizie Siciliane
+          </li>
+        {% endif %}
       </ul>
       <a href="{{ vp_url }}" class="btn btn-primary vulcano-cta">{{ section.settings.cta_label }}</a>
     </div>
@@ -92,6 +103,18 @@
       "default": "Invenzione originale"
     },
     {
+      "type": "text",
+      "id": "title_line_1",
+      "label": "Titolo riga 1",
+      "default": "Vulcano"
+    },
+    {
+      "type": "text",
+      "id": "title_line_2",
+      "label": "Titolo in corsivo",
+      "default": "Etna"
+    },
+    {
       "type": "textarea",
       "id": "description",
       "label": "Descrizione",
@@ -109,6 +132,29 @@
       "label": "Link CTA (sovrascrive il prodotto selezionato)"
     }
   ],
-  "presets": [{ "name": "Vulcano Feature" }]
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Punto chiave",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Testo",
+          "default": "Ricetta e forma brevettate"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vulcano Feature",
+      "blocks": [
+        { "type": "feature", "settings": { "text": "Ricetta e forma brevettate" } },
+        { "type": "feature", "settings": { "text": "150g - confezione da 6 pz." } },
+        { "type": "feature", "settings": { "text": "Solo da Delizie Siciliane" } }
+      ]
+    }
+  ]
 }
 {% endschema %}

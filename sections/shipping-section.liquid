@@ -4,65 +4,94 @@
 <section class="section shipping texture" aria-labelledby="spedizioni-title-{{ section.id }}">
   <div class="container">
     <div class="section-header">
-      <p class="eyebrow">Spedizioni</p>
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
       <h2 class="section-title" id="spedizioni-title-{{ section.id }}">
-        Il fresco arriva a casa tua,<br>intatto.
+        {{ section.settings.title }}
       </h2>
-      <p class="section-sub">
-        Sappiamo quanto è prezioso ricevere un dolce integro. Ogni pacco viene preparato
-        con la stessa cura del prodotto che contiene.
-      </p>
+      <p class="section-sub">{{ section.settings.subtitle }}</p>
     </div>
 
     <div class="shipping-grid">
-      <div class="ship-card fade-up">
-        <span class="ship-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2C8 2 4 5.5 4 10c0 6 8 12 8 12s8-6 8-12c0-4.5-4-8-8-8z"/>
-            <circle cx="12" cy="10" r="2.5"/>
-          </svg>
-        </span>
-        <h3>Imballaggio isotermico</h3>
-        <p>Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso. Mantiene il fresco per 48–72 ore.</p>
-      </div>
-
-      <div class="ship-card fade-up">
-        <span class="ship-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="1" y="3" width="15" height="13" rx="1"/>
-            <path d="M16 8h4l3 5v3h-7V8z"/>
-            <circle cx="5.5" cy="18.5" r="2.5"/>
-            <circle cx="18.5" cy="18.5" r="2.5"/>
-          </svg>
-        </span>
-        <h3>Express 24–48h</h3>
-        <p>Spediamo con corriere espresso in tutta Italia. Tracking in tempo reale dalla nostra email di conferma.</p>
-      </div>
-
-      <div class="ship-card fade-up">
-        <span class="ship-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
-          </svg>
-        </span>
-        <h3>Sicurezza alimentare</h3>
-        <p>Non spediamo nei periodi con temperature esterne previste superiori a 30°C. La tua sicurezza viene prima di tutto.</p>
-      </div>
-
-      <div class="ship-card fade-up">
-        <span class="ship-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 11l3 3L22 4"/>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-          </svg>
-        </span>
-        <h3>Packaging certificato</h3>
-        <p>Tutti i materiali sono conformi alla normativa CE per il contatto con alimenti. Sicuri per te, rispettosi dell'ambiente.</p>
-      </div>
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'ship_item' %}
+            <div class="ship-card fade-up" {{ block.shopify_attributes }}>
+              <span class="ship-icon" aria-hidden="true">
+                {% if block.settings.icon == 'pin' %}
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2C8 2 4 5.5 4 10c0 6 8 12 8 12s8-6 8-12c0-4.5-4-8-8-8z"/>
+                    <circle cx="12" cy="10" r="2.5"/>
+                  </svg>
+                {% elsif block.settings.icon == 'truck' %}
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="3" width="15" height="13" rx="1"/>
+                    <path d="M16 8h4l3 5v3h-7V8z"/>
+                    <circle cx="5.5" cy="18.5" r="2.5"/>
+                    <circle cx="18.5" cy="18.5" r="2.5"/>
+                  </svg>
+                {% elsif block.settings.icon == 'temp' %}
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                  </svg>
+                {% else %}
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                  </svg>
+                {% endif %}
+              </span>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="ship-card fade-up">
+          <span class="ship-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C8 2 4 5.5 4 10c0 6 8 12 8 12s8-6 8-12c0-4.5-4-8-8-8z"/>
+              <circle cx="12" cy="10" r="2.5"/>
+            </svg>
+          </span>
+          <h3>Imballaggio isotermico</h3>
+          <p>Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso. Mantiene il fresco per 48-72 ore.</p>
+        </div>
+        <div class="ship-card fade-up">
+          <span class="ship-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13" rx="1"/>
+              <path d="M16 8h4l3 5v3h-7V8z"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/>
+              <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+          </span>
+          <h3>Express 24-48h</h3>
+          <p>Spediamo con corriere espresso in tutta Italia. Tracking in tempo reale dalla nostra email di conferma.</p>
+        </div>
+        <div class="ship-card fade-up">
+          <span class="ship-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+            </svg>
+          </span>
+          <h3>Sicurezza alimentare</h3>
+          <p>Non spediamo nei periodi con temperature esterne previste superiori a 30 gradi. La tua sicurezza viene prima di tutto.</p>
+        </div>
+        <div class="ship-card fade-up">
+          <span class="ship-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </span>
+          <h3>Packaging certificato</h3>
+          <p>Tutti i materiali sono conformi alla normativa CE per il contatto con alimenti. Sicuri per te, rispettosi dell'ambiente.</p>
+        </div>
+      {% endif %}
     </div>
 
     <div class="ship-cta">
-      <a href="{{ sped_url }}" class="btn btn-outline">Tutte le info sulle spedizioni</a>
+      <a href="{{ sped_url }}" class="btn btn-outline">{{ section.settings.cta_label }}</a>
     </div>
   </div>
 </section>
@@ -79,11 +108,106 @@
   "tag": "section",
   "settings": [
     {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Spedizioni"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Titolo",
+      "default": "Il fresco arriva a casa tua,<br>intatto."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sottotitolo",
+      "default": "Sappiamo quanto e prezioso ricevere un dolce integro. Ogni pacco viene preparato con la stessa cura del prodotto che contiene."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Testo pulsante",
+      "default": "Tutte le info sulle spedizioni"
+    },
+    {
       "type": "url",
       "id": "cta_link",
       "label": "Link «Tutte le info»"
     }
   ],
-  "presets": [{ "name": "Sezione Spedizioni" }]
+  "blocks": [
+    {
+      "type": "ship_item",
+      "name": "Card spedizione",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icona",
+          "options": [
+            { "value": "pin", "label": "Posizione/freddo" },
+            { "value": "truck", "label": "Corriere" },
+            { "value": "temp", "label": "Temperatura" },
+            { "value": "check", "label": "Certificazione" }
+          ],
+          "default": "pin"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Imballaggio isotermico"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testo",
+          "default": "Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Sezione Spedizioni",
+      "blocks": [
+        {
+          "type": "ship_item",
+          "settings": {
+            "icon": "pin",
+            "title": "Imballaggio isotermico",
+            "text": "Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso. Mantiene il fresco per 48-72 ore."
+          }
+        },
+        {
+          "type": "ship_item",
+          "settings": {
+            "icon": "truck",
+            "title": "Express 24-48h",
+            "text": "Spediamo con corriere espresso in tutta Italia. Tracking in tempo reale dalla nostra email di conferma."
+          }
+        },
+        {
+          "type": "ship_item",
+          "settings": {
+            "icon": "temp",
+            "title": "Sicurezza alimentare",
+            "text": "Non spediamo nei periodi con temperature esterne previste superiori a 30 gradi."
+          }
+        },
+        {
+          "type": "ship_item",
+          "settings": {
+            "icon": "check",
+            "title": "Packaging certificato",
+            "text": "Materiali conformi alla normativa CE per il contatto con alimenti."
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

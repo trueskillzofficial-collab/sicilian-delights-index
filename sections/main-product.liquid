@@ -1,0 +1,458 @@
+{% comment %} Pagina prodotto — stile allineato a product.html {% endcomment %}
+{%- liquid
+  assign product_tags_downcase = product.tags | join: ',' | downcase
+  assign brevettato_metafield = product.metafields.custom.brevettato.value | downcase
+  assign is_best_seller = false
+  assign is_brevettato = false
+  assign is_kit_cannolo = false
+
+  if product_tags_downcase contains 'best-seller' or product_tags_downcase contains 'bestseller'
+    assign is_best_seller = true
+  endif
+  if product_tags_downcase contains 'brevettato' or brevettato_metafield == 'true'
+    assign is_brevettato = true
+  endif
+  if product_tags_downcase contains 'kit-cannolo'
+    assign is_kit_cannolo = true
+  endif
+
+  assign trust_cold_text = section.settings.trust_cold_text
+  if trust_cold_text == blank
+    assign trust_cold_text = 'products.trust_cold' | t
+  endif
+  assign trust_ship_text = section.settings.trust_ship_text
+  if trust_ship_text == blank
+    assign trust_ship_text = 'products.trust_ship' | t
+  endif
+-%}
+
+{% if is_brevettato %}
+  <div class="brevetto-banner" role="complementary">
+    <span>★</span> {{ section.settings.brevetto_banner_text }} <span>★</span>
+  </div>
+{% endif %}
+
+<div class="pp-breadcrumb">
+  <div class="container">
+    <a href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+    {% if product.collections.first %}
+      <span aria-hidden="true"> / </span>
+      <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+    {% endif %}
+    <span aria-hidden="true"> / </span>
+    <span>{{ product.title }}</span>
+  </div>
+</div>
+
+<section class="product-hero">
+  <div class="container">
+    <div class="product-hero-grid">
+      <div class="product-gallery">
+        <div class="main-image">
+          {% if product.featured_media %}
+            <img
+              id="ProductMainImage"
+              src="{{ product.featured_media | image_url: width: 1200 }}"
+              alt="{{ product.featured_media.alt | default: product.title | escape }}"
+              width="{{ product.featured_media.preview_image.width }}"
+              height="{{ product.featured_media.preview_image.height }}"
+            >
+          {% else %}
+            <div class="card-img-placeholder">{{ product.title }}</div>
+          {% endif %}
+          {% if is_best_seller %}
+            <span class="badge" style="position:absolute;top:16px;left:16px">BEST<br>SELLER</span>
+          {% endif %}
+          {% if is_brevettato %}
+            <span class="badge badge-left">{{ section.settings.brevettato_badge_label }}</span>
+          {% endif %}
+        </div>
+        {% if product.media.size > 1 %}
+          <div class="thumb-row">
+            {% for media in product.media limit: 8 %}
+              <button type="button" class="thumb{% if forloop.first %} active{% endif %}" data-media-src="{{ media | image_url: width: 1200 }}" data-media-alt="{{ media.alt | escape }}" aria-label="{{ 'products.photo_n' | t: n: forloop.index }}">
+                <img src="{{ media | image_url: width: 200 }}" alt="" loading="lazy" width="72" height="72">
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-essentials">
+        <p class="product-eyebrow">
+          {{ product.type | default: shop.name }}
+          {% if is_best_seller %} · {{ section.settings.best_seller_flag_label }}{% endif %}
+        </p>
+        <h1>{{ product.title }}</h1>
+        <p class="product-price-tag" id="ProductPrice">{{ product.selected_or_first_available_variant.price | money }}</p>
+        <div class="product-short-desc rte">{{ product.description | strip_html | truncatewords: 48 }}</div>
+        {% if is_best_seller or is_brevettato or is_kit_cannolo %}
+          <div class="product-key-features" aria-label="Caratteristiche prodotto">
+            <div class="product-key-features-head">
+              {% if is_best_seller %}
+                <span class="product-flag product-flag-best">{{ section.settings.best_seller_flag_label }}</span>
+              {% endif %}
+              {% if is_brevettato %}
+                <span class="product-flag product-flag-patent">{{ section.settings.brevettato_badge_label }}</span>
+              {% endif %}
+              {% if is_kit_cannolo %}
+                <span class="product-flag product-flag-kit">{{ section.settings.kit_flag_label }}</span>
+              {% endif %}
+            </div>
+            <ul class="product-key-features-list">
+              {% if is_kit_cannolo %}
+                <li>{{ section.settings.kit_feature_1 }}</li>
+                <li>{{ section.settings.kit_feature_2 }}</li>
+              {% endif %}
+              {% if is_best_seller %}
+                <li>{{ section.settings.best_feature_1 }}</li>
+                <li>{{ section.settings.best_feature_2 }}</li>
+              {% endif %}
+              {% if is_brevettato %}
+                <li>{{ section.settings.brevetto_feature_1 }}</li>
+                <li>{{ section.settings.brevetto_feature_2 }}</li>
+              {% endif %}
+            </ul>
+          </div>
+        {% endif %}
+        {% if is_brevettato %}
+          <div class="brevetto-tag">{{ section.settings.brevetto_tag_line }}</div>
+        {% endif %}
+
+        {% form 'product', product, id: 'ProductForm', class: 'product-form', novalidate: 'novalidate' %}
+          {% if product.has_only_default_variant %}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {% else %}
+            <div class="form-group" style="margin-top:8px;">
+              <label class="pp-option-label" for="ProductVariantSelect">{{ 'products.choose_variant' | t }}</label>
+              <select name="id" id="ProductVariantSelect" class="form-control product-variant-select">
+                {% for variant in product.variants %}
+                  <option
+                    value="{{ variant.id }}"
+                    {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                    {% unless variant.available %}disabled{% endunless %}
+                    data-price="{{ variant.price }}"
+                  >
+                    {{ variant.title }} — {{ variant.price | money }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endif %}
+
+          <div class="cta-area">
+            <div class="quantity-selector">
+              <button type="button" class="qty-btn" data-qty-change="-1" aria-label="{{ 'products.decrease_qty' | t }}">−</button>
+              <span class="qty-val" id="QtyVal">1</span>
+              <button type="button" class="qty-btn" data-qty-change="1" aria-label="{{ 'products.increase_qty' | t }}">+</button>
+              <input type="hidden" name="quantity" id="QuantityInput" value="1">
+            </div>
+            <button type="submit" name="add" class="add-to-cart-big" {% unless product.available %}disabled{% endunless %}>
+              {{ 'products.add_to_cart' | t }}
+            </button>
+          </div>
+        {% endform %}
+
+        <div class="trust-badges-inline">
+          <span class="t-badge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2C8 2 4 5.5 4 10c0 6 8 12 8 12s8-6 8-12c0-4.5-4-8-8-8z"/></svg>
+            {{ trust_cold_text }}
+          </span>
+          <span class="t-badge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/></svg>
+            {% if is_brevettato %}{{ section.settings.trust_patent_text }}{% else %}{{ trust_ship_text }}{% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {%- capture tab_desc_meta -%}{{ product.metafields.custom.descrizione | metafield_tag }}{%- endcapture -%}
+    {%- capture tab_comp_content -%}{{ product.metafields.custom.composizione | metafield_tag }}{%- endcapture -%}
+    {%- capture tab_prep_content -%}{{ product.metafields.custom.preparazione | metafield_tag }}{%- endcapture -%}
+    {%- capture tab_ingr_content -%}{{ product.metafields.custom.ingredienti | metafield_tag }}{%- endcapture -%}
+    {%- capture tab_conserv_content -%}{{ product.metafields.custom.conservazione | metafield_tag }}{%- endcapture -%}
+    {%- capture tab_sped_content -%}{{ product.metafields.custom.spedizioni | metafield_tag }}{%- endcapture -%}
+
+    {%- capture tab_desc_content -%}
+      {%- if tab_desc_meta | strip_html | strip != blank -%}
+        {{ tab_desc_meta }}
+      {%- elsif product.description != blank -%}
+        {{ product.description }}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- assign tab_desc_plain = tab_desc_content | strip_html | strip_newlines | replace: '&nbsp;', '' | replace: ' ', '' | strip -%}
+    {%- assign tab_comp_plain = tab_comp_content | strip_html | strip_newlines | replace: '&nbsp;', '' | replace: ' ', '' | strip -%}
+    {%- assign tab_prep_plain = tab_prep_content | strip_html | strip_newlines | replace: '&nbsp;', '' | replace: ' ', '' | strip -%}
+    {%- assign tab_ingr_plain = tab_ingr_content | strip_html | strip_newlines | replace: '&nbsp;', '' | replace: ' ', '' | strip -%}
+    {%- assign tab_conserv_plain = tab_conserv_content | strip_html | strip_newlines | replace: '&nbsp;', '' | replace: ' ', '' | strip -%}
+    {%- assign tab_sped_plain = tab_sped_content | strip_html | strip_newlines | replace: '&nbsp;', '' | replace: ' ', '' | strip -%}
+
+    {%- if tab_sped_plain == blank or tab_sped_plain.size < 12 -%}
+      {%- capture tab_sped_content -%}
+        <p>{{ section.settings.default_shipping_tab }}</p>
+      {%- endcapture -%}
+      {%- assign tab_sped_plain = tab_sped_content | strip_html | strip_newlines | strip -%}
+    {%- endif -%}
+
+    {%- assign first_tab_key = '' -%}
+    {%- if tab_desc_plain != blank and first_tab_key == '' -%}{%- assign first_tab_key = 'desc' -%}{%- endif -%}
+    {%- if tab_comp_plain != blank and first_tab_key == '' -%}{%- assign first_tab_key = 'comp' -%}{%- endif -%}
+    {%- if tab_prep_plain != blank and first_tab_key == '' -%}{%- assign first_tab_key = 'prep' -%}{%- endif -%}
+    {%- if tab_ingr_plain != blank and first_tab_key == '' -%}{%- assign first_tab_key = 'ingr' -%}{%- endif -%}
+    {%- if tab_conserv_plain != blank and first_tab_key == '' -%}{%- assign first_tab_key = 'conserv' -%}{%- endif -%}
+    {%- if tab_sped_plain != blank and first_tab_key == '' -%}{%- assign first_tab_key = 'sped' -%}{%- endif -%}
+
+    {% if first_tab_key != '' %}
+      <div class="product-tabs product-tabs-page">
+        <ul class="tabs-nav" role="tablist">
+          {% if tab_desc_plain != blank %}
+            <li><button type="button" class="tab-btn{% if first_tab_key == 'desc' %} active{% endif %}" data-tab-target="desc" role="tab">{{ section.settings.tab_label_desc }}</button></li>
+          {% endif %}
+          {% if tab_comp_plain != blank %}
+            <li><button type="button" class="tab-btn{% if first_tab_key == 'comp' %} active{% endif %}" data-tab-target="comp" role="tab">{{ section.settings.tab_label_comp }}</button></li>
+          {% endif %}
+          {% if tab_prep_plain != blank %}
+            <li><button type="button" class="tab-btn{% if first_tab_key == 'prep' %} active{% endif %}" data-tab-target="prep" role="tab">{{ section.settings.tab_label_prep }}</button></li>
+          {% endif %}
+          {% if tab_ingr_plain != blank %}
+            <li><button type="button" class="tab-btn{% if first_tab_key == 'ingr' %} active{% endif %}" data-tab-target="ingr" role="tab">{{ section.settings.tab_label_ingr }}</button></li>
+          {% endif %}
+          {% if tab_conserv_plain != blank %}
+            <li><button type="button" class="tab-btn{% if first_tab_key == 'conserv' %} active{% endif %}" data-tab-target="conserv" role="tab">{{ section.settings.tab_label_conserv }}</button></li>
+          {% endif %}
+          {% if tab_sped_plain != blank %}
+            <li><button type="button" class="tab-btn{% if first_tab_key == 'sped' %} active{% endif %}" data-tab-target="sped" role="tab">{{ section.settings.tab_label_sped }}</button></li>
+          {% endif %}
+        </ul>
+
+        {% if tab_desc_plain != blank %}
+          <div id="tab-panel-desc" class="tab-panel{% if first_tab_key == 'desc' %} show{% endif %}" role="tabpanel"{% unless first_tab_key == 'desc' %} hidden{% endunless %}>
+            <div class="rte pp-desc-html">{{ tab_desc_content }}</div>
+          </div>
+        {% endif %}
+        {% if tab_comp_plain != blank %}
+          <div id="tab-panel-comp" class="tab-panel{% if first_tab_key == 'comp' %} show{% endif %}" role="tabpanel"{% unless first_tab_key == 'comp' %} hidden{% endunless %}>
+            <div class="rte pp-desc-html">{{ tab_comp_content }}</div>
+          </div>
+        {% endif %}
+        {% if tab_prep_plain != blank %}
+          <div id="tab-panel-prep" class="tab-panel{% if first_tab_key == 'prep' %} show{% endif %}" role="tabpanel"{% unless first_tab_key == 'prep' %} hidden{% endunless %}>
+            <div class="rte pp-desc-html">{{ tab_prep_content }}</div>
+          </div>
+        {% endif %}
+        {% if tab_ingr_plain != blank %}
+          <div id="tab-panel-ingr" class="tab-panel{% if first_tab_key == 'ingr' %} show{% endif %}" role="tabpanel"{% unless first_tab_key == 'ingr' %} hidden{% endunless %}>
+            <div class="rte pp-desc-html">{{ tab_ingr_content }}</div>
+          </div>
+        {% endif %}
+        {% if tab_conserv_plain != blank %}
+          <div id="tab-panel-conserv" class="tab-panel{% if first_tab_key == 'conserv' %} show{% endif %}" role="tabpanel"{% unless first_tab_key == 'conserv' %} hidden{% endunless %}>
+            <div class="rte pp-desc-html">{{ tab_conserv_content }}</div>
+          </div>
+        {% endif %}
+        {% if tab_sped_plain != blank %}
+          <div id="tab-panel-sped" class="tab-panel{% if first_tab_key == 'sped' %} show{% endif %}" role="tabpanel"{% unless first_tab_key == 'sped' %} hidden{% endunless %}>
+            <div class="rte pp-desc-html">{{ tab_sped_content }}</div>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  (function () {
+    document.querySelectorAll('.thumb-row .thumb').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var src = btn.getAttribute('data-media-src');
+        var alt = btn.getAttribute('data-media-alt') || '';
+        var main = document.getElementById('ProductMainImage');
+        if (main && src) {
+          main.src = src;
+          main.alt = alt;
+        }
+        document.querySelectorAll('.thumb-row .thumb').forEach(function (t) { t.classList.remove('active'); });
+        btn.classList.add('active');
+      });
+    });
+
+    var qtyVal = document.getElementById('QtyVal');
+    var qtyInput = document.getElementById('QuantityInput');
+    if (qtyInput) {
+      document.querySelectorAll('[data-qty-change]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var d = parseInt(b.getAttribute('data-qty-change'), 10);
+          var v = parseInt(qtyInput.value, 10) || 1;
+          v = Math.max(1, v + d);
+          qtyInput.value = String(v);
+          if (qtyVal) qtyVal.textContent = String(v);
+        });
+      });
+    }
+
+    var vSel = document.getElementById('ProductVariantSelect');
+    var priceEl = document.getElementById('ProductPrice');
+    if (vSel && priceEl) {
+      vSel.addEventListener('change', function () {
+        var opt = vSel.options[vSel.selectedIndex];
+        var cents = parseInt(opt.getAttribute('data-price'), 10);
+        if (!isNaN(cents)) {
+          var euros = (cents / 100).toFixed(2).replace('.', ',');
+          priceEl.textContent = '€' + euros;
+        }
+      });
+    }
+
+    document.querySelectorAll('.product-tabs-page .tab-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-tab-target');
+        document.querySelectorAll('.product-tabs-page .tab-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.querySelectorAll('.product-tabs-page .tab-panel').forEach(function (p) {
+          p.classList.remove('show');
+          p.hidden = true;
+        });
+        var panel = document.getElementById('tab-panel-' + id);
+        if (panel) {
+          panel.classList.add('show');
+          panel.hidden = false;
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brevetto_banner_text",
+      "label": "Testo banner brevetto",
+      "default": "Prodotto brevettato — Invenzione originale di Delizie Siciliane"
+    },
+    {
+      "type": "text",
+      "id": "brevettato_badge_label",
+      "label": "Label badge brevettato",
+      "default": "Brevettato"
+    },
+    {
+      "type": "text",
+      "id": "best_seller_flag_label",
+      "label": "Label best seller",
+      "default": "Best seller"
+    },
+    {
+      "type": "text",
+      "id": "kit_flag_label",
+      "label": "Label kit",
+      "default": "Kit Cannolo"
+    },
+    {
+      "type": "textarea",
+      "id": "kit_feature_1",
+      "label": "Kit - punto 1",
+      "default": "Cialde e crema separate per mantenere la croccantezza fino al servizio."
+    },
+    {
+      "type": "textarea",
+      "id": "kit_feature_2",
+      "label": "Kit - punto 2",
+      "default": "Esperienza da completare a casa, ideale da condividere a tavola."
+    },
+    {
+      "type": "textarea",
+      "id": "best_feature_1",
+      "label": "Best seller - punto 1",
+      "default": "Scelto dai clienti per gusto, freschezza e costanza artigianale."
+    },
+    {
+      "type": "textarea",
+      "id": "best_feature_2",
+      "label": "Best seller - punto 2",
+      "default": "Formato ideale per occasioni speciali e regali gourmet."
+    },
+    {
+      "type": "textarea",
+      "id": "brevetto_feature_1",
+      "label": "Brevettato - punto 1",
+      "default": "Processo artigianale proprietario per mantenere struttura e qualita."
+    },
+    {
+      "type": "textarea",
+      "id": "brevetto_feature_2",
+      "label": "Brevettato - punto 2",
+      "default": "Equilibrio studiato tra croccantezza, crema e tenuta in spedizione."
+    },
+    {
+      "type": "text",
+      "id": "brevetto_tag_line",
+      "label": "Sottotitolo brevetto",
+      "default": "Brevetto esclusivo Delizie Siciliane"
+    },
+    {
+      "type": "text",
+      "id": "trust_cold_text",
+      "label": "Badge fiducia freddo",
+      "default": "Spedizione refrigerata"
+    },
+    {
+      "type": "text",
+      "id": "trust_ship_text",
+      "label": "Badge fiducia spedizione",
+      "default": "Consegna 24-48h"
+    },
+    {
+      "type": "text",
+      "id": "trust_patent_text",
+      "label": "Badge fiducia brevettato",
+      "default": "Ricetta brevettata"
+    },
+    {
+      "type": "textarea",
+      "id": "default_shipping_tab",
+      "label": "Testo tab spedizioni (fallback)",
+      "default": "Spedizione refrigerata con imballaggio isotermico e consegna express in 24-48h."
+    },
+    {
+      "type": "text",
+      "id": "tab_label_desc",
+      "label": "Label tab descrizione",
+      "default": "Descrizione"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_comp",
+      "label": "Label tab cosa comprende",
+      "default": "Cosa comprende"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_prep",
+      "label": "Label tab preparazione",
+      "default": "Preparazione"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_ingr",
+      "label": "Label tab ingredienti",
+      "default": "Ingredienti"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_conserv",
+      "label": "Label tab conservazione",
+      "default": "Conservazione"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_sped",
+      "label": "Label tab spedizioni",
+      "default": "Spedizioni"
+    }
+  ]
+}
+{% endschema %}

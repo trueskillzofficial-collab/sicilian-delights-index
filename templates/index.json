@@ -55,7 +55,13 @@
         "badge": "Brevetto esclusivo",
         "eyebrow": "Invenzione originale",
         "cta_label": "Scopri il Vulcano Etna"
-      }
+      },
+      "blocks": {
+        "vf1": { "type": "feature", "settings": { "text": "Ricetta e forma brevettate" } },
+        "vf2": { "type": "feature", "settings": { "text": "150g - confezione da 6 pz." } },
+        "vf3": { "type": "feature", "settings": { "text": "Solo da Delizie Siciliane" } }
+      },
+      "block_order": ["vf1", "vf2", "vf3"]
     },
     "brand_story": {
       "type": "brand-story",
@@ -63,7 +69,14 @@
     },
     "shipping_section": {
       "type": "shipping-section",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "s1": { "type": "ship_item", "settings": { "icon": "pin", "title": "Imballaggio isotermico", "text": "Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso. Mantiene il fresco per 48-72 ore." } },
+        "s2": { "type": "ship_item", "settings": { "icon": "truck", "title": "Express 24-48h", "text": "Spediamo con corriere espresso in tutta Italia. Tracking in tempo reale dalla nostra email di conferma." } },
+        "s3": { "type": "ship_item", "settings": { "icon": "temp", "title": "Sicurezza alimentare", "text": "Non spediamo nei periodi con temperature esterne previste superiori a 30 gradi." } },
+        "s4": { "type": "ship_item", "settings": { "icon": "check", "title": "Packaging certificato", "text": "Materiali conformi alla normativa CE per il contatto con alimenti." } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"]
     },
     "social_proof": {
       "type": "social-proof",

@@ -3,7 +3,87 @@
   "sections": {
     "main": {
       "type": "page-spedizioni",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "ship_1": {
+          "type": "ship_card",
+          "settings": {
+            "icon": "package",
+            "title": "Imballaggio isotermico",
+            "text": "Box termoisolante con pannello in polistirene alimentare e ghiaccio secco incluso. Mantiene il fresco per 48-72 ore."
+          }
+        },
+        "ship_2": {
+          "type": "ship_card",
+          "settings": {
+            "icon": "arrows",
+            "title": "Processo controllato",
+            "text": "Prepariamo e spediamo nello stesso giorno per ridurre i tempi di permanenza in transito."
+          }
+        },
+        "ship_3": {
+          "type": "ship_card",
+          "settings": {
+            "icon": "truck",
+            "title": "Express 24-48h",
+            "text": "Spedizione nazionale con corriere espresso e tracking in tempo reale."
+          }
+        },
+        "ship_4": {
+          "type": "ship_card",
+          "settings": {
+            "icon": "temp",
+            "title": "Sicurezza alimentare",
+            "text": "Non spediamo in giornate con temperature esterne troppo alte per tutelare il prodotto."
+          }
+        },
+        "zone_1": {
+          "type": "zone_row",
+          "settings": {
+            "zone": "Zona 1",
+            "regions": "Campania, Lazio, Molise, Puglia",
+            "times": "24h"
+          }
+        },
+        "zone_2": {
+          "type": "zone_row",
+          "settings": {
+            "zone": "Zona 2",
+            "regions": "Nord e Centro Italia",
+            "times": "24-48h"
+          }
+        },
+        "zone_3": {
+          "type": "zone_row",
+          "settings": {
+            "zone": "Zona 3",
+            "regions": "Isole e localita disagiate",
+            "times": "48-72h"
+          }
+        },
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "Come vengono confezionati i dolci?",
+            "answer": "In box isotermici certificati per il contatto alimentare, con supporti refrigeranti."
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "Posso tracciare la spedizione?",
+            "answer": "Si, inviamo tracking appena il pacco viene affidato al corriere."
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Cosa succede se il corriere ritarda?",
+            "answer": "Monitoriamo ogni spedizione e forniamo supporto rapido per gestire eventuali anomalie."
+          }
+        }
+      },
+      "block_order": ["ship_1", "ship_2", "ship_3", "ship_4", "zone_1", "zone_2", "zone_3", "faq_1", "faq_2", "faq_3"]
     }
   },
   "order": ["main"]
